@@ -20,11 +20,10 @@ def crear_usuario(login,password,nombre="",apellidos="",email=""):
     hashed_pw = generate_password_hash(password)
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO sys_user (login,password,nombre,apellidos,email) VALUES (?, ?, ?, ?, ?,)", (login,hashed_pw,nombre,apellidos,email))
+        cursor.execute("INSERT INTO sys_user (login,password,nombre,apellidos,email) VALUES (?, ?, ?, ?, ?)", (login,hashed_pw,nombre,apellidos,email))
         conn.commit()
     print(f"✅ Insertado el usuario con login: {login}.")
 
-
-crear_usuario("dasago", "dasago", "David", "Santamaría Gómez")
+crear_usuario("dasago", "dasago", "David", "Santamaría Gómez","david@dasago.es")
 
 
