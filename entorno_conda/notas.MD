@@ -14,4 +14,4 @@
 
 # 🗃️🗃️🗃️ Iré generando un yml nuevo cuando requiera instalar nuevos paquetes.
 
-## Versión actual:  <span style="color:red;background-color:white;">22/04/2025</span>
+## Versión actual:  <span style="color:red;background-color:white;">22/04/2025 08:12</span>
