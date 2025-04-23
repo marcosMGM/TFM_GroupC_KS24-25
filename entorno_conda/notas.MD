@@ -9,6 +9,9 @@
 ### Para importar actualizando el entorno existente
 <code>conda env create -f tfm.yml --prune</code>
 
+### Para eliminar el entorno existente previamente si no deja actualizar con --prune según la versión de conda
+<code>conda env delete --name tfm</code>
+
 
 
 
