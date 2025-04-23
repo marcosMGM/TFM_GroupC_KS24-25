@@ -14,16 +14,16 @@ connection_string = (
 def get_connection():
     return pyodbc.connect(connection_string)
 
-def add_house(data: dict):
+def insert_property(data: dict):
     """
-    Inserta un nuevo registro en la tabla houses.
+    Inserta un nuevo registro en la tabla property.
     :param data: Diccionario con los campos y valores a insertar.
     """
     keys = ", ".join(data.keys())
     placeholders = ", ".join(["?" for _ in data])
     values = tuple(data.values())
 
-    query = f"INSERT INTO test_house ({keys}) VALUES ({placeholders})"
+    query = f"INSERT INTO property ({keys}) VALUES ({placeholders})"
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query, values)
