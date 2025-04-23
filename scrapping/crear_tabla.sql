@@ -1,5 +1,6 @@
 CREATE TABLE property (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    id INT PRIMARY KEY,
+    -- id INT IDENTITY(1,1) PRIMARY KEY, -- lo cambio sin identity ya que tengo el id de idealista directamente (único)
     link NVARCHAR(500),
     title NVARCHAR(555),
     price DECIMAL(12,2),

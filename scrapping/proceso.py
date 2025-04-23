@@ -1,4 +1,4 @@
-from config_bd import get_connection, add_house
+from config_bd import get_connection, insert_property
 import pandas as pd
 import numpy as np
 import datetime
@@ -14,16 +14,6 @@ from selenium.webdriver.chrome.options import Options
 import undetected_chromedriver as uc
 
 
-# for i in range(1, 15001):
-#     add_house({
-#         "id": i,
-#         "address": "Calle Falsa "+str(i),
-#         "price": 250000,
-#         "bedroom": 3,
-#         "bathroom": 2
-#     })
-
-
 ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/mostoles-madrid/con-sin-inquilinos/"
 URL_INMUEBLE = "https://www.idealista.com/inmueble/%INMUEBLE_ID%/"
 browser = uc.Chrome()
@@ -32,7 +22,7 @@ paginacion = 1
 ids = []
 resultados = []
 # while True:
-while paginacion == 1:
+while paginacion == 1: ## fuerzo para recoger solo una página
     print('Página: ', paginacion)
     url = f'{ENLACE_INICIAL_LISTADO}{"pagina-" + str(paginacion) + ".htm" if paginacion > 1 else ""}'
     browser.get(url)
@@ -68,7 +58,11 @@ for article in articles:
 
     # Precio
     price_tag = article.find('span', class_='item-price')
-    precio = price_tag.get_text(strip=True) if price_tag else ''
+    precio_text = price_tag.get_text(strip=True) if price_tag else '0'
+    try:
+        precio = round(float(precio_text.replace('€', '').replace('.','').replace(',', '.').strip()), 2)
+    except ValueError:
+        precio = 0.0
 
     # Detalles (habitaciones, m2, planta...)
     detalles_tags = article.find_all('span', class_='item-detail')
@@ -96,16 +90,29 @@ for article in articles:
     #     'descripcion': descripcion,
     #     'etiquetas': etiquetas
     # }
-
-    add_house({
-        "id": element_id,
-        "link": enlace,
-        "title": titulo,
-        "address": "Calle Falsa "+str(i),
-        "price": precio,
-        "bedroom": 3,
-        "bathroom": 2
+    insert_property({
+        'id' : element_id,
+        'link' : enlace,
+        'title' : titulo,
+        'price' : precio,
+        'description' : descripcion,
+        'label' : etiquetas,
+        # 'built_area' : '',
+        # 'usable_area' : '',
+        # 'bedrooms' : '',
+        # 'bathrooms' : '',
+        # 'has_terrace' : '',
+        # 'garage_included' : '',
+        # 'property_condition' : '',
+        # 'heating_type' : '',
+        # 'adapted_access' : '',
+        # 'floor_number' : '',
+        # 'is_exterior' : '',
+        # 'has_elevator' : '',
+        # 'has_air_conditioning' : '',
+        # 'energy_consumption_kwh' : '',
+        # 'energy_consumption_class' : '',
+        # 'co2_emissions_kg' : '',
+        # 'co2_emissions_class' : ''
     })
 
-    resultados.append(datos)
-print(resultados)
