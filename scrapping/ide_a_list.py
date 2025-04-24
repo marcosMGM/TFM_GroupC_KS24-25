@@ -65,7 +65,18 @@ while True:
 
         # Detalles (habitaciones, m2, planta...)
         detalles_tags = article.find_all('span', class_='item-detail')
-        detalles = ' | '.join([d.get_text(strip=True) for d in detalles_tags])
+        # detalles = ' | '.join([d.get_text(strip=True) for d in detalles_tags])
+        for d in detalles_tags:
+            if 'm²' in d.get_text(strip=True):
+                built_area = d.get_text(strip=True).replace('m²', '').strip()
+            else:
+                built_area = 0
+
+            if 'hab.' in d.get_text(strip=True):
+                bedrooms = int(d.get_text(strip=True).replace('hab.', '').strip())
+            else:
+                bedrooms = 0
+            
 
         # Descripción
         desc_tag = article.find('div', class_='item-description')
@@ -97,9 +108,9 @@ while True:
             'price' : precio,
             'description' : descripcion,
             'label' : etiquetas,
-            # 'built_area' : '',
+            'built_area' : built_area,
             # 'usable_area' : '',
-            # 'bedrooms' : '',
+            'bedrooms' : bedrooms,
             # 'bathrooms' : '',
             # 'has_terrace' : '',
             # 'garage_included' : '',
