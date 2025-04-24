@@ -29,9 +29,9 @@ def get_connection():
 #         cursor.execute(query, values)
 #         conn.commit()
 
-def insert_property(data: dict):
+def insert_ide_property(data: dict):
     """
-    Inserta un nuevo registro en la tabla property, actualiza ya existente.
+    Inserta un nuevo registro en la tabla ide_property, actualiza ya existente.
     :param data: Diccionario con los campos y valores a insertar.
     """
     keys = list(data.keys())
@@ -43,7 +43,7 @@ def insert_property(data: dict):
     source_alias = ", ".join([f"? AS {k}" for k in keys])
 
     query = f"""
-    MERGE INTO property AS target
+    MERGE INTO ide_property AS target
     USING (SELECT {source_alias}) AS source
     ON target.id = source.id
     WHEN MATCHED THEN

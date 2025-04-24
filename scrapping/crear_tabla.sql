@@ -1,6 +1,9 @@
-CREATE TABLE property (
+CREATE TABLE ide_property (
     id INT PRIMARY KEY,
     -- id INT IDENTITY(1,1) PRIMARY KEY, -- lo cambio sin identity ya que tengo el id de idealista directamente (único)
+    insert_date DATETIME NOT NULL DEFAULT GETDATE(),
+    update_date DATETIME,
+    detail_date DATETIME,
     link NVARCHAR(500),
     title NVARCHAR(555),
     price DECIMAL(12,2),
