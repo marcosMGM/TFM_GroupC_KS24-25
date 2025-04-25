@@ -15,7 +15,9 @@ import undetected_chromedriver as uc
 
 
 # ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/mostoles-madrid/con-sin-inquilinos/"
-ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-mar-castellon/con-sin-inquilinos/"
+# Si se cae y quiero reiniciar el proceso, lo hago desde la página 22 por ejemplo
+# ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-mar-castellon/con-sin-inquilinos/pagina-22.htm" 
+ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-mar-castellon/con-sin-inquilinos"
 URL_INMUEBLE = "https://www.idealista.com/inmueble/%INMUEBLE_ID%/"
 browser = uc.Chrome()
 
@@ -68,7 +70,7 @@ while True:
         # detalles = ' | '.join([d.get_text(strip=True) for d in detalles_tags])
         for d in detalles_tags:
             if 'm²' in d.get_text(strip=True):
-                built_area = d.get_text(strip=True).replace('m²', '').strip()
+                built_area = d.get_text(strip=True).replace('m²', '').replace('.', '').strip()
             else:
                 built_area = 0
 
