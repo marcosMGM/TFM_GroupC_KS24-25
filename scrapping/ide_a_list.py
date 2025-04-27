@@ -17,11 +17,11 @@ import undetected_chromedriver as uc
 # ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/mostoles-madrid/con-sin-inquilinos/"
 # Si se cae y quiero reiniciar el proceso, lo hago desde la página 22 por ejemplo
 # ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-mar-castellon/con-sin-inquilinos/pagina-22.htm" 
-ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-mar-castellon/con-sin-inquilinos"
+ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-mar-castellon/con-sin-inquilinos/"
 URL_INMUEBLE = "https://www.idealista.com/inmueble/%INMUEBLE_ID%/"
 browser = uc.Chrome()
 
-paginacion = 1
+paginacion = 35
 ids = []
 resultados = []
 while True:
@@ -67,18 +67,14 @@ while True:
 
         # Detalles (habitaciones, m2, planta...)
         detalles_tags = article.find_all('span', class_='item-detail')
-        # detalles = ' | '.join([d.get_text(strip=True) for d in detalles_tags])
+        # Inicializo las variables con el valor por defecto.
+        built_area = 0
+        bedrooms = 0
         for d in detalles_tags:
             if 'm²' in d.get_text(strip=True):
                 built_area = d.get_text(strip=True).replace('m²', '').replace('.', '').strip()
-            else:
-                built_area = 0
-
             if 'hab.' in d.get_text(strip=True):
                 bedrooms = int(d.get_text(strip=True).replace('hab.', '').strip())
-            else:
-                bedrooms = 0
-            
 
         # Descripción
         desc_tag = article.find('div', class_='item-description')
@@ -92,16 +88,7 @@ while True:
                 tag.get_text(strip=True) for tag in tag_container.find_all('span', class_='listing-tags')
             ])
 
-        # Diccionario final para este artículo
-        # datos = {
-        #     'id': element_id,
-        #     'enlace': enlace,
-        #     'titulo': titulo,
-        #     'precio': precio,
-        #     'detalles': detalles,
-        #     'descripcion': descripcion,
-        #     'etiquetas': etiquetas
-        # }
+
         insert_ide_property({
             'id' : element_id,
             'update_date' : datetime.datetime.now(),
