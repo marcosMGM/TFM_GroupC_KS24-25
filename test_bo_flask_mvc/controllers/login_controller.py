@@ -18,6 +18,8 @@ def login():
             update_last_access(user.id)
             return redirect(url_for('home'))
 
-        return render_template('login.html', error="Credenciales inválidas o usuario inactivo")
+        # return render_template('login.html', error="Credenciales inválidas o usuario inactivo")
+        return render_template('sign_in_1.html', error="Credenciales inválidas o usuario inactivo")
 
-    return render_template('login.html')
+    # return render_template('login.html')
+    return render_template('sign_in_1.html')
