@@ -19,7 +19,7 @@ def login():
             return redirect(url_for('home'))
 
         # return render_template('login.html', error="Credenciales inválidas o usuario inactivo")
-        return render_template('sign_in_1.html', error="Credenciales inválidas o usuario inactivo")
+        return render_template('login.html', error="Credenciales inválidas o usuario inactivo")
 
     # return render_template('login.html')
-    return render_template('sign_in_1.html')
+    return render_template('login.html')

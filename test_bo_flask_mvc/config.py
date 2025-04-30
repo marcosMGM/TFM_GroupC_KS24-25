@@ -16,5 +16,5 @@ def get_connection():
 
 SECRET_KEY = 'supersecretkey'
 DEBUG = True
-APP_NAME = 'BACKOFFICE - TFM'
+APP_NAME = 'BACKOFFICE - TFM GRUPO C'
 VERSION = 0
