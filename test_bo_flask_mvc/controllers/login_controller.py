@@ -17,6 +17,8 @@ def login():
 
         if user and check_password_hash(user.password, password_input):
             session['user'] = user.nombre or user.login
+            session['user_name'] = user.nombre
+            session['user_mail'] = user.email
             session['user_id'] = user.id
             update_last_access(user.id)
             return redirect(url_for('home'))

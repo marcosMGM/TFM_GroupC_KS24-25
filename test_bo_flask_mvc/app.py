@@ -18,7 +18,7 @@ app.register_blueprint(login_bp)
 def home():
     if 'user' not in session:
         return redirect(url_for('login_bp.login'))
-    return render_template('pages/index.html', user=session['user'], pageTitle="Inicio")
+    return render_template('pages/index.html', user=session['user'], name=session['user_name'], mail=session['user_mail'], pageTitle="Inicio")
 
 @app.route('/logout')
 def logout():
