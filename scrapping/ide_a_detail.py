@@ -88,8 +88,7 @@ pool = 0
 
 if detalles:
     div_features_one = detalles.find('div', {'class': 'details-property-feature-one'})
-    lis = div_features_one.find_all('li')
-    for li in lis:
+    for li in div_features_one.find_all('li'):
         if 'habitaciones' in li.text.strip().lower():
             habitaciones = li.find('span', {'class': 'value'}).text.strip()
    
@@ -121,5 +120,5 @@ print(ubicacion)
 print(precio)
 print(lat, lon)
 print(etiquetas_final)
-print(commentario)
+# print(commentario)
 
