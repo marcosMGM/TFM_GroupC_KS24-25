@@ -5,6 +5,9 @@ from werkzeug.security import check_password_hash
 login_bp = Blueprint('login_bp', __name__)
 
 @login_bp.route('/login', methods=['GET', 'POST'])
+
+
+
 def login():
     if request.method == 'POST':
         login_input = request.form['username']
@@ -19,7 +22,7 @@ def login():
             return redirect(url_for('home'))
 
         # return render_template('login.html', error="Credenciales inválidas o usuario inactivo")
-        return render_template('login.html', error="Credenciales inválidas o usuario inactivo")
+        return render_template('pages/login.html', error="Credenciales inválidas o usuario inactivo")
 
     # return render_template('login.html')
-    return render_template('login.html')
+    return render_template('pages/login.html')

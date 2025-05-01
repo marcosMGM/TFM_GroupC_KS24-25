@@ -21,7 +21,8 @@ ENLACE_INICIAL_LISTADO ="https://www.idealista.com/venta-viviendas/oropesa-del-m
 URL_INMUEBLE = "https://www.idealista.com/inmueble/%INMUEBLE_ID%/"
 browser = uc.Chrome()
 
-paginacion = 35
+# paginacion = 1
+paginacion = 25  #Si se cae y quiero reiniciar el proceso, lo hago desde la página 35 por ejemplo
 ids = []
 resultados = []
 while True:

@@ -18,7 +18,7 @@ app.register_blueprint(login_bp)
 def home():
     if 'user' not in session:
         return redirect(url_for('login_bp.login'))
-    return render_template('index.html', user=session['user'])
+    return render_template('pages/index.html', user=session['user'], pageTitle="Inicio")
 
 @app.route('/logout')
 def logout():
@@ -27,3 +27,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=config.DEBUG)
+    # app.run(host='
