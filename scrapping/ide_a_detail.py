@@ -70,7 +70,7 @@ if full_detail:
     print(titulo)
     print(ubicacion)
     print(precio)
-    # print(map_image_link)
+    print(map_image_link)
     print(center)
 
 else:
