@@ -1,9 +1,18 @@
 from flask import Flask
-from config import SECRET_KEY
+from app.config import SECRET_KEY, APP_NAME, VERSION
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = SECRET_KEY
+
+
+    @app.context_processor
+    def inject_config_constants():
+        return {
+            "APP_NAME": APP_NAME,
+            "VERSION": VERSION
+        }
+
 
     from app.routes.home import home_controller
     from app.routes.auth import auth_controller
@@ -14,5 +23,6 @@ def create_app():
     # app.register_blueprint(entidad, url_prefix="/entidades")
 
 
-
     return app
+
+

@@ -1,5 +1,5 @@
 import pyodbc
-from credenciales_sqlserver import *
+from app.credenciales_sqlserver import *
 
 connection_string = (
     # f"DRIVER={{ODBC Driver 17 for SQL Server}};"
