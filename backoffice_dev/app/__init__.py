@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from app.config import SECRET_KEY, APP_NAME, VERSION
 
 def create_app():
@@ -12,7 +12,14 @@ def create_app():
             "APP_NAME": APP_NAME,
             "VERSION": VERSION
         }
-
+    @app.context_processor
+    def inject_user():
+        return dict(
+            profile_user=session.get('user'),
+            profile_user_name=session.get('user_name'),
+            profile_user_mail=session.get('user_mail'),
+            profile_user_id=session.get('user_id'),
+            )    
 
     from app.routes.home import home_controller
     from app.routes.auth import auth_controller

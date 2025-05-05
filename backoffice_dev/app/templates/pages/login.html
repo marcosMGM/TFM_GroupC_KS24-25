@@ -48,21 +48,17 @@
                     <div class="login-form-container">
                       <div class="form_container">
 
-                        {% with messages = get_flashed_messages() %}
-                          {% if messages %}
-                            {% for message in messages %}
-                              <div class="pa-12 text-center">
-                                <div class="alert alert-light-danger" role="alert">{{ message }}</div>
-                              </div>
-                            {% endfor %}
-                          {% endif %}
-                        {% endwith %}
-
-
-
                         <form class="app-form" method="post">
-
-
+                          
+                          {% with messages = get_flashed_messages(with_categories=true) %}
+                          {% if messages %}
+                          {% for category, message in messages %}
+                          <div class="pa-12 text-center">
+                            <div class="alert alert-{{category}}" role="alert">{{message}}</div>
+                          </div>
+                          {% endfor %}
+                          {% endif %}
+                          {% endwith %}
 
                           <div class="mb-3 text-center">
                             <h3>Inicio de sesión</h3>
