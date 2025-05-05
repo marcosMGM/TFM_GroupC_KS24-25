@@ -47,11 +47,18 @@
                   
                     <div class="login-form-container">
                       <div class="form_container">
-                        {% if error %}
-                        <div class="pa-12 text-center">
-                          <div class="alert alert-light-danger" role="alert">No es posible iniciar sesión. Inténtalo de nuevo.</div>
-                        </div>
-                        {% endif %}
+
+                        {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                              <div class="pa-12 text-center">
+                                <div class="alert alert-light-danger" role="alert">{{ message }}</div>
+                              </div>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+
+
 
                         <form class="app-form" method="post">
 

@@ -13,4 +13,11 @@ def login():
             return redirect(url_for("main.index"))
         else:
             flash("Credenciales incorrectas")
-    return render_template("login.html")
+    return render_template("pages/login.html")
+
+
+@auth_controller.route('/logout')
+def logout():
+    session.clear()
+    flash("Sesión cerrada correctamente")
+    return redirect(url_for('auth_controller.login'))

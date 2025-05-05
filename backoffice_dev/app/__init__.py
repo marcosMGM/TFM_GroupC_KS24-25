@@ -20,6 +20,7 @@ def create_app():
 
     app.register_blueprint(home_controller)
     app.register_blueprint(auth_controller, url_prefix="/auth")
+    # app.register_blueprint(auth_controller, url_prefix="/auth")
     # app.register_blueprint(entidad, url_prefix="/entidades")
 
 

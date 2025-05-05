@@ -6,6 +6,6 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if 'usuario' not in session:
             flash('Debes iniciar sesión para acceder a esta página.')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth_controller.login'))
         return f(*args, **kwargs)
     return decorated_function

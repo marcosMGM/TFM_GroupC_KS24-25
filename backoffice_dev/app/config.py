@@ -16,5 +16,5 @@ def get_connection():
 
 SECRET_KEY = 'kjlcoGDSFGNHIOFJVSDfdjsbjgfdvhf'
 DEBUG = True
-APP_NAME = 'BACKOFFICE - TFM GRUPO C'
-VERSION = 0
+APP_NAME = 'TFM GRUPO C'
+VERSION = "0.0.0"
