@@ -14,7 +14,7 @@ connection_string = (
 def get_connection():
     return pyodbc.connect(connection_string)
 
-SECRET_KEY = 'supersecretkey'
+SECRET_KEY = 'kjlcoGDSFGNHIOFJVSDfdjsbjgfdvhf'
 DEBUG = True
 APP_NAME = 'BACKOFFICE - TFM GRUPO C'
 VERSION = 0

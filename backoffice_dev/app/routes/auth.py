@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from app.utils.decorators import login_required
 
 auth_controller = Blueprint('auth_controller', __name__)
 
