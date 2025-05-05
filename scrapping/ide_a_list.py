@@ -22,7 +22,7 @@ URL_INMUEBLE = "https://www.idealista.com/inmueble/%INMUEBLE_ID%/"
 browser = uc.Chrome()
 
 # paginacion = 1
-paginacion = 25  #Si se cae y quiero reiniciar el proceso, lo hago desde la página 35 por ejemplo
+paginacion = 1  #Si se cae y quiero reiniciar el proceso, lo hago desde la página 35 por ejemplo
 ids = []
 resultados = []
 while True:
