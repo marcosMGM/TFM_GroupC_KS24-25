@@ -6,4 +6,4 @@ home_controller = Blueprint('home_controller', __name__)
 @home_controller.route("/")
 @login_required
 def index():
-    return render_template("pages/inicio.html")
+    return render_template("pages/home/inicio.html")

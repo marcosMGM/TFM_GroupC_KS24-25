@@ -22,7 +22,12 @@ def create_app():
             )  
     @app.context_processor
     def inject_global_vars():
-        return dict(page_title=getattr(g, 'page_title', APP_NAME))
+        return dict(
+            page_title=getattr(g, 'page_title', APP_NAME),
+            bc_level_1=getattr(g, 'bc_level_1', None),
+            bc_level_2=getattr(g, 'bc_level_2', None),
+            bc_level_3=getattr(g, 'bc_level_3', None),
+            )
 
 
 
