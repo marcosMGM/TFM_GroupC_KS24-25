@@ -38,12 +38,21 @@ def logout():
 @login_required
 def password(): 
     if request.method == 'POST':
-        login_input = request.form['username']
-        password_input = request.form['password']
-        flash("Sesión cerrada correctamente", "success")
+        if request.form['new_pwd'] != request.form['repeat_new_pwd']:
+            flash("Las contraseñas especificadas no coinciden", "warning")
+            return render_template('pages/auth/password.html')
+        
+        if request.form['new_pwd'] != request.form['repeat_new_pwd']:
+            flash("Las contraseñas especificadas no coinciden", "warning")
+            return render_template('pages/auth/password.html')
+
+
+
+
+
+
 
     # return redirect(url_for('home_controller.login'))
-
     g.page_title = "Restablecimiento de contraseña"
     g.bc_level_1 = ("Home", url_for('home_controller.index'))
     g.bc_level_2 = ("Configuración de la cuenta", url_for('auth_controller.password'))
