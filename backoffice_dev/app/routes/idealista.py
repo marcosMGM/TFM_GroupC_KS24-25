@@ -32,11 +32,5 @@ con esto debo controlar paginación, ordenación y búsqueda de los datos que se
 @idealista_controller.route("/datalist")
 @login_required
 def datalist():
-    data = [
-        {"id": 1, "titulo": "Titulo 1"},
-        {"id": 2, "titulo": "Titulo 2"},
-        {"id": 3, "titulo": "Titulo 3"},
-        {"id": 4, "titulo": "Titulo 4"},
-        {"id": 5, "titulo": "Titulo 5"}
-    ]
-    return jsonify(data)
+    datalist = get_datalist(request.args)
+    return jsonify(datalist)
