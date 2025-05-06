@@ -36,14 +36,14 @@ def logout():
 
 @auth_controller.route('/password', methods=["GET", "POST"])
 @login_required
-def password():
+def password(): 
     if request.method == 'POST':
         login_input = request.form['username']
         password_input = request.form['password']
         flash("Sesión cerrada correctamente", "success")
 
     # return redirect(url_for('home_controller.login'))
-    
+
     g.page_title = "Restablecimiento de contraseña"
     g.bc_level_1 = ("Home", url_for('home_controller.index'))
     g.bc_level_2 = ("Configuración de la cuenta", url_for('auth_controller.password'))
@@ -51,7 +51,7 @@ def password():
     return render_template('pages/auth/password.html')
 
 
-
+ 
 
 
 
