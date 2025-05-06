@@ -19,6 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&display=swap" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/static/vendor/datatable/jquery.dataTables.min.css">
   <link rel="stylesheet" type="text/css" href="/static/vendor/tabler-icons/tabler-icons.css">
   <link rel="stylesheet" href="/static/vendor/animation/animate.min.css">
   <link rel="stylesheet" type="text/css" href="/static/vendor/flag-icons-master/flag-icon.css">
@@ -26,6 +30,9 @@
   <link rel="stylesheet" type="text/css" href="/static/vendor/simplebar/simplebar.css">
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <link rel="stylesheet" type="text/css" href="/static/css/responsive.css">
+  
+  {% include "slots/base_pre_scripts.html" %}
+
 
 </head>
 
@@ -81,7 +88,7 @@
   </div>
   
 
-  {% include "slots/base_scripts.html" %}
+  {% include "slots/base_post_scripts.html" %}
   
 </body>
 
