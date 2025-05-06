@@ -17,6 +17,7 @@ def create_app():
         return dict(
             profile_user=session.get('user'),
             profile_user_name=session.get('user_name'),
+            profile_user_lastname=session.get('user_lastname'),
             profile_user_mail=session.get('user_mail'),
             profile_user_id=session.get('user_id'),
             )  
