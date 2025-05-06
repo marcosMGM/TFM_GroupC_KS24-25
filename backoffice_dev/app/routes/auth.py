@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from app.utils.decorators import login_required
-from app.models.auth import get_user_by_login, update_last_access
+from app.models.auth_model import get_user_by_login, update_last_access
 from werkzeug.security import check_password_hash
 
 auth_controller = Blueprint('auth_controller', __name__)
