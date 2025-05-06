@@ -19,49 +19,11 @@
                         <table id="tablelist" class="display app-data-table default-data-table">
                           <thead>
                             <tr>
-                              <th>Name</th>
-                              <th>Position</th>
-                              <th>Office</th>
-                              <th>Age</th>
-                              <th>Start date</th>
-                              <th>Salary</th>
-                              <th>Action</th>
+                              <th>Id</th>
+                              <th>Título</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>Tiger Nixon</td>
-                              <td><span class="badge text-light-primary">System Architect</span></td>
-                              <td>Edinburgh</td>
-                              <td>61</td>
-                              <td>$3674.55</td>
-                              <td>$320,800</td>
-                              <td>
-                                <button type="button" class="btn btn-light-success icon-btn b-r-4">
-                                  <i class="ti ti-edit text-success"></i> 
-                                </button>
-                                <button type="button" class="btn btn-light-danger icon-btn b-r-4 delete-btn">
-                                  <i class="ti ti-trash"></i>
-                                </button>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>Garrett Winters</td>
-                              <td><span class="badge text-light-success">Accountant</span></td>
-                              <td>Tokyo</td>
-                              <td>63</td>
-                              <td>2011-07-25</td>
-                              <td>$170,750</td>
-                              <td>
-                                <button type="button" class="btn btn-light-success icon-btn b-r-4">
-                                  <i class="ti ti-edit text-success"></i> 
-                                </button>
-                                <button type="button" class="btn btn-light-danger icon-btn b-r-4 delete-btn">
-                                  <i class="ti ti-trash"></i>
-                                </button>
-                              </td>
-                            </tr>
-                            
                           </tbody>
                         </table>
                       </div>
@@ -80,14 +42,13 @@
     $('#tablelist').DataTable({
       processing: true,
       serverSide: true,
-      ajax: '/api/usuarios',  // Aquí va tu ruta Flask
+      ajax: '{{url_for("idealista_controller.datalist")}}',  // Aquí va tu ruta Flask
       language: {
         url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
       },
       columns: [
         { data: 'id' },
-        { data: 'nombre' },
-        { data: 'email' }
+        { data: 'titulo' },
       ]
     });
   });
