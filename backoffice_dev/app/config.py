@@ -19,3 +19,5 @@ DEBUG = True
 APP_NAME = 'TFM GRUPO C'
 VERSION = "0.0.0"
 APP_PORT = 8080
+
+IDEALISTA_URL = "https://www.idealista.com"

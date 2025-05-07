@@ -1,4 +1,5 @@
 from app.config import get_connection
+from app.utils.database import db
 import datetime
 
 def get_datalist(params):

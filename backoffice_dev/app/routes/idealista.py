@@ -3,6 +3,7 @@ from app.utils.decorators import login_required
 from app.models.idealista_model import get_datalist
 from werkzeug.security import check_password_hash
 from flask import jsonify
+from app.config import IDEALISTA_URL
 
 idealista_controller = Blueprint('idealista_controller', __name__)
 
@@ -14,7 +15,7 @@ def index():
     g.bc_level_1 = ("Inicio", url_for('home_controller.index'))
     g.bc_level_2 = ("Propiedades", url_for('home_controller.index'))
     g.bc_level_3 = ("Idealista", url_for('idealista_controller.index'))
-    return render_template("pages/idealista/list.html")
+    return render_template("pages/idealista/list.html", IDEALISTA_URL=IDEALISTA_URL)
     # return redirect(url_for('home_controller.index'))
 
 
