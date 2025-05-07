@@ -3,25 +3,34 @@ import datetime
 
 def get_datalist(params):
 
-    """ select id, link, title, built_area, price
-    FROM ide_property
-    ORDER BY id ASC """
-
-
-    limit = """ """
-    select = """ """
+    top = f"TOP {int(params['length'])}"
+    select = """SELECT {top} id, link, title, built_area, price FROM ide_property WHERE 1=1"""
     where = """ """
     group = """ """
     order = """ """
-        
+    query = select.format(top=top) + where + group + order
+    
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
 
-    data = [
-        {"id": 1, "titulo": "Titulo 1"},
-        {"id": 2, "titulo": "Titulo 2"},
-        {"id": 3, "titulo": "Titulo 3"},
-        {"id": 4, "titulo": "Titulo 4"},
-        {"id": 5, "titulo": "Titulo 5"}
-    ]
+        columns = [column[0] for column in cursor.description]
+        data = [dict(zip(columns, row)) for row in rows]
+
+        # For recordsTotal and recordsFiltered, you'd typically run separate count queries
+        # For simplicity, using len(data) for now, but this is not accurate if pagination/filtering is applied server-side.
+
+        records_total = len(data) # This should be a COUNT(*) query without filters
+        records_filtered = len(data) # This should be a COUNT(*) query with filters
+
+    # data = [
+    #     {"id": 1, "titulo": "Titulo 1"},
+    #     {"id": 2, "titulo": "Titulo 2"},
+    #     {"id": 3, "titulo": "Titulo 3"},
+    #     {"id": 4, "titulo": "Titulo 4"},
+    #     {"id": 5, "titulo": "Titulo 5"}
+    # ]
 
     # draw = int(request.args.get('draw', 1))
     # start = int(request.args.get('start', 0))
@@ -30,8 +39,8 @@ def get_datalist(params):
 
     return {
         "draw": int(params.get('draw', 1)),
-        "recordsTotal": 5,
-        "recordsFiltered": 4,
+        "recordsTotal": records_total,
+        "recordsFiltered": records_filtered,
         "data": data
     }
 
