@@ -47,7 +47,8 @@
       serverSide: true,
       ajax: '{{url_for("idealista_controller.datalist")}}',
       language: {
-        url: "/static/lang/datatables_es-ES.json"
+        url: "/static/lang/datatables_es-ES.json",
+        type: "POST"
       },
       columns: [
         { data: 'id' },

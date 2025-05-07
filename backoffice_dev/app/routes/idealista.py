@@ -34,4 +34,5 @@ con esto debo controlar paginación, ordenación y búsqueda de los datos que se
 @login_required
 def datalist():
     datalist = get_datalist(request.args)
+    # datalist = get_datalist(request.form)
     return jsonify(datalist)

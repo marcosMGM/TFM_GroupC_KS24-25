@@ -7,11 +7,29 @@ def get_datalist(params, pagination=True):
     db = DatabaseInterface()
 
     """ SELECT BLOCK """
-    select = """SELECT id, link, title, built_area, price FROM ide_property WHERE 1=1"""
+    select = """SELECT id, link, title, built_area, price FROM ide_property """
 
 
     """ FILTER BLOCK """
-    where = """ """
+    where = """ WHERE 1=1 """
+
+    ##### SEARCH BOX #####
+    if params.get('search') and params['search'].get('value', '') != '':
+        filter_data = {
+            'id' : 'id',
+            'title' : 'title'
+        }
+        sqlWhere = ""
+        search = params['search']['value'].lower().replace("'", "''")  # escapado simple para LIKE
+        for i in range(len(params['columns'])):
+            requestColumn = params['columns'][i]
+            if requestColumn.get('searchable') == 'true' and requestColumn['data'] in filter_data:
+                sqlWhere += f" OR LOWER({filter_data[requestColumn['data']]}) LIKE '%{search}%'"
+                print(sqlWhere)
+                # A ESTE PRINT NO ESTA ENTRANDO REVISAR
+        if sqlWhere.strip():
+            where += " AND (" + sqlWhere.lstrip(" OR") + ")"
+
 
 
     """ GROUP BLOCK """
@@ -19,23 +37,24 @@ def get_datalist(params, pagination=True):
 
 
     """ ORDER BLOCK """
-    order = ""
-    if 'order' in params and len(params['order']) > 0:
+    if params.get('order') and len(params['order']) > 0 and 'columns' in params:
         orderColumns = []
 
-    for i in range(len(params['order'])):
-        columnIdx = int(params['order'][i]['column'])
-        requestColumn = params['columns'][columnIdx]
-        if requestColumn['orderable'] == 'true':
-            dir = 'ASC' if params['order'][i]['dir'] == 'asc' else 'DESC'
-            if requestColumn['data'] == 'activa':
-                orderColumns.append(f"p.activa {dir}")
-            else:
-                orderColumns.append(f"{requestColumn['data']} {dir}")
+        for i in range(len(params['order'])):
+            columnIdx = int(params['order'][i].get('column', 0))
+            requestColumn = params['columns'][columnIdx]
 
-    if orderColumns:
-        order = " ORDER BY " + ", ".join(orderColumns)
-    # Orden por omisión
+            if requestColumn.get('orderable') == 'true':
+                dir = 'ASC' if params['order'][i].get('dir') == 'asc' else 'DESC'
+
+                if requestColumn.get('data') == 'activa':
+                    orderColumns.append(f"p.activa {dir}")
+                else:
+                    orderColumns.append(f"{requestColumn.get('data')} {dir}")
+
+        if orderColumns:
+            order = " ORDER BY " + ", ".join(orderColumns)
+    #Orden por omisión
     if 'order' not in locals() or not order:
         order = " ORDER BY id ASC"
 
