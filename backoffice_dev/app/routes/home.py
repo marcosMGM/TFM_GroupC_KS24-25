@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g
 from app.utils.decorators import login_required
-from app.models.home_model import get_pie_by_bedrooms
+from app.models.home_model import get_pie_ide_by_bedrooms, get_home_cards
 
 home_controller = Blueprint('home_controller', __name__)
 
@@ -8,8 +8,9 @@ home_controller = Blueprint('home_controller', __name__)
 @login_required
 def index():
     g.page_title = "Inicio"
-    pie_data = get_pie_by_bedrooms()
-    return render_template("pages/home/inicio.html")
+    cards = get_home_cards()
+    pie1 = get_pie_ide_by_bedrooms()
+    return render_template("pages/home/inicio.html", pie1=pie1, cards=cards)
 
 
 

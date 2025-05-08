@@ -3,38 +3,117 @@
 {% block content %}
 
 
+
             <!-- Blank start -->
-            <div class="row">
-                <!-- Default Card start -->
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h5>Default Card</h5>
+             <div class="row">
+              <div class="col-md-12">
+                <div class="card equal-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h5 class="header-title-text">Resumen del inventario de propiedades</h5>
+
+                        <div class="project-status-box">
+                          <div class="project-status-card bg-success">
+                            <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                              <i class="ph-fill  ph-house-line"></i>
+                            </span>
+                            <p class="mb-0 mt-2">Idealista</p>
+                            <h4 class="text-white f-w-600">{{cards.card1}}</h4>
+                          </div>
+                          <div class="project-status-card bg-danger">
+                            <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
+                              <i class="ph-duotone  ph-house-line"></i>
+                            </span>
+                            <p class="mb-0 mt-2">AirBNB</p>
+                            <h4 class="text-white f-w-600">{{cards.card2}}</h4>
+                          </div>
+                          <div class="project-status-card bg-warning">
+                            <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                              <i class="ph-fill  ph-circles-three-plus"></i>
+                            </span>
+                            <p class="mb-0 mt-2">Añadidas hoy</p>
+                            <h4 class="text-white f-w-600">{{cards.card3}}</h4>
+                          </div>
+                          <div class="project-status-card bg-info">
+                            <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
+                              <i class="ph-fill  ph-key-return"></i>
+                            </span>
+                            <p class="mb-0 mt-2">Acualizadas hoy</p>
+                            <h4 class="text-white f-w-600">{{cards.card4}}</h4>
+                          </div>
+                          <div class="project-status-card bg-dark">
+                            <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
+                              <i class="ph-fill  ph-currency-eur"></i>
+                            </span>
+                            <p class="mb-0 mt-2">Precio medio por metro</p>
+                            <h4 class="f-w-600 text-white">{{cards.card5}} €</h4>
+                          </div>
+                        </div>
+
+
+                      </div>
+
                     </div>
-                    <div class="card-body">
-                      <h6>Where does it come from ?</h6>
-                      <p class="text-secondary"> Contrary to popular belief, Lorem Ipsum is not simply random text. It has
-                        roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard
-                        McClinton, a Latin professor at Hampered-Sydney College in Virginia, looked up one of the more
-                        obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the
-                        word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections
-                        1.10.32 and 1.10.33 of "de Minibus Bono rum et Malo rum" (The Extremes of Good and Evil) by Cicero,
-                        written in 45 BC. This book is a treatise on the theory of ethics, very popular during the
-                        Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in
-                        section 1.10.32 </p>
-                    </div>
-                    <div class="card-footer">
-                      <p class="float-start text-secondary p-t-10 mb-0">1 days Ago</p>
-  
-                      <a href="#" class="float-end fw-bold"> Read More </a>
-                    </div>
-  
                   </div>
                 </div>
-  
-               <!-- Default Card end -->
               </div>
+             </div>
+            <div class="row">
+                       <!-- Pie1 - Idealista by Bedrooms -->
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Composición número de habitaciones</h5>
+                  </div>
+                  <div class="card-body">
+                    <div id="pie1"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Simple Pie Chart end --> 
+
+
+            </div>
               <!-- Blank end -->
+
+              <script>
+
+                /* Pie1 */
+                const pieData = {{ pie1 | tojson }};
+                const series = pieData.map(item => item.propiedades);
+                const labels = pieData.map(item => item.bedrooms.toString() + " dormitorios");
+              
+                var options = {
+                    series: series,
+                    chart: {
+                        height: 340,
+                        type: 'pie',
+                    },
+                    labels: labels,
+                    legend: {
+                      position: 'bottom'
+                    },
+                    responsive: [{
+                        breakpoint: 1366,
+                        options: {
+                            chart: {
+                                height: 250
+                            },
+                            legend: {
+                              show: false,
+                            },
+                        }
+                    }]
+                };
+                var chart = new ApexCharts(document.querySelector("#pie1"), options);
+                chart.render();
+                /* Pie1 End */
+
+
+
+
+              </script>
 
 
 {% endblock %}
