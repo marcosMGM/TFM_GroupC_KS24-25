@@ -7,13 +7,14 @@ def get_home_cards():
     card1 = db.getcountfromquery("SELECT id FROM ide_property")
     card3 = db.getcountfromquery(f"SELECT id FROM ide_property WHERE CONVERT(date, insert_date) = '{datetime.datetime.now().date()}'")
     card4 = db.getcountfromquery(f"SELECT id FROM ide_property WHERE CONVERT(date, update_date) = '{datetime.datetime.now().date()}'")
+    card5 = db.getallfromquery("SELECT SUM(price) / SUM(built_area) as precio_medio FROM ide_property")
 
     return {
         'card1': card1,
         'card2': 0,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
         'card3': card3,
         'card4': card4,
-        'card5': 0,
+        'card5': round(float(card5[0].get('precio_medio', 0)),2),
     }
 
 def get_pie_ide_by_bedrooms():

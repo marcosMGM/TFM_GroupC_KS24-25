@@ -55,8 +55,6 @@ def password():
         return redirect(url_for('auth_controller.login'))
 
 
-
-
     # return redirect(url_for('home_controller.login'))
     g.page_title = "Restablecimiento de contraseña"
     g.bc_level_1 = ("Home", url_for('home_controller.index'))
