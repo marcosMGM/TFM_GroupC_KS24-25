@@ -14,8 +14,8 @@ from selenium.webdriver.chrome.options import Options
 import undetected_chromedriver as uc
 from urllib.parse import urlparse, parse_qs
 
-ENLACE_INI = "https://www.idealista.com/inmueble/100000581/"
-ENLACE_INI = "https://www.idealista.com/inmueble/102146350/"
+ENLACE_INI = "https://www.idealista.com/inmueble/96316820/"
+# ENLACE_INI = "https://www.idealista.com/inmueble/102146350/"
 
 browser = uc.Chrome()
 browser.get(ENLACE_INI)

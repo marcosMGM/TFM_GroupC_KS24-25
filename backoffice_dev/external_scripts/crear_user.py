@@ -27,6 +27,9 @@ def crear_usuario(login,password,nombre="",apellidos="",email=""):
         conn.commit()
     print(f"✅ Insertado el usuario con login: {login}.")
 
-crear_usuario("dasago", "dasago", "David", "Santamaría Gómez","david@dasago.es")
+# crear_usuario("dasago", "dasago", "David", "Santamaría Gómez","david@dasago.es")
+crear_usuario("mario", "mario", "Mario", "Díaz-Rullo","mario.diazrullo@gmail.com")
+crear_usuario("joseba", "joseba", "Joseba", "Ayarzaguena Mayo","jos.ayarzaguena@gmail.com")
+crear_usuario("marcos", "marcos", "Marcos", "Gambín","marcos.mgm13@gmail.com")
 
 
