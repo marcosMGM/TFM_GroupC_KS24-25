@@ -14,22 +14,40 @@ def get_datalist(params, pagination=True):
     where = """ WHERE 1=1 """
 
     ##### SEARCH BOX #####
-    if params.get('search') and params['search'].get('value', '') != '':
-        filter_data = {
-            'id' : 'id',
-            'title' : 'title'
-        }
-        sqlWhere = ""
-        search = params['search']['value'].lower().replace("'", "''")  # escapado simple para LIKE
-        for i in range(len(params['columns'])):
-            requestColumn = params['columns'][i]
-            if requestColumn.get('searchable') == 'true' and requestColumn['data'] in filter_data:
-                sqlWhere += f" OR LOWER({filter_data[requestColumn['data']]}) LIKE '%{search}%'"
-                print(sqlWhere)
-                # A ESTE PRINT NO ESTA ENTRANDO REVISAR
-        if sqlWhere.strip():
-            where += " AND (" + sqlWhere.lstrip(" OR") + ")"
+    filter_data = {
+        'id' : 'id',
+        'title' : 'title',
+        'price' : 'price',
+        'built_area' : 'built_area',
+    }
+    search = params.get('search[value]', '').lower()
+    sqlWhere = ''
+    columns = []
+    # reconstruir columnas. TODO empaquetar en una función en UTILS
+    i = 0
+    while True:
+        col_data = params.get(f'columns[{i}][data]')
+        if col_data is None:
+            break
+        columns.append({
+            'data': col_data,
+            'searchable': params.get(f'columns[{i}][searchable]'),
+            'search_value': params.get(f'columns[{i}][search][value]'),
+        })
+        i += 1
 
+    for col in columns:
+        if col['searchable'] == 'true' and col['data'] in filter_data:
+            if search:
+                sqlWhere += f" OR LOWER({filter_data[col['data']]}) LIKE '%{search}%'"
+                print(f"Añadiendo filtro: {col['data']} -> {filter_data[col['data']]}")
+            elif col['search_value']:
+                value = col['search_value'].lower()
+                sqlWhere += f" OR LOWER({filter_data[col['data']]}) LIKE '%{value}%'"
+                print(f"Añadiendo filtro por columna: {col['data']}")
+
+    if sqlWhere.strip():
+        where += " AND (" + sqlWhere.lstrip(" OR") + ")"
 
 
     """ GROUP BLOCK """
@@ -70,7 +88,7 @@ def get_datalist(params, pagination=True):
 
 
     """ OUTPUT """
-    print(f"SELECT: {select + where + group + order + limit}")
+    # print(f"SELECT: {select + where + group + order + limit}")
     return {
         "draw": int(params.get('draw', 1)),
         "recordsTotal": db.getcountfromquery(select),
