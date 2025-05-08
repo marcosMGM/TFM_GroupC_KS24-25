@@ -174,3 +174,4 @@ cython_debug/
 .pypirc
 
 credenciales_sqlserver.py
+/data_import/airbnb/data
