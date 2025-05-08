@@ -4,116 +4,275 @@
 
 
 
-            <!-- Blank start -->
-             <div class="row">
-              <div class="col-md-12">
-                <div class="card equal-card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-sm-12">
-                        <h5 class="header-title-text">Resumen del inventario de propiedades</h5>
+<!-- Blank start -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card equal-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h5 class="header-title-text">Resumen del inventario de propiedades</h5>
 
-                        <div class="project-status-box">
-                          <div class="project-status-card bg-success">
-                            <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                              <i class="ph-fill  ph-house-line"></i>
-                            </span>
-                            <p class="mb-0 mt-2">Idealista</p>
-                            <h4 class="text-white f-w-600">{{cards.card1}}</h4>
-                          </div>
-                          <div class="project-status-card bg-danger">
-                            <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
-                              <i class="ph-duotone  ph-house-line"></i>
-                            </span>
-                            <p class="mb-0 mt-2">AirBNB</p>
-                            <h4 class="text-white f-w-600">{{cards.card2}}</h4>
-                          </div>
-                          <div class="project-status-card bg-warning">
-                            <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                              <i class="ph-fill  ph-circles-three-plus"></i>
-                            </span>
-                            <p class="mb-0 mt-2">Añadidas hoy</p>
-                            <h4 class="text-white f-w-600">{{cards.card3}}</h4>
-                          </div>
-                          <div class="project-status-card bg-info">
-                            <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
-                              <i class="ph-fill  ph-key-return"></i>
-                            </span>
-                            <p class="mb-0 mt-2">Acualizadas hoy</p>
-                            <h4 class="text-white f-w-600">{{cards.card4}}</h4>
-                          </div>
-                          <div class="project-status-card bg-dark">
-                            <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
-                              <i class="ph-fill  ph-currency-eur"></i>
-                            </span>
-                            <p class="mb-0 mt-2">Precio medio por metro</p>
-                            <h4 class="f-w-600 text-white">{{cards.card5}} €</h4>
-                          </div>
-                        </div>
-
-
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
+            <div class="project-status-box">
+              <div class="project-status-card bg-success">
+                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-house-line"></i>
+                </span>
+                <p class="mb-0 mt-2">Idealista</p>
+                <h4 class="text-white f-w-600">{{cards.card1}}</h4>
               </div>
-             </div>
-            <div class="row">
-                       <!-- Pie1 - Idealista by Bedrooms -->
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-header">
-                    <h5>Composición número de habitaciones</h5>
-                  </div>
-                  <div class="card-body">
-                    <div id="pie1"></div>
-                  </div>
-                </div>
+              <div class="project-status-card bg-danger">
+                <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-duotone  ph-house-line"></i>
+                </span>
+                <p class="mb-0 mt-2">AirBNB</p>
+                <h4 class="text-white f-w-600">{{cards.card2}}</h4>
               </div>
-              <!-- Simple Pie Chart end --> 
-
-
+              <div class="project-status-card bg-warning">
+                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-circles-three-plus"></i>
+                </span>
+                <p class="mb-0 mt-2">Añadidas hoy</p>
+                <h4 class="text-white f-w-600">{{cards.card3}}</h4>
+              </div>
+              <div class="project-status-card bg-info">
+                <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-key-return"></i>
+                </span>
+                <p class="mb-0 mt-2">Acualizadas hoy</p>
+                <h4 class="text-white f-w-600">{{cards.card4}}</h4>
+              </div>
+              <div class="project-status-card bg-dark">
+                <span class="bg-light-light h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-currency-eur"></i>
+                </span>
+                <p class="mb-0 mt-2">Precio medio por metro</p>
+                <h4 class="f-w-600 text-white">{{cards.card5}} €</h4>
+              </div>
             </div>
-              <!-- Blank end -->
-
-              <script>
-
-                /* Pie1 */
-                const pieData = {{ pie1 | tojson }};
-                const series = pieData.map(item => item.propiedades);
-                const labels = pieData.map(item => item.bedrooms.toString() + " dormitorios");
-              
-                var options = {
-                    series: series,
-                    chart: {
-                        height: 340,
-                        type: 'pie',
-                    },
-                    labels: labels,
-                    legend: {
-                      position: 'bottom'
-                    },
-                    responsive: [{
-                        breakpoint: 1366,
-                        options: {
-                            chart: {
-                                height: 250
-                            },
-                            legend: {
-                              show: false,
-                            },
-                        }
-                    }]
-                };
-                var chart = new ApexCharts(document.querySelector("#pie1"), options);
-                chart.render();
-                /* Pie1 End */
 
 
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Scatter (XY) Chart start -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5>Precio / Superficie</h5>
+      </div>
+      <div class="card-body">
+        <div id="sct1"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Scatter (XY) Chart end -->
+  <!-- Scatter (XY) Chart start -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5>Precio / Nº de habitaciones</h5>
+      </div>
+      <div class="card-body">
+        <div id="sct2"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Scatter (XY) Chart end -->
+</div>
 
 
-              </script>
+<div class="row">
+  <!-- Pie1 - Idealista by Bedrooms -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5>Composición número de habitaciones</h5>
+      </div>
+      <div class="card-body">
+        <div id="pie1"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Simple Pie Chart end -->
+<!-- Basic Bar Chart start -->
+<div class="col-md-6">
+<div class="card">
+  <div class="card-header">
+    <h5>Volumen de propiedades según número de habitaciones </h5>
+  </div>
+  <div class="card-body">
+    <div id="bar1"></div>
+  </div>
+</div>
+</div>
+<!-- Basic Bar Chart end -->
+
+
+
+</div>
+<!-- Blank end -->
+
+<script>
+
+  /* sct1 */
+  var options = {
+    series: [
+  {
+    name: "Precio / Metros",
+    data: {{ sct1['1'] | tojson }}
+  }
+
+],
+  chart: {
+    height: 350,
+    type: 'scatter',
+    zoom: {
+      enabled: true,
+      type: 'xy'
+    }
+  },
+  xaxis: {
+    tickAmount: 10,
+    title: {
+      text: 'Metros construidos'
+    },
+    labels: {
+      formatter: function (val) {
+        return parseFloat(val).toFixed(1)
+      }
+    }
+  },
+  yaxis: {
+    tickAmount: 7,
+    title: {
+      text: 'Precio (€)'
+    },
+    labels: {
+      formatter: function (val) {
+        return parseFloat(val).toFixed(0)
+      }
+    }
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#sct1"), options);
+chart.render();
+  /* sct1 end */
+  /* sct2 */
+  var options = {
+    series: [
+  {
+    name: "Precio / Habitaciones",
+    data: {{ sct1['2'] | tojson }}
+  }
+],
+  chart: {
+    height: 350,
+    type: 'scatter',
+    zoom: {
+      enabled: true,
+      type: 'xy'
+    }
+  },
+  xaxis: {
+    tickAmount: 10,
+    title: {
+      text: 'Número de habitaciones'
+    },
+    labels: {
+      formatter: function (val) {
+        return parseFloat(val).toFixed(1)
+      }
+    }
+  },
+  yaxis: {
+    tickAmount: 7,
+    title: {
+      text: 'Precio (€)'
+    },
+    labels: {
+      formatter: function (val) {
+        return parseFloat(val).toFixed(0)
+      }
+    }
+  }
+};
+
+var chart_sct2 = new ApexCharts(document.querySelector("#sct2"), options);
+chart_sct2.render();
+  /* sct2 end */
+
+
+
+  /* Pie1 */
+  const pieData = {{ pie1 | tojson }};
+  const series = pieData.map(item => item.propiedades);
+  const labels = pieData.map(item => item.bedrooms.toString() + " dormitorios");
+
+  var options = {
+    series: series,
+    chart: {
+      height: 340,
+      type: 'pie',
+    },
+    labels: labels,
+    legend: {
+      position: 'bottom'
+    },
+    responsive: [{
+      breakpoint: 1366,
+      options: {
+        chart: {
+          height: 350
+        },
+        legend: {
+          show: true,
+        },
+      }
+    }]
+  };
+  var chart_pie1 = new ApexCharts(document.querySelector("#pie1"), options);
+  chart_pie1.render();
+  /* Pie1 End */
+
+/* bar1 */
+var options = {
+    series: [{
+      name: "Número de propiedades",
+    data: series
+  }],
+    chart: {
+    type: 'bar',
+    height: 400
+  },
+  plotOptions: {
+    bar: {
+      borderRadius: 4,
+      horizontal: true,
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  xaxis: {  
+    categories: labels
+    
+  },
+ 
+  };
+
+  var chart_bar1 = new ApexCharts(document.querySelector("#bar1"), options);
+  chart_bar1.render();
+/* bar1 end */
+
+</script>
 
 
 {% endblock %}

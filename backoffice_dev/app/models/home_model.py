@@ -1,6 +1,7 @@
 from app.config import get_connection
 from app.utils.database import DatabaseInterface
 import datetime
+from collections import defaultdict
 
 def get_home_cards():
     db = DatabaseInterface()
@@ -40,3 +41,31 @@ def get_pie_ide_by_bedrooms():
         ORDER BY bedrooms ASC
     """
     return db.getallfromquery(sql)
+
+def get_sct1():
+    db = DatabaseInterface()
+    sql = """
+    SELECT 
+    CAST(built_area AS FLOAT) AS x,
+    CAST(price AS FLOAT) AS y,
+    '1' AS serie
+    FROM ide_property
+    WHERE price IS NOT NULL AND built_area IS NOT NULL
+
+    UNION ALL
+
+    SELECT 
+    CAST(bedrooms AS FLOAT) AS x,
+    CAST(price AS FLOAT) AS y,
+    '2' AS serie
+    FROM ide_property
+    WHERE 
+    1=1
+    -- price IS NOT NULL AND bedrooms IS NOT NULL;
+    """
+    data = db.getallfromquery(sql)
+    grouped = defaultdict(list)
+    for item in data:
+        grouped[item['serie']].append([item['x'], item['y']])
+
+    return grouped
