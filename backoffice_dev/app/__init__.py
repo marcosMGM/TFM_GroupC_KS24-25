@@ -35,11 +35,13 @@ def create_app():
     from app.routes.home import home_controller
     from app.routes.auth import auth_controller
     from app.routes.idealista import idealista_controller
+    from app.routes.prueba import prueba_controller
     # from app.routes.entidad import entidad_bp
 
     app.register_blueprint(home_controller)
     app.register_blueprint(auth_controller, url_prefix="/auth")
     app.register_blueprint(idealista_controller, url_prefix="/idealista")
+    app.register_blueprint(prueba_controller, url_prefix="/prueba")
     # app.register_blueprint(auth_controller, url_prefix="/auth")
     # app.register_blueprint(entidad, url_prefix="/entidades")
 

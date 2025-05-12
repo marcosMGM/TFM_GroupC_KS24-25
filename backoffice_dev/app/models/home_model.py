@@ -64,6 +64,7 @@ def get_sct1():
     -- price IS NOT NULL AND bedrooms IS NOT NULL;
     """
     data = db.getallfromquery(sql)
+ 
     grouped = defaultdict(list)
     for item in data:
         grouped[item['serie']].append([item['x'], item['y']])

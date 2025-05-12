@@ -18,6 +18,6 @@ SECRET_KEY = 'kjlcoGDSFGNHIOFJVSDfdjsbjgfdvhf'
 DEBUG = True
 APP_NAME = 'TFM GRUPO C'
 VERSION = "0.0.0"
-APP_PORT = 8080
+APP_PORT = 55555
 
 IDEALISTA_URL = "https://www.idealista.com"

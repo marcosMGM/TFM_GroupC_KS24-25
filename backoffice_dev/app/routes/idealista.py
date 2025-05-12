@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, g
 from app.utils.decorators import login_required
 from app.models.idealista_model import get_datalist
-from werkzeug.security import check_password_hash
 from flask import jsonify
 from app.config import IDEALISTA_URL
 

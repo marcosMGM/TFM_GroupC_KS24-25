@@ -10,10 +10,8 @@ def index():
     g.page_title = "Inicio"
     cards = get_home_cards()
     pie1 = get_pie_ide_by_bedrooms()
-    scatterdata = get_sct1()
-
-    
-    return render_template("pages/home/inicio.html", pie1=pie1, cards=cards, sct1=scatterdata)
+    sct1 = get_sct1()
+    return render_template("pages/home/inicio.html", pie1=pie1, cards=cards, sct1=sct1)
 
 
 
