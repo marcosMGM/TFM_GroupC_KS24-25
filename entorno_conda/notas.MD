@@ -17,4 +17,7 @@
 
 # 🗃️🗃️🗃️ Iré generando un yml nuevo cuando requiera instalar nuevos paquetes.
 
-## Versión actual:  <span style="color:red;background-color:white;">22/04/2025 08:12</span>
+## Versión actual:  <span style="color:red;background-color:white;">14/05/2025 20.38 horas</span>  
+
+Motivo: Instalo TQDM para mostrar una barra de progreso en los notebook de importación de datos de CSV de inside-airbnb a SQL SERVER 
+
