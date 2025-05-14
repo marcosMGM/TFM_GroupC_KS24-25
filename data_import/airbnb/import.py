@@ -50,6 +50,13 @@ else:
     sys.exit()
 
 
+df = pd.read_csv(output_file_path, low_memory=False)
+print(df.head())
+
+
+
+
+
 
 
 
