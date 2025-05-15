@@ -1,5 +1,5 @@
 CREATE TABLE bnb_calendar (
-    property_id INT NOT NULL,
+    property_id BIGINT NOT NULL,
     date DATE NOT NULL,
     available BIT,
     price DECIMAL(10,2),
@@ -7,3 +7,5 @@ CREATE TABLE bnb_calendar (
     maximum_nights INT,
     PRIMARY KEY (property_id, date)
 );
+
+
