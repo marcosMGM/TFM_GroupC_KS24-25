@@ -175,3 +175,4 @@ cython_debug/
 
 credenciales_sqlserver.py
 /data_import/airbnb/data
+tfm_functions_bd_mac.py
