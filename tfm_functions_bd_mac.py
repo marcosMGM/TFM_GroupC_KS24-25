@@ -35,7 +35,7 @@ def get_all_houses_id():
     Obtiene todas las casas de la base de datos.
     :return: Lista de diccionarios con los datos de las casas.
     """
-    query = "SELECT ID FROM HOUSES"
+    query = "SELECT HOUSE_ID FROM HOUSES"
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query)
@@ -43,6 +43,13 @@ def get_all_houses_id():
 
 def get_all_houses_id_url():
     query = "SELECT HOUSE_ID,URL FROM HOUSES WHERE UPDATED_DATE IS NULL"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchall()
+    
+def get_all_houses_id_address():
+    query = "SELECT HOUSE_ID, ADDRESS1, ADDRESS2, CITY FROM HOUSES WHERE UPDATED_DATE IS NULL"
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query)
@@ -55,9 +62,43 @@ def update_latlong(house_id, lat, lon, district):
     :param lat: Latitud.
     :param lon: Longitud.
     """
-    query = f"UPDATE HOUSES SET LATITUDE = {lat}, LONGITUDE = {lon}, DISTRICT = \'{district}\' UPDATED_DATE = getdate() WHERE ID = {house_id}"
+    query = "UPDATE HOUSES SET LATITUDE = %s, LONGITUDE = %s, DISTRITO = %s, UPDATED_DATE = getdate() WHERE HOUSE_ID = %s"
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(query, (lat, lon, house_id))
+        cursor.execute(query, (lat, lon, district, house_id))
         conn.commit()
+
+def insert_houses_db(house):
+    #Insert the houses in the database
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO HOUSES (
+            HOUSE_ID, TITLE, PRICE, ADDRESS1, ADDRESS2, CITY, ENERGY_CONSUME, ENERGY_EMISSION, PLANTA, SUPERFICIE, 
+            HABITACIONES, BANOS, GARAJE, ESTADO, ARMARIOS_EMPOTRADOS, ANO, CALEFACCION, PISCINA, JARDIN, UPDATE_DATE, 
+            URL, ZONA, MORE_INFO, ASCENSOR, MOVILIDAD_REDUCIDA, TRASTERO, TERRAZA, BALCON, AIRE_ACOND, ORIENTACION, CREATED_DATE,
+            UPDATED_DATE,LATITUDE, LONGITUDE, DISTRITO
+        ) VALUES (
+            %(house_id)s, %(title)s, %(price)s, %(address_1)s, %(address_2)s, %(city)s, %(energy_consume)s, 
+            %(energy_emission)s, %(planta)s, %(superficie)s, %(habitaciones)s, %(baños)s, %(garaje)s, %(estado)s, 
+            %(armarios_empotrados)s, %(año)s, %(calefaccion)s, %(piscina)s, %(jardin)s, %(update_date)s, 
+            %(url)s, %(zona)s, %(more_info)s, %(ascensor)s, %(movilidad_reducida)s, %(trastero)s, %(terraza)s, 
+            %(balcon)s, %(aire_acond)s, %(orientacion)s, getdate(), getdate(), %(latitude)s, %(longitude)s, %(distrito)s
+        )
+        """, house)
+        conn.commit()
+
+
+def get_proccessed_numbers():
+    query = "SELECT PROCESS_NUMBER FROM PROCESSES"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchall()
     
+def insert_process_number(process_number):
+    query = "INSERT INTO PROCESSES (PROCESS_NUMBER) VALUES (%s)"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query, (process_number,))
+        conn.commit()

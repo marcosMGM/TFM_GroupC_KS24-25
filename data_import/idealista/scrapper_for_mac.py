@@ -2,7 +2,6 @@ import requests as rq
 from bs4 import BeautifulSoup
 import datetime as dt
 import re
-import logging
 
 import httpx
 import asyncio
@@ -28,37 +27,6 @@ BASE_HEADERS = {
 }
 session = httpx.AsyncClient(headers=BASE_HEADERS, follow_redirects=True)
 
-
-def insert_houses_db(house):
-    #Insert the houses in the database
-    try:
-        conn = pymssql.connect(
-            server=cred.server,
-            port=cred.port,
-            database=cred.database,
-            user=cred.username,
-            password=cred.password
-        )
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO HOUSES (
-            HOUSE_ID, TITLE, PRICE, ADDRESS1, ADDRESS2, CITY, ENERGY_CONSUME, ENERGY_EMISSION, PLANTA, SUPERFICIE, 
-            HABITACIONES, BANOS, GARAJE, ESTADO, ARMARIOS_EMPOTRADOS, ANO, CALEFACCION, PISCINA, JARDIN, UPDATE_DATE, 
-            URL, ZONA, MORE_INFO, ASCENSOR, MOVILIDAD_REDUCIDA, TRASTERO, TERRAZA, BALCON, AIRE_ACOND, ORIENTACION
-        ) VALUES (
-            %(house_id)s, %(title)s, %(price)s, %(address_1)s, %(address_2)s, %(city)s, %(energy_consume)s, 
-            %(energy_emission)s, %(planta)s, %(superficie)s, %(habitaciones)s, %(baños)s, %(garaje)s, %(estado)s, 
-            %(armarios_empotrados)s, %(año)s, %(calefaccion)s, %(piscina)s, %(jardin)s, %(update_date)s, 
-            %(url)s, %(zona)s, %(more_info)s, %(ascensor)s, %(movilidad_reducida)s, %(trastero)s, %(terraza)s, 
-            %(balcon)s, %(aire_acond)s, %(orientacion)s
-        )
-        """, house)
-        conn.commit()
-        cursor.close()
-        conn.close()
-    except Exception as e:
-        logging.error(f"Error inserting houses in database: {e}")
-        raise
 
 
 def procces_features(features, house_detail):
@@ -105,7 +73,7 @@ def procces_features(features, house_detail):
             elif "armarios empotrados" in feature_lower:
                 house_detail["armarios_empotrados"] = True
     except Exception as e:
-        logging.error(f"Error processing features: {e}")
+        print(f"Error processing features: {e}")
 
 
 async def get_house_description(ids_houses, zone):
@@ -115,7 +83,6 @@ async def get_house_description(ids_houses, zone):
         response = session.get(url)
         response = await response
         if response.status_code != 200:
-            logging.error(f"Error: {response.status_code} {url}")
             #If error we finish the process
             return False
         else:
@@ -155,20 +122,23 @@ async def get_house_description(ids_houses, zone):
             house_detail["balcon"] = 0
             house_detail["aire_acond"] = 0
             house_detail["orientacion"] = None
+            house_detail["latitude"] = None
+            house_detail["longitude"] = None
+            house_detail["distrito"] = "Not defined"
 
             #Get the zone
 
             try:
                  house_detail["title"] = soup.find_all("span",class_="main-info__title-main").pop().text.strip()
             except:
-                 logging.error(f"Error getting title {id_house}")
+                 print(f"Error getting title {id_house}")
             
             #Price
             try:
                  price_html = soup.find_all("span",class_="info-data-price")
                  house_detail["price"] = int(price_html.pop().text.replace("€","").replace(".","").strip())
             except:
-                 logging.error(f"Error getting price {id_house}")
+                 print(f"Error getting price {id_house}")
            
 
             try:
@@ -176,7 +146,7 @@ async def get_house_description(ids_houses, zone):
                 if more_info_html:
                     house_detail["more_info"] = more_info_html[0].find("span").text.strip()
             except:
-                logging.error(f"Error getting more info {id_house}")
+                print(f"Error getting more info {id_house}")
 
             #Location
             try:
@@ -187,7 +157,7 @@ async def get_house_description(ids_houses, zone):
                         house_detail["address_2"] = all_directions[1].text.strip()
                     house_detail["city"] = all_directions[-1].text.strip()
             except:
-                logging.error(f"Error getting address {id_house}")
+                print(f"Error getting address {id_house}")
 
 
             #Get all the features
@@ -199,7 +169,7 @@ async def get_house_description(ids_houses, zone):
                      for prop_feature in property_features:
                          features.append(prop_feature.text.strip())
             except:
-                logging.error(f"Error getting features {id_house}")
+                print(f"Error getting features {id_house}")
 
 
             try:
@@ -219,7 +189,7 @@ async def get_house_description(ids_houses, zone):
                                 energy_class = prop_feature.find(class_=True)
                                 house_detail["energy_emission"] = energy_class['class'][0]
             except:
-                logging.error(f"Error getting features {id_house}")
+                print(f"Error getting features {id_house}")
 
             procces_features(features,house_detail)
 
@@ -227,20 +197,32 @@ async def get_house_description(ids_houses, zone):
             try:
                 house_detail["update_date"] = soup.find("p",class_="stats-text").text.strip()
             except:
-                logging.error(f"Error getting update date {id_house}")
+                print(f"Error getting update date {id_house}")
+            
+            #Get the latitude, longitude and distrito using the Google Maps API
+            address = f"{house_detail['address_1']}, {house_detail['address_2']}"
+            lat, lng = get_lat_long_from_address(address, house_detail['city'])
+            if lat is None or lng is None:
+                lat, lng = 0, 0
+            house_detail["latitude"] = lat
+            house_detail["longitude"] = lng
+            if lat != 0 or lng != 0:
+                district = get_neighbourhood_group(lat, lng)
+                if district == None:
+                    district = "Not defined"
+            house_detail["distrito"] = district
+
 
             #Insert the house in the database
             try:
                 insert_houses_db(house_detail)
             except Exception as e:
-                logging.error(f"Error inserting house {id_house} in database: {e}")
+                print(f"Error inserting house {id_house} in database: {e}")
                 #If error we finish the process
                 return False      
     return True
 
 async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_publicacion:str = ",publicado_ultimo-mes"):
-    logging.info(f"Getting all houses from {zone} on idealista")
-    initial_load = False
     filter_meters = [["menos","40"],
                         ["mas","40","menos","60"],
                         ["mas","60","menos","80"],
@@ -268,7 +250,7 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
     response = session.get(url)
     response = await response
     if response.status_code != 200:
-        logging.error(f"Error_00: {response.status_code} getting {url}")
+        print(f"Error_00: {response.status_code} getting {url}")
         return False
     else:
         soup = BeautifulSoup(response.content, "html.parser")
@@ -278,7 +260,7 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
             num_houses = num_houses.split(" con tus criterios")[0]
             num_houses = int(re.sub(r'\D', '', num_houses))
         except:
-            logging.error(f"Error getting number of houses {zone}")
+            print(f"Error getting number of houses {zone}")
         if num_houses > 0:
             #Get pagination
             max_page = (59 if num_houses > 1800 else num_houses // 30)
@@ -288,66 +270,55 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
                 response = session.get(url)
                 response = await response
                 if response.status_code != 200:
-                    logging.error(f"Error_01: {response.status_code} getting {url}")
+                    print(f"Error_01: {response.status_code} getting {url}")
                     return False
                 else:
                     soup = BeautifulSoup(response.content, "html.parser")
                     id_houses = set()
                     for ref in [a.get('data-element-id') for a in soup.find_all('article') if a.get('data-element-id') and a.get('data-online-booking')]:
                         id_houses.add(ref)
+                    #TODO: Check if the house has changed the prices to consider ot not it again
+                    # Now, if not condiring this, only if already exists in the database
                     diff_id_houses = id_houses.difference(db_data_houses)
                     if len(diff_id_houses) > 0:
                         all_house_processes_status = False
                         all_house_processes_status = await get_house_description(diff_id_houses, zone)
                         if all_house_processes_status == False:
                             return False
-            logging.info(f"Process {num_process} finished")
-            logging.info(f"Number of houses processed: {num_houses}")
+            print(f"Process {num_process} finished")
+            print(f"Number of houses processed: {num_houses}")
     #All the houses are processed fo process_number are processed
     return True
 
 def get_all_db_houses():
     #Get all the houses from the database
     id_houses = set()
-    logging.info("Getting all houses from database")
-
+    print("Getting all houses from database")
     try:     
         rows = get_all_houses_id()
         for row in rows:
             id_houses.add(row[0])
-        logging.info(f"Number of houses in database: {len(id_houses)}")
+        print(f"Number of houses in database: {len(id_houses)}")
     except Exception as e:
-        logging.error(f"Error getting all houses from database: {e}")
+        print(f"Error getting all houses from database: {e}")
         raise
     return id_houses
 
 
 def get_no_finished_processes():
     processed_set = set()
-    try:
-        conn = pymssql.connect(
-            server=cred.server,
-            port=cred.port,
-            database=cred.database,
-            user=cred.username,
-            password=cred.password
-        )
-        cursor = conn.cursor()
-        cursor.execute("SELECT PROCESS_NUMBER FROM PROCESSES")
-        processes = cursor.fetchall()
+    try:        
+        processes = get_proccessed_numbers()
         for process in processes:
             processed_set.add(process[0])
         if len(processed_set ) == 0:
             #Insert all the processes
             #Number of processes is associated to the number of filters
             for i in range(0, 15):
-                cursor.execute("INSERT INTO PROCESSES (PROCESS_NUMBER) VALUES (%s)", (i,))
-                conn.commit()
+                insert_process_number(i)
             processed_set = set(range(0, 15))
-        cursor.close()
-        conn.close()
     except Exception as e:
-        logging.error(f"Error getting unantended processes: {e}")
+        print(f"Error getting unantended processes: {e}")
         raise
     return processed_set
 
@@ -367,30 +338,8 @@ def delete_process(num_process):
         cursor.close()
         conn.close()
     except Exception as e:
-        logging.error(f"Error deleting process {num_process}: {e}")
+        print(f"Error deleting process {num_process}: {e}")
         raise
-
-
-def do_scroll_down(browser):
-    """
-    Scroll down the page to load all the content.
-    This function is not used in this script, but it is useful for future updates.
-    """
-    #Accepting the cookies
-    try:
-        browser.find_element("xpath", '//*[@id="didomi-notice-agree-button"]').click()
-    except:
-        pass
-    last_height = browser.execute_script("return document.body.scrollHeight")
-    while True:
-        browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(random.randint(1, 2))
-        new_height = browser.execute_script("return document.body.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
-    time.sleep(random.randint(2, 4))
-
 
 
 async def update_inf_latlong_dist():
@@ -399,44 +348,18 @@ async def update_inf_latlong_dist():
     This function is not used in this script, but it is useful for future updates.
     """
     #Get all the houses from the database with its like
-    #To avoid the error of scrapping, number of intends, when the process fails 7 times, we stop the process
-    count_process = 0
-    rows = get_all_houses_id_url()
-    browser = uc.Chrome()
+    rows = get_all_houses_id_address()
     houses_latlong = dict()
-    count_process = 0
     for row in rows:
-        url = row[1]
-        try:
-            browser.get(url) 
-            #We have to go down on the page to obtain all the information
-            do_scroll_down(browser)
-            soup = BeautifulSoup(browser.page_source, "html.parser")
-            #We have to go down on the page
-            #Get the latitude and longitude
-            mapa = soup.find('div', {'class': 'static-map-container'})
-            map_img = mapa.find('img', id='sMap') if mapa else None
-            map_image_link = map_img.get('src') if map_img else ''
-            lat, lon = 0,0
-            if map_image_link and len(map_image_link) > 10:
-                parsed_url = urlparse(map_image_link)
-                params = parse_qs(parsed_url.query)
-                center = params.get('center', [''])[0]
-                if "," in center:
-                    lat, lon, *rest = center.split(",") #no creo que vengas más "," pero por si acaso
-            lat, lon = float(lat), float(lon)
-            if lat == 0 and lon == 0:
-                count_process += 1
-                if count_process >= 7:
-                    return houses_latlong
-            else:
-                houses_latlong[row[0]] = (lat, lon)
-        except Exception as e:
-            count_process += 1
-            if count_process >= 7:
-                return houses_latlong
-    print(f"Number of houses with latitude and longitude: {len(houses_latlong)} count_process: {count_process}")
+        address = f"{row[1]}, {row[2]}"
+        lat, lng = get_lat_long_from_address(address, row[3])
+        if lat is None or lng is None:
+            lat, lng = 0, 0
+        houses_latlong[row[0]] = (lat, lng)
+
+    print(f"Number of houses with latitude and longitude: {len(houses_latlong)}")
     return houses_latlong
+
 
 def update_db_latlong_dist(houses_latlong):
     """
@@ -449,11 +372,10 @@ def update_db_latlong_dist(houses_latlong):
             if lat != 0 or lon != 0:
                 district = get_neighbourhood_group(lat, lon)
                 if district == None:
-                    logging.info(f"Updating house {house_id} with lat: {lat}, lon: {lon}, district: {district}")
                     district = "Not defined"
             update_latlong(house_id, lat, lon, district)
     except Exception as e:
-        logging.error(f"Error updating latitude and longitude in database: {e}")
+        print(f"Error updating latitude and longitude in database: {e}")
         raise
 
 
@@ -464,38 +386,38 @@ async def run():
     
     db_data_houses = get_all_db_houses()
     no_finished_process = get_no_finished_processes()
-    logging.info(f"Unattended processes: {no_finished_process}")
+    print(f"Unattended processes: {no_finished_process}")
     for num_process in no_finished_process:
         status_process = False
         status_process = await houseLinks(zone, num_process,db_data_houses, text_filter_publicacion)
         if status_process == False:
-            logging.error(f"Error in process {num_process}")
+            print(f"Error in process {num_process}")
             break
         else:
             try:
                 delete_process(num_process)
-                logging.info(f"Process {num_process} deleted")
+                print(f"Process {num_process} deleted")
             except Exception as e:
-                logging.error(f"Error deleting process {num_process}: {e}")
+                print(f"Error deleting process {num_process}: {e}")
                 break
 
 
-async def update_info():
-    #Fixed paramaters
-   try:
-       houses_latlong = await update_inf_latlong_dist()
-       if houses_latlong:
-          update_db_latlong_dist(houses_latlong)
-          print("Process finished")
-          logging.info("Database updated with latitude and longitude information.")
-          return True
-       else:
-          logging.error("No houses found to update.")
-          return False
-   except Exception as e:
-       logging.error(f"Error updating information: {e}")
-       return False
+# async def update_info():
+#     #Fixed paramaters
+#    try:
+#        houses_latlong = await update_inf_latlong_dist()
+#        if houses_latlong:
+#           update_db_latlong_dist(houses_latlong)
+#           print("Process finished")
+#           print("Database updated with latitude and longitude information.")
+#           return True
+#        else:
+#           print("No houses found to update.")
+#           return False
+#    except Exception as e:
+#        print(f"Error updating information: {e}")
+#        return False
 
 if __name__ == "__main__":
-    #asyncio.run(run())
-    asyncio.run(update_info())
+    asyncio.run(run())
+    #asyncio.run(update_info())
