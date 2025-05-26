@@ -48,14 +48,14 @@ def get_all_houses_id_url():
         cursor.execute(query)
         return cursor.fetchall()
 
-def update_latlong(house_id, lat, lon):
+def update_latlong(house_id, lat, lon, district):
     """
     Actualiza la latitud y longitud de una casa en la base de datos.
     :param house_id: ID de la casa.
     :param lat: Latitud.
     :param lon: Longitud.
     """
-    query = "UPDATE HOUSES SET LATITUDE = %s, LONGITUDE = %s, UPDATED_DATE = getdate() WHERE ID = %s"
+    query = f"UPDATE HOUSES SET LATITUDE = {lat}, LONGITUDE = {lon}, DISTRICT = \'{district}\' UPDATED_DATE = getdate() WHERE ID = {house_id}"
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(query, (lat, lon, house_id))

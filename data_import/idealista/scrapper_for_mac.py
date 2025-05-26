@@ -12,6 +12,7 @@ import pymssql
 import sys
 sys.path.append('TFM_GroupC_KS24-25')
 from tfm_functions_bd_mac import *
+from tfm_auxiliar_functions import *
 from urllib.parse import urlparse, parse_qs
 
 import time
@@ -398,15 +399,14 @@ async def update_inf_latlong_dist():
     This function is not used in this script, but it is useful for future updates.
     """
     #Get all the houses from the database with its like
-    logging.info("Getting all id,url in the database where update_date is null ")
     #To avoid the error of scrapping, number of intends, when the process fails 7 times, we stop the process
     count_process = 0
     rows = get_all_houses_id_url()
     browser = uc.Chrome()
     houses_latlong = dict()
+    count_process = 0
     for row in rows:
         url = row[1]
-        count_process = 0
         try:
             browser.get(url) 
             #We have to go down on the page to obtain all the information
@@ -425,14 +425,17 @@ async def update_inf_latlong_dist():
                 if "," in center:
                     lat, lon, *rest = center.split(",") #no creo que vengas más "," pero por si acaso
             lat, lon = float(lat), float(lon)
-            houses_latlong[row[0]] = (lat, lon)
-            #We are going to get the corresponding district depending on the latitude and longitude
+            if lat == 0 and lon == 0:
+                count_process += 1
+                if count_process >= 7:
+                    return houses_latlong
+            else:
+                houses_latlong[row[0]] = (lat, lon)
         except Exception as e:
-            logging.error(f"Error getting {url}")
             count_process += 1
             if count_process >= 7:
-                logging.error("Too many errors, stopping the process")
-                return False
+                return houses_latlong
+    print(f"Number of houses with latitude and longitude: {len(houses_latlong)} count_process: {count_process}")
     return houses_latlong
 
 def update_db_latlong_dist(houses_latlong):
@@ -442,7 +445,13 @@ def update_db_latlong_dist(houses_latlong):
     """
     try:
         for house_id, (lat, lon) in houses_latlong.items():
-            update_latlong(house_id, lat, lon)
+            district = "Not defined"
+            if lat != 0 or lon != 0:
+                district = get_neighbourhood_group(lat, lon)
+                if district == None:
+                    logging.info(f"Updating house {house_id} with lat: {lat}, lon: {lon}, district: {district}")
+                    district = "Not defined"
+            update_latlong(house_id, lat, lon, district)
     except Exception as e:
         logging.error(f"Error updating latitude and longitude in database: {e}")
         raise
@@ -475,6 +484,14 @@ async def update_info():
     #Fixed paramaters
    try:
        houses_latlong = await update_inf_latlong_dist()
+       if houses_latlong:
+          update_db_latlong_dist(houses_latlong)
+          print("Process finished")
+          logging.info("Database updated with latitude and longitude information.")
+          return True
+       else:
+          logging.error("No houses found to update.")
+          return False
    except Exception as e:
        logging.error(f"Error updating information: {e}")
        return False
