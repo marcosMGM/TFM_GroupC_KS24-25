@@ -4,7 +4,6 @@ import os
 from credenciales_sqlserver import GOOGLE_API_KEY
 import requests
 
-geojson_path = '/Users/jayarza/Developer/Master Data Science/TFM/Proyecto_Git/TFM_GroupC_KS24-25/data_import/airbnb/data/neighbourhoods.geojson'
 
 def get_neighbourhood_group(latitude, longitude, geojson_path='neighbourhoods.geojson'):
     """
