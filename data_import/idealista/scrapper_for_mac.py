@@ -5,18 +5,22 @@ import re
 
 import httpx
 import asyncio
-
 import pymssql
 
+
 import sys
-sys.path.append('TFM_GroupC_KS24-25')
+import os
+project_root = os.path.abspath(os.path.join(os.getcwd()+"/TFM_GroupC_KS24-25"))
+
+# Add to sys.path if not already added
+if project_root not in sys.path:
+    sys.path.append(project_root)
+print(sys.path)
+
 from tfm_functions_bd_mac import *
 from tfm_auxiliar_functions import *
 from urllib.parse import urlparse, parse_qs
 
-import time
-import undetected_chromedriver as uc
-import random
 
 
 BASE_HEADERS = {
@@ -34,7 +38,9 @@ def procces_features(features, house_detail):
     try:
         for feature in features:
             feature_lower = str.lower(feature)
-            if "m²" in feature_lower:
+            if "m² construidos" in feature_lower:
+                house_detail["superficie"] = feature
+            elif "Parcela" in feature_lower and house_detail["superficie"] is not None:
                 house_detail["superficie"] = feature
             elif "habitaciones" in feature_lower or "habitación" in feature_lower:
                 house_detail["habitaciones"] = feature
