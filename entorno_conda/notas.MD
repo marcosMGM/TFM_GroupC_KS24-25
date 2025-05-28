@@ -5,12 +5,21 @@
 
 ### Para importar creando
 <code>conda env create -f tfm.yml</code>
+
+### Para instalar con pip el requirements.txt
+<code>pip install -r requirements.txt</code>
+
 ### Para importar actualizando el entorno existente
 <code>conda env create -f tfm.yml --prune</code>
 
 ### Para eliminar el entorno existente previamente si no deja actualizar con --prune según la versión de conda
 <code>conda env delete --name tfm</code>
 
+### Para generar el requirements.txt con conda. 
+<code>conda list -e > requirements.txt</code>
+
+### Para generar el requirements.txt con pip (puede ser dentro de conda con en el env activado)
+<code>pip freeze > requirements.txt</code>
 
 
 
@@ -18,5 +27,5 @@
 
 ## Versión actual:  <span style="color:red;background-color:white;">28/05/2025 19:42 horas</span>  
 
-Motivo: Instalo skops para poder exportar el modelo de ml de skl 
+Motivo: Instalo skops para poder exportar el modelo de ml de skl y añado algunas instrucciones a las notas
 
