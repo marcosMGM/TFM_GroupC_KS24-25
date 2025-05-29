@@ -13,7 +13,7 @@
 <code>conda env create -f tfm.yml --prune</code>
 
 ### Para eliminar el entorno existente previamente si no deja actualizar con --prune según la versión de conda
-<code>conda env delete --name tfm</code>
+<code>conda env remove --name tfm</code>
 
 ### Para generar el requirements.txt con conda. 
 <code>conda list -e > requirements.txt</code>
