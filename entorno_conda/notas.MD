@@ -25,7 +25,8 @@
 
 # 🗃️🗃️🗃️ Iré generando un yml nuevo cuando requiera instalar nuevos paquetes.
 
-## Versión actual:  <span style="color:red;background-color:white;">28/05/2025 19:42 horas</span>  
+## Versión actual:  <span style="color:red;background-color:white;">29/05/2025 06.51 horas</span>  
 
 Motivo: Instalo skops para poder exportar el modelo de ml de skl y añado algunas instrucciones a las notas
+29/05 añado pyodbc
 
