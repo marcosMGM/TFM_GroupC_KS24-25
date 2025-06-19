@@ -1,0 +1,31 @@
+            <!-- Breadcrumb start -->
+            <div class="row m-1">
+                <div class="col-12 {% if not bc_level_1 %}mb-3{% endif %}">
+                  <h4 class="main-title" style="text-transform:none">{{page_title}}</h4>
+
+                  {% if bc_level_1 %}
+                  <ul class="app-line-breadcrumbs mb-3">
+                    <li class="{% if not bc_level_2 %} active {% endif %}">
+                      <a href="{{bc_level_1[1]}}" class="f-s-14 f-w-500">
+                        <span>
+                          <i class="ph-duotone  ph-newspaper f-s-16"></i> {{bc_level_1[0]}}
+                        </span>
+                      </a>
+                    </li>
+                      {% if bc_level_2 %}
+                      <li class="{% if not bc_level_3 %} active {% endif %}">
+                        <a href="{{bc_level_2[1]}}" class="f-s-14 f-w-500">{{bc_level_2[0]}}</a>
+                      </li>
+                      {% endif %}
+
+                        {% if bc_level_3 %}
+                        <li class="active">
+                          <a href="{{bc_level_3[1]}}" class="f-s-14 f-w-500">{{bc_level_3[0]}}</a>
+                        </li>
+                        {% endif %}
+
+                  </ul>
+                  {% endif %}
+                </div>
+              </div>
+              <!-- Breadcrumb end -->
