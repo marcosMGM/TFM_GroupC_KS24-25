@@ -176,7 +176,7 @@ cython_debug/
 credenciales_sqlserver.py
 
 
-./data_import/airbnb/data/calendar.csv
-./data_import/airbnb/data/listings.csv
-./data_import/airbnb/data/neighbourhoods.csv
-./data_import/airbnb/data/neighbourhoods.geoson
+data_import/airbnb/data/calendar.csv
+data_import/airbnb/data/listings.csv
+data_import/airbnb/data/neighbourhoods.csv
+data_import/airbnb/data/neighbourhoods.geojson
