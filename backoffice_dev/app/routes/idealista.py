@@ -10,9 +10,9 @@ idealista_controller = Blueprint('idealista_controller', __name__)
 @idealista_controller.route("/")
 @login_required
 def index():
-    g.page_title = "Propiedades anunciadas desde Idealista"
+    g.page_title = "Oportunidades de Inversión identificadas en Idealista"
     g.bc_level_1 = ("Inicio", url_for('home_controller.index'))
-    g.bc_level_2 = ("Propiedades", url_for('home_controller.index'))
+    g.bc_level_2 = ("Oportunidades", url_for('home_controller.index'))
     g.bc_level_3 = ("Idealista", url_for('idealista_controller.index'))
     return render_template("pages/idealista/list.html", IDEALISTA_URL=IDEALISTA_URL)
     # return redirect(url_for('home_controller.index'))
