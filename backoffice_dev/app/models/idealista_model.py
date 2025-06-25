@@ -1,5 +1,6 @@
 from app.config import get_connection
 from app.utils.database import DatabaseInterface
+from app.models.custom_model import get_parameters_by_key
 import datetime
 
 
@@ -7,7 +8,7 @@ def get_datalist(params, pagination=True):
     db = DatabaseInterface()
 
     """ SELECT BLOCK """
-    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO FROM HOUSES """
+    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO, PRICE_PER_NIGHT FROM HOUSES """
 
 
     """ FILTER BLOCK """
@@ -72,6 +73,8 @@ def get_datalist(params, pagination=True):
 
         if orderColumns:
             order = " ORDER BY " + ", ".join(orderColumns)
+
+
     #Orden por omisión
     if 'order' not in locals() or not order:
         order = " ORDER BY HOUSE_ID ASC"
@@ -87,6 +90,16 @@ def get_datalist(params, pagination=True):
             limit += f" FETCH NEXT {int(params['length'])} ROWS ONLY"
 
 
+
+    results = db.getallfromquery(select + where + group + order + limit) if db.getallfromquery(select + where + group + order + limit) else []
+    if results:
+        parameters= get_parameters_by_key()
+        estimated_anual_days_ocupation = int(round(int(parameters.get('ESTIMATED_ANNUAL_OCCUPANCY', {}).get('VALUE', 0)) /100 * 365,0))
+
+        for result in results:
+            result['revenue'] = result['PRICE_PER_NIGHT'] * estimated_anual_days_ocupation
+            # print() 
+
     """ OUTPUT """
     # print(f"SELECT: {select + where + group + order + limit}")
     return {
@@ -94,7 +107,7 @@ def get_datalist(params, pagination=True):
         "recordsTotal": db.getcountfromquery(select),
         "recordsFiltered": db.getcountfromquery(select + where),
         # "data": result if result else [],
-        "data": db.getallfromquery(select + where + group + order + limit) if db.getallfromquery(select + where + group + order + limit) else [],
+        "data": results,
     }
 
 

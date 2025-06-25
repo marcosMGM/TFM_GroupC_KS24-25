@@ -106,7 +106,7 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-header">
-        <h5>Composición número de habitaciones</h5>
+        <h5>Oportunidades por Distrito</h5>
       </div>
       <div class="card-body">
         <div id="pie1"></div>
@@ -227,7 +227,7 @@ chart_sct2.render();
   /* Pie1 */
   const pieData = {{ pie1 | tojson }};
   const series = pieData.map(item => item.propiedades);
-  const labels = pieData.map(item => item.bedrooms.toString() + " dormitorios");
+  const labels = pieData.map(item => item.DISTRITO);
 
   var options = {
     series: series,
@@ -256,10 +256,15 @@ chart_sct2.render();
   /* Pie1 End */
 
 /* bar1 */
+
+const bar1data = {{ bars1 | tojson }};
+const series_bars1 = bar1data.map(item => item.propiedades);
+const labels_bars1 = bar1data.map(item => item.bedrooms.toString() + " dormitorios" );
+
 var options = {
     series: [{
       name: "Número de propiedades",
-    data: series
+    data: series_bars1
   }],
     chart: {
     type: 'bar',
@@ -275,7 +280,7 @@ var options = {
     enabled: false
   },
   xaxis: {  
-    categories: labels
+    categories: labels_bars1
     
   },
  

@@ -12,22 +12,22 @@ def get_home_cards():
 
     return {
         'card1': card1,
-        'card2': 13250,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
+        'card2': 13871,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
         'card3': card3,
         'card4': card4,
         'card5': round(float(card5[0].get('precio_medio', 0)),2),
     }
 
-def get_pie_ide_by_bedrooms():
+def get_pie_ide_by_district():
     db = DatabaseInterface()
     sql = """
         SELECT 
-        BEDROOMS as bedrooms,
+        DISTRITO,
         COUNT(HOUSE_ID) as propiedades
         FROM HOUSES 
         WHERE DISTRITO <> 'Not defined'
-        GROUP BY BEDROOMS
-        ORDER BY BEDROOMS ASC
+        GROUP BY DISTRITO
+        ORDER BY DISTRITO ASC
     """
     return db.getallfromquery(sql)
 

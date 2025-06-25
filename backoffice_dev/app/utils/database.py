@@ -100,6 +100,54 @@ class DatabaseInterface:
                 conn.close()
 
 
+    def update(self, table:str,values:dict,where:str):
+        """
+        Executes an UPDATE query against SQL Server.
+
+        Args:
+            table (str): The name of the table to update.
+            values (dict): A dictionary of column-value pairs to update.
+            where (str): The WHERE clause to specify which rows to update.
+
+        Returns:
+            bool: True if the update was successful, False otherwise.
+        """
+        conn = None
+        cursor = None
+        try:
+            conn = get_connection()
+            if conn is None:
+                print("Error: Could not establish database connection.")
+                return False
+
+            cursor = conn.cursor()
+            set_clause = ', '.join([f"{key} = ?" for key in values.keys()])
+            query = f"UPDATE {table} SET {set_clause} WHERE 1=1 "
+
+            if where and where.strip():
+                query += f" AND {where}"
+
+            params = list(values.values())
+            
+            cursor.execute(query, params)
+            conn.commit()
+            return True
+
+        except pyodbc.Error as ex:
+            sqlstate = ex.args[0]
+            print(f"Database update error: {sqlstate}")
+            print(ex)
+            return False
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()       
+
+
 if __name__ == '__main__':
     pass
     
