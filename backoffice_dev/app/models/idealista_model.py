@@ -7,18 +7,18 @@ def get_datalist(params, pagination=True):
     db = DatabaseInterface()
 
     """ SELECT BLOCK """
-    select = """SELECT id, link, title, built_area, price FROM ide_property """
+    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO FROM HOUSES """
 
 
     """ FILTER BLOCK """
-    where = """ WHERE 1=1 """
+    where = """ WHERE 1=1 AND DISTRITO <> 'Not defined' """
 
     ##### SEARCH BOX #####
     filter_data = {
-        'id' : 'id',
-        'title' : 'title',
-        'price' : 'price',
-        'built_area' : 'built_area',
+        'id' : 'HOUSE_ID',
+        'title' : 'TITLE',
+        'price' : 'PRICE',
+        'built_area' : 'BUILT_AREA',
     }
     search = params.get('search[value]', '').lower()
     sqlWhere = ''
@@ -74,7 +74,7 @@ def get_datalist(params, pagination=True):
             order = " ORDER BY " + ", ".join(orderColumns)
     #Orden por omisión
     if 'order' not in locals() or not order:
-        order = " ORDER BY id ASC"
+        order = " ORDER BY HOUSE_ID ASC"
 
 
 

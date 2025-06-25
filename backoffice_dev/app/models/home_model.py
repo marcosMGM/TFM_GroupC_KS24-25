@@ -5,14 +5,14 @@ from collections import defaultdict
 
 def get_home_cards():
     db = DatabaseInterface()
-    card1 = db.getcountfromquery("SELECT id FROM ide_property")
-    card3 = db.getcountfromquery(f"SELECT id FROM ide_property WHERE CONVERT(date, insert_date) = '{datetime.datetime.now().date()}'")
-    card4 = db.getcountfromquery(f"SELECT id FROM ide_property WHERE CONVERT(date, update_date) = '{datetime.datetime.now().date()}'")
-    card5 = db.getallfromquery("SELECT SUM(price) / SUM(built_area) as precio_medio FROM ide_property")
+    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined'")
+    card3 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND CONVERT(date, CREATED_DATE) = '{datetime.datetime.now().date()}'")
+    card4 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND CONVERT(date, UPDATED_DATE) = '{datetime.datetime.now().date()}'")
+    card5 = db.getallfromquery("SELECT ISNULL(SUM(PRICE) / NULLIF(SUM(BUILT_AREA), 0), 0) AS precio_medio FROM HOUSES WHERE DISTRITO <> 'Not defined';")
 
     return {
         'card1': card1,
-        'card2': 0,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
+        'card2': 13250,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
         'card3': card3,
         'card4': card4,
         'card5': round(float(card5[0].get('precio_medio', 0)),2),
@@ -22,11 +22,12 @@ def get_pie_ide_by_bedrooms():
     db = DatabaseInterface()
     sql = """
         SELECT 
-        bedrooms,
-        COUNT(id) as propiedades
-        FROM ide_property 
-        GROUP BY bedrooms
-        ORDER BY bedrooms ASC
+        BEDROOMS as bedrooms,
+        COUNT(HOUSE_ID) as propiedades
+        FROM HOUSES 
+        WHERE DISTRITO <> 'Not defined'
+        GROUP BY BEDROOMS
+        ORDER BY BEDROOMS ASC
     """
     return db.getallfromquery(sql)
 
@@ -34,11 +35,12 @@ def get_pie_ide_by_bedrooms():
     db = DatabaseInterface()
     sql = """
         SELECT 
-        bedrooms,
-        COUNT(id) as propiedades
-        FROM ide_property 
-        GROUP BY bedrooms
-        ORDER BY bedrooms ASC
+        BEDROOMS as bedrooms,
+        COUNT(HOUSE_ID) as propiedades
+        FROM HOUSES 
+        WHERE DISTRITO <> 'Not defined'
+        GROUP BY BEDROOMS
+        ORDER BY BEDROOMS ASC
     """
     return db.getallfromquery(sql)
 
@@ -46,21 +48,21 @@ def get_sct1():
     db = DatabaseInterface()
     sql = """
     SELECT 
-    CAST(built_area AS FLOAT) AS x,
-    CAST(price AS FLOAT) AS y,
+    CAST(BUILT_AREA AS FLOAT) AS x,
+    CAST(PRICE AS FLOAT) AS y,
     '1' AS serie
-    FROM ide_property
-    WHERE price IS NOT NULL AND built_area IS NOT NULL
+    FROM HOUSES
+    WHERE PRICE IS NOT NULL AND BUILT_AREA IS NOT NULL AND BUILT_AREA > 0 AND DISTRITO <> 'Not defined'
 
     UNION ALL
 
     SELECT 
-    CAST(bedrooms AS FLOAT) AS x,
-    CAST(price AS FLOAT) AS y,
+    CAST(BEDROOMS AS FLOAT) AS x,
+    CAST(PRICE   AS FLOAT) AS y,
     '2' AS serie
-    FROM ide_property
+    FROM HOUSES
     WHERE 
-    1=1
+    1=1 AND DISTRITO <> 'Not defined' 
     -- price IS NOT NULL AND bedrooms IS NOT NULL;
     """
     data = db.getallfromquery(sql)
@@ -70,3 +72,35 @@ def get_sct1():
         grouped[item['serie']].append([item['x'], item['y']])
 
     return grouped
+
+def get_map_markers():
+    db = DatabaseInterface()
+    sql = """
+    SELECT 
+        HOUSE_ID,
+        LATITUDE,
+        LONGITUDE,
+        PRICE,
+        BUILT_AREA,
+        BEDROOMS,
+        BATHROOMS,
+        DISTRITO
+    FROM HOUSES
+    WHERE LATITUDE IS NOT NULL AND LONGITUDE IS NOT NULL AND DISTRITO <> 'Not defined'
+    """
+    data = db.getallfromquery(sql)
+    
+    markers = []
+    for item in data:
+        markers.append({
+            'id': item['HOUSE_ID'],
+            'lat': item['LATITUDE'],
+            'lng': item['LONGITUDE'],
+            'price': item['PRICE'],
+            'built_area': item['BUILT_AREA'],
+            'bedrooms': item['BEDROOMS'],
+            'bathrooms': item['BATHROOMS'],
+            'distrito': item['DISTRITO']
+        })
+    
+    return markers

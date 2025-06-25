@@ -86,6 +86,19 @@
   </div>
   <!-- Scatter (XY) Chart end -->
 </div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>Ubicación de las oprtunidades de inversión</h5>
+      </div>
+
+      <div class="card-body">
+        <div class="w-100 h-280" id="markersmap" style="min-height: 480px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="row">
@@ -271,6 +284,62 @@ var options = {
   var chart_bar1 = new ApexCharts(document.querySelector("#bar1"), options);
   chart_bar1.render();
 /* bar1 end */
+
+</script>
+
+<script>
+
+/* Mapa con los marcadores de las viviendas */
+var map = L.map('markersmap').setView([40.416936, -3.703470], 10);
+
+var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+var redIcon = L.divIcon({
+  className: 'custom-red-dot',
+  html: '<span style="display:inline-block;width:8px;height:8px;background:#e74c3c;border-radius:50%;border:1px solid #fff;"></span>',
+  iconSize: [8, 8],
+  iconAnchor: [4, 4],
+  popupAnchor: [0, -4]
+});
+
+
+
+  /* Cargar y mostrar las geocercas del fichero Distritos.geojson */
+  fetch('/static/geocercas/Distritos.geojson')
+    .then(response => response.json())
+    .then(geojsonData => {
+      L.geoJSON(geojsonData, {
+        style: function (feature) {
+          return {
+            color: '#154360',
+            weight: 2,
+            fillOpacity: 0.2
+          };
+        },
+        onEachFeature: function (feature, layer) {
+          if (feature.properties && feature.properties.NOMBRE) {
+            layer.bindPopup(feature.properties.NOMBRE);
+          }
+        }
+      }).addTo(map);
+    })
+    .catch(error => {
+      console.error('Error cargando Distritos.geojson:', error);
+    });
+
+
+
+  var markers = {{ map_markers | tojson }};
+  markers.forEach(function (markerData) {
+    var marker = L.marker([markerData.lat, markerData.lng], { icon: redIcon }).addTo(map)
+      .bindPopup('Precio: ' + markerData.price + '€<br>Metros: ' + markerData.built_area + 'm²<br>' +
+        'Habitaciones: ' + markerData.bedrooms + '<br>Baños: ' + markerData.bathrooms + '<br>' +
+        'Distrito: ' + markerData.distrito);
+  });
+
 
 </script>
 

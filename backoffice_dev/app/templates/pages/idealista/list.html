@@ -21,9 +21,9 @@
                             <tr>
                               <th>Id</th>
                               <th>Título</th>
-                              <th>Precio</th>
-                              <th>Metros Construidos</th>
-                              <th>Link Directo</th>
+                              <th>Precio Compra</th>
+                              <th>Sup.</th>
+                              <th>Visitar</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -57,7 +57,7 @@
         { data: 'built_area' },
         { data: 'link',
           render: function (data, type, row) {
-            return '<a type="button" class="btn btn-light-primary icon-btn b-r-4" href="{{IDEALISTA_URL}}' + data + '" target="_blank"><i class="ti ti-hand-click"></i></a>';
+            return '<a type="button" class="btn btn-light-primary icon-btn b-r-4" href="' + data + '" target="_blank"><i class="ti ti-hand-click"></i></a>';
           }
          },
 
