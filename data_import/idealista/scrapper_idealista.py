@@ -17,9 +17,9 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 print(sys.path)
 
-from .\utils\tfm_functions_bd_mac import *
-from .\utils\tfm_auxiliar_functions import *
 from urllib.parse import urlparse, parse_qs
+from data_import.idealista.utils.tfm_auxiliar_functions import *
+from data_import.idealista.utils.tfm_functions_bd_mac import *
 
 
 
