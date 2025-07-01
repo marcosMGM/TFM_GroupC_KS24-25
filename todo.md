@@ -11,8 +11,13 @@
 ### Modelado (Joseba y Marcos)
 <ul>
   <li>Hacer un notebook ETL y notebook modelo definitivo, que tenga el pipeline estructurado.</li>
-  <li></li>
+  <li>Scrapping definitivo</li>
+  <li>etc</li>
+</ul>
 
+### Github (todos)
+<ul>
+  <li>Pasar todo a la rama definitiva dev</li>
 </ul>
 
 
