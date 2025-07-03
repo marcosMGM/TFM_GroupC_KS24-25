@@ -23,12 +23,21 @@ from data_import.idealista.utils.tfm_functions_bd_mac import *
 
 
 
+# BASE_HEADERS = {
+#     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
+#     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+#     "accept-language": "en-US;en;q=0.9",
+#     "accept-encoding": "gzip, deflate, br",
+# }
+
 BASE_HEADERS = {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36",
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-    "accept-language": "en-US;en;q=0.9",
-    "accept-encoding": "gzip, deflate, br",
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Cookie': 'ttcsid_C5OI33SVNBDLN9M57490=1751465540234::yY557PzHE3jTxB6JVqOY.1.1751465670225; datadome=uQN_mQH2wZ3lzgQnP9aZasQfIPr2mD2cAuOwcfH4A1wZQsZumOumSLQkoe_2LyWp02tXuNHdpf3RYRV6VX8YxBu9hQfjsJHfo2bkk7PjI1OT5EOihntkGxvN6~31SRVV; _clsk=fqp68e%7C1751465641447%7C44%7C0%7Ca.clarity.ms%2Fcollect; ABTasty=uid=sy057h5bfxtqg8gs; ABTastySession=mrasn=&lp=https%253A%252F%252Fwww.idealista.com%252Finmueble%252F93595363%252F; _tt_enable_cookie=1; _ttp=01JZ5QPEM8T6Z00WHKZNWFCBWF_.tt.1; _uetsid=9b694360574e11f082ce772aefa08864; _uetvid=9b698260574e11f09357e78d2d04d875; utag_main__pn=2%3Bexp-session; utag_main__prevEventLink=; utag_main__prevEventView=005-idealista/portal > portal > adDetail > > > > > viewAdDetail%3Bexp-1751469240761; utag_main__prevLevel2=005-idealista/portal%3Bexp-1751469240761; utag_main__se=9%3Bexp-session; utag_main__sn=1; utag_main__ss=0%3Bexp-session; utag_main__st=1751467440758%3Bexp-session; utag_main_ses_id=1751465528302%3Bexp-session; __rtbh.lid=%7B%22eventType%22%3A%22lid%22%2C%22id%22%3A%22I2ZjALOIMlN63JKWmgyo%22%2C%22expiryDate%22%3A%222026-07-02T14%3A14%3A00.843Z%22%7D; __rtbh.uid=%7B%22eventType%22%3A%22uid%22%2C%22id%22%3A%22unknown%22%2C%22expiryDate%22%3A%222026-07-02T14%3A14%3A00.843Z%22%7D; contact39576d83-8954-4afc-a49d-1ec22d798995="{\'maxNumberContactsAllow\':10}"; ttcsid=1751465540235::eXlf7suzQG43oOJaL-wH.1.1751465638360; _clck=15il7e1%7C2%7Cfx9%7C0%7C2009; dicbo_id=%7B%22dicbo_fetch%22%3A1751465540518%7D; didomi_token=eyJ1c2VyX2lkIjoiMTk3Y2I3YjAtYjZhOC02MjU2LWJiYzAtOWNlYzkxY2NjNGFiIiwiY3JlYXRlZCI6IjIwMjUtMDctMDJUMTQ6MTI6MDguMTcwWiIsInVwZGF0ZWQiOiIyMDI1LTA3LTAyVDE0OjEyOjE5Ljk2N1oiLCJ2ZW5kb3JzIjp7ImVuYWJsZWQiOlsiZ29vZ2xlIiwiYzpsaW5rZWRpbi1tYXJrZXRpbmctc29sdXRpb25zIiwiYzptaXhwYW5lbCIsImM6YWJ0YXN0eS1MTGtFQ0NqOCIsImM6aG90amFyIiwiYzpiZWFtZXItSDd0cjdIaXgiLCJjOnRlYWxpdW1jby1EVkRDZDhaUCIsImM6dGlrdG9rLUtaQVVRTFo5IiwiYzpnb29nbGVhbmEtNFRYbkppZ1IiLCJjOmlkZWFsaXN0YS1MenRCZXFFMyIsImM6aWRlYWxpc3RhLWZlUkVqZTJjIiwiYzpjb250ZW50c3F1YXJlIiwiYzptaWNyb3NvZnQiXX0sInB1cnBvc2VzIjp7ImVuYWJsZWQiOlsiZ2VvbG9jYXRpb25fZGF0YSIsImRldmljZV9jaGFyYWN0ZXJpc3RpY3MiXX0sInZlcnNpb24iOjIsImFjIjoiQ2hHQUVBRmtGQ0lBLkFBQUEifQ==; euconsent-v2=CQT7KEAQT7KEAAHABBENBxFsAP_gAAAAAAAAHXwBwAIAAqABaAFsAUgC8wHXgAAAFJQAYAAgtWUgAwABBashABgACC1Y6ADAAEFqwkAGAAILVgAA.f_wAAAAAAAAA; utag_main__prevTsCampaign=organicTrafficByTm%3Bexp-1751469128305; utag_main__prevTsProvider=%3Bexp-1751469128305; utag_main__prevTsReferrer=https://www.idealista.com/inmueble/93595363/%3Bexp-1751469128305; utag_main__prevTsSource=Portal sites%3Bexp-1751469128305; utag_main__prevTsUrl=https%3A%2F%2Fwww.idealista.com%2Finmueble%2F93595363%2F%3Bexp-1751469128305; _pcid=%7B%22browserId%22%3A%22mcm1cqz9q8ld7fxr%22%2C%22_t%22%3A%22msaga8h2%7Cmcm1cr52%22%7D; _pctx=%7Bu%7DN4IgrgzgpgThIC4B2YA2qA05owMoBcBDfSREQpAeyRCwgEt8oBJAE0RXSwH18yBbCIQDmhABwALACwAffgGN%2BARnkwArFJABfIA; _pprv=eyJjb25zZW50Ijp7IjAiOnsibW9kZSI6Im9wdC1pbiJ9LCIxIjp7Im1vZGUiOiJvcHQtaW4ifSwiMiI6eyJtb2RlIjoib3B0LWluIn0sIjMiOnsibW9kZSI6Im9wdC1pbiJ9LCI0Ijp7Im1vZGUiOiJvcHQtaW4ifSwiNSI6eyJtb2RlIjoib3B0LWluIn0sIjYiOnsibW9kZSI6Im9wdC1pbiJ9LCI3Ijp7Im1vZGUiOiJvcHQtaW4ifX0sInB1cnBvc2VzIjpudWxsLCJfdCI6Im1zYWdhOGJifG1jbTFjcXpiIn0%3D; SESSION=43d96ceac90fd93d~39576d83-8954-4afc-a49d-1ec22d798995; userUUID=4081f2e2-77fb-4540-bc44-c05c074664fa',
+    "accept-encoding": "gzip, deflate, br"
 }
+
+
 session = httpx.AsyncClient(headers=BASE_HEADERS, follow_redirects=True)
 
 
@@ -425,5 +434,11 @@ async def run():
 #        return False
 
 if __name__ == "__main__":
-    asyncio.run(run())
-    #asyncio.run(update_info())
+    #Principal
+    #asyncio.run(run())
+    
+    
+    ##asyncio.run(update_info())
+    asyncio.run(get_house_description(['93595363'], 'Madrid'))
+
+    
