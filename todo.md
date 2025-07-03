@@ -11,7 +11,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 | Añadir ROI en `/idealista/`                                          | Mario, David       | ⬜ Pendiente | Mostrar rentabilidad basada en ROI            |
 | Añadir coste +10% como dato adicional para calcular rentabilidad     | Mario, David       | ⬜ Pendiente | Coste total vivienda incluido impuesto        |
 | Ajustar el orden de la `DataTable`                                   | Mario, David       | 🔄 En progreso | Mejorar visualización                         |
-| Implementar área de filtrado y búsqueda                              | Mario, David       | 🔄 En progreso | Filtros por parámetros clave                  |
+| Implementar área de filtrado y búsqueda                              | Mario, David       | ✅ Completado| Filtros por parámetros clave                  |
 | Añadir widget de parámetros ROI ajustables en tiempo real            | Mario, David       | ⬜ Pendiente | Refrescar sin recargar página `/idealista`   |
 | Añadir métrica PER (Coste adquisición / Ingresos anuales)            | Mario, David       | ⬜ Pendiente | Estimar años de recuperación de inversión     |
 | Eliminar el menú de AIRBNB                                           | David       | ✅ Completado |                                 |
@@ -47,4 +47,4 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 
 ---
 
-**Última actualización:** 03/07/2025 06:37
+**Última actualización:** 03/07/2025 09:05

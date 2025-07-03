@@ -33,9 +33,12 @@ con esto debo controlar paginación, ordenación y búsqueda de los datos que se
 
 
  """
-@idealista_controller.route("/datalist")
+@idealista_controller.route("/datalist", methods=["GET", "POST"])
+# @idealista_controller.route("/datalist")
 @login_required
 def datalist():
-    datalist = get_datalist(request.args)
-    # datalist = get_datalist(request.form)
+    """ En modo GET """
+    # datalist = get_datalist(request.args)
+    """ En modo POST """
+    datalist = get_datalist(request.form)
     return jsonify(datalist)

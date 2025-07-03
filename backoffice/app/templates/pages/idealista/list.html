@@ -20,7 +20,7 @@
           <div id="filter_area" class="accordion-collapse collapse show" data-bs-parent="#acordeon">
             <div class="accordion-body">
               <!-- filter_form -->
-              <form class="app-form">
+              <form name="ftr_data_form" class="app-form">
                 <div class="row">
                   <div class="col-12 mb-2">
                     <p>Descubre las mejores oportunidades de inversión personalizando tus filtros de búsqueda y encuentra las
@@ -29,14 +29,14 @@
                   <div class="col-sm-6">
                     <div class="mb-3">
                       <label class="form-label">Que incluyan el siguiente texto</label>
-                      <input type="ftr_text" class="form-control" placeholder="Introduzca un texto">
+                      <input name="ftr_text" type="text" class="form-control" placeholder="Introduzca un texto">
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="mb-3">
                       <label class="form-label">Distrito</label>
-                      <select class="form-select">
-                        <option selected>Incluir Todos</option>
+                      <select name="ftr_district" class="form-select">
+                        <option value="" selected>Incluir Todos</option>
                         {% for district in districts %}
                         <option value="{{ district.DISTRITO }}">{{ district.DISTRITO }}</option>
                         {% endfor %}
@@ -48,8 +48,8 @@
                     <div>
                       <label class="form-label mb-3" style="padding-bottom:25px">Precio de compra</label>
                       <div class="mt-3" id="buy_price-slider"></div>
-                      <input type="hidden" id="buy_price-min">
-                      <input type="hidden" id="buy_price-max">
+                      <input  name="ftr_buy_price_min" type="hidden" id="buy_price-min">
+                      <input name="ftr_buy_price_max" type="hidden" id="buy_price-max">
                       <span id="buy_price-display"></span>
                     </div>
                   </div>
@@ -113,10 +113,24 @@
 
 <script>
   $(document).ready(function () {
+
+    const form = document.forms['ftr_data_form'];
+
     $('#tablelist').DataTable({
       processing: true,
       serverSide: true,
-      ajax: '{{url_for("idealista_controller.datalist")}}',
+      ajax: {
+        url: '{{url_for("idealista_controller.datalist")}}',
+        type: "POST",
+        data: function(d) {
+          // const form = document.forms['ftr_data_form'];
+            d.ftr_text = form.querySelector('input[name="ftr_text"]').value;
+            d.ftr_district = form.querySelector('select[name="ftr_district"]').value;
+            d.ftr_buy_price_min = form.querySelector('input[name="ftr_buy_price_min"]').value;
+            d.ftr_buy_price_max = form.querySelector('input[name="ftr_buy_price_max"]').value;
+        }
+      },
+
       language: {
         url: "/static/lang/datatables_es-ES.json",
         type: "POST"
@@ -162,6 +176,11 @@
     });
 
 
+    $(form).on('change input', 'input, select', function() {
+      $('#tablelist').DataTable().ajax.reload();
+    });
+
+
 
 
   const slider = document.getElementById('buy_price-slider');
@@ -180,16 +199,17 @@
     }
   });
 
-  slider.noUiSlider.on('update', function (values, handle) {
-    const min = values[0].replace(' €', '');
-    const max = values[1].replace(' €', '');
-    document.getElementById('buy_price-min').value = min;
-    document.getElementById('buy_price-max').value = max;
-    // Formatear con separador de miles
-    const minFormatted = Number(min).toLocaleString('es-ES');
-    const maxFormatted = Number(max).toLocaleString('es-ES');
-    document.getElementById('buy_price-display').innerText = `De ${minFormatted} € a ${maxFormatted} €`;
-  });
+    slider.noUiSlider.on('update', function (values, handle) {
+      const min = values[0].replace(' €', '');
+      const max = values[1].replace(' €', '');
+      document.getElementById('buy_price-min').value = min;
+      document.getElementById('buy_price-max').value = max;
+      $(form).find('input[name="ftr_buy_price_min"], input[name="ftr_buy_price_max"]').trigger('change');
+      // Formatear con separador de miles
+      const minFormatted = Number(min).toLocaleString('es-ES');
+      const maxFormatted = Number(max).toLocaleString('es-ES');
+      document.getElementById('buy_price-display').innerText = `De ${minFormatted} € a ${maxFormatted} €`;
+    });
 
 
 

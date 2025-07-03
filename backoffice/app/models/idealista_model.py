@@ -14,6 +14,24 @@ def get_datalist(params, pagination=True):
     """ FILTER BLOCK """
     where = """ WHERE 1=1 AND DISTRITO <> 'Not defined' """
 
+    if params.get('ftr_district'):
+        where += f" AND DISTRITO = '{params['ftr_district']}'"
+
+    if params.get('ftr_text'):
+        where += f" AND TITLE LIKE '%{params['ftr_text']}%'"
+
+    min_price = params.get('ftr_buy_price_min')
+    max_price = params.get('ftr_buy_price_max')
+    try:
+        if min_price is not None and min_price != '' and str(min_price).replace('.', '', 1).isdigit():
+            where += f" AND PRICE >= {float(min_price)}"
+        if max_price is not None and max_price != '' and str(max_price).replace('.', '', 1).isdigit():
+            where += f" AND PRICE <= {float(max_price)}"
+    except Exception:
+        print(f"Error al procesar los filtros de precio: {min_price}, {max_price}")
+
+
+
     ##### SEARCH BOX #####
     filter_data = {
         'id' : 'HOUSE_ID',
