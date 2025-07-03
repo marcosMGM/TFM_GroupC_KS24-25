@@ -1,25 +1,47 @@
-### Backoffice  (Mario y David)
-<ul>
-  <li>En http://127.0.0.1:44444/idealista/ añadimos ROI</li>
-  <li>En el coste de la vivienda. Añadir coste más 10% aprox. Cómo dato para calcular rentabilidad</li>
-  <li>Terminar de ajustar el orden de la datatable</li>
-  <li>Área de filtrado y búsqueda</li>
-  <li>Ajustes / Widget de los parámetros de cálculo de ROI, en tiempo real, refrescable en la página /idealista </li>
-  <li>Añadir otra métrica PER (Coste adquisición incluyendo tax / Ingresos Anuales). Da el número de años que tardas en recuperar la inversión. </li>
-</ul>
+# ✅ To-Do List Colaborativo del Proyecto
 
-### Modelado (Joseba y Marcos)
-<ul>
-  <li>Hacer un notebook ETL y notebook modelo definitivo, que tenga el pipeline estructurado.</li>
-  <li>Scrapping definitivo</li>
-  <li>etc</li>
-</ul>
+Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentarios conforme avancemos.
 
-### Github (todos)
-<ul>
-  <li>Pasar todo a la rama definitiva dev</li>
-</ul>
+---
+
+## 🧾 Backoffice 
+
+| Tarea                                                                 | Responsable(s)     | Estado   | Comentarios                                  |
+|-----------------------------------------------------------------------|--------------------|----------|----------------------------------------------|
+| Añadir ROI en `/idealista/`                                          | Mario, David       | 🔄 En progreso | Mostrar rentabilidad basada en ROI            |
+| Añadir coste +10% como dato adicional para calcular rentabilidad     | Mario, David       | ⬜ Pendiente | Coste total vivienda incluido impuesto        |
+| Ajustar el orden de la `DataTable`                                   | Mario, David       | ⬜ Pendiente | Mejorar visualización                         |
+| Implementar área de filtrado y búsqueda                              | Mario, David       | ⬜ Pendiente | Filtros por parámetros clave                  |
+| Añadir widget de parámetros ROI ajustables en tiempo real            | Mario, David       | ⬜ Pendiente | Refrescar sin recargar página `/idealista`   |
+| Añadir métrica PER (Coste adquisición / Ingresos anuales)            | Mario, David       | ⬜ Pendiente | Estimar años de recuperación de inversión     |
+
+---
+
+## 🧪 Modelado 
+| Tarea                                                                 | Responsable(s)     | Estado   | Comentarios                                  |
+|-----------------------------------------------------------------------|--------------------|----------|----------------------------------------------|
+| Crear notebook ETL estructurado                                       | Joseba, Marcos     | ⬜ Pendiente | Pipeline limpio y reutilizable               |
+| Crear notebook final con modelo entrenado                             | Joseba, Marcos     | ⬜ Pendiente | Incluir validaciones y métricas              |
+| Scraping definitivo y robusto                                         | Joseba, Marcos     | ⬜ Pendiente | Manejar límites y errores                    |
+
+---
+
+## 🧩 GitHub 
+
+| Tarea                                                                 | Responsable(s)     | Estado   | Comentarios                                  |
+|-----------------------------------------------------------------------|--------------------|----------|----------------------------------------------|
+| Consolidar trabajo en rama definitiva `dev`                          | Todos              | ⬜ Pendiente | Fusionar ramas actuales                      |
+
+---
+
+## 📌 Notas
+
+- Usa los siguientes íconos para el estado:
+  - ⬜ Pendiente
+  - 🔄 En progreso
+  - ✅ Completado
 
 
+---
 
-
+**Última actualización:** <!-- Actualiza la fecha manualmente aquí -->

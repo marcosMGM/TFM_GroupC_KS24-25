@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Proyecto TFM Grupo C">
+  <meta name="keywords"
+    content="invertir, idealista, todo, todo, etc">
+  <meta name="author" content="la-themes">
+  <link rel="icon" href="/static/images/logo/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/static/images/logo/favicon.png" type="image/x-icon">
+
+  <title>{{page_title}} | {{APP_NAME}}</title>
+
+  <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&display=swap" rel="stylesheet">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/static/vendor/datatable/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/tabler-icons/tabler-icons.css">
+  <link rel="stylesheet" href="/static/vendor/animation/animate.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/flag-icons-master/flag-icon.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/simplebar/simplebar.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/apexcharts/apexcharts.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="/static/vendor/leafletmaps/leaflet.css">
+  
+  
+  {% include "slots/base_pre_scripts.html" %}
+
+
+</head>
+
+<body>
+  <div class="app-wrapper">
+
+    <div class="loader-wrapper">
+      <div class="app-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    {% include "slots/base_navmenu.html" %}
+
+
+    <div class="app-content">
+      <div class="">
+
+
+         {% include "slots/base_header.html" %}
+         
+  
+
+        <!-- Body main section starts -->
+        <main>
+          <div class="container-fluid">
+            {% include "slots/base_breadcrumb.html" %}
+            {% include "slots/base_content_alert.html" %}
+
+
+            {% block content %}
+            {% endblock %}
+
+          </div>
+        </main>
+        <!-- Body main section ends -->
+
+        <!-- tap on top -->
+        <div class="go-top">
+          <span class="progress-value">
+            <i class="ti ti-arrow-up"></i>
+          </span>
+        </div>
+
+        {% include "slots/base_footer.html" %}
+        
+      </div>
+    </div>
+  </div>
+  
+
+  {% include "slots/base_post_scripts.html" %}
+  
+</body>
+
+</html>
