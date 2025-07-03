@@ -15,7 +15,8 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 | Añadir widget de parámetros ROI ajustables en tiempo real            | Mario, David       | ⬜ Pendiente | Refrescar sin recargar página `/idealista`   |
 | Añadir métrica PER (Coste adquisición / Ingresos anuales)            | Mario, David       | ⬜ Pendiente | Estimar años de recuperación de inversión     |
 | Eliminar el menú de AIRBNB                                           | David       | ✅ Completado |                                 |
-| Poner BADGES que ayuden a predecir ROI                               | David       | ⬜ Pendiente |                                 |
+| Poner BADGES que ayuden a predecir ROI                               | David       | ⬜ Pendiente |  En `/idealista`                     |
+| Analizar si tiene cabida poner objetos ribbon con alguna vivienda    | David       | ⬜ Pendiente |  En `/home` u otra página nueva             |
 
 ---
 
