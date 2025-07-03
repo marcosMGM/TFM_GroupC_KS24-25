@@ -111,8 +111,23 @@ def get_datalist(params, pagination=True):
     }
 
 
+def get_districts():
+    db = DatabaseInterface()
+    query = "SELECT DISTINCT DISTRITO FROM HOUSES WHERE DISTRITO <> 'Not defined' ORDER BY DISTRITO"
+    return db.getallfromquery(query)
 
 
+def get_min_price():
+    db = DatabaseInterface()
+    query = "SELECT MIN(PRICE) as min_price FROM HOUSES"
+    result = db.getallfromquery(query)
+    return result[0]['min_price'] if result else 0
+
+def get_max_price():
+    db = DatabaseInterface()
+    query = "SELECT MAX(PRICE) as max_price FROM HOUSES"
+    result = db.getallfromquery(query)
+    return result[0]['max_price'] if result else 0
 
 
 

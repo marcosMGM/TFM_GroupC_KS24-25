@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, g
 from app.utils.decorators import login_required
-from app.models.idealista_model import get_datalist
+from app.models.idealista_model import get_datalist, get_districts, get_max_price
+from app.models.custom_model import get_parameters_by_key
 from flask import jsonify
 from app.config import IDEALISTA_URL
 
@@ -14,9 +15,12 @@ def index():
     g.bc_level_1 = ("Inicio", url_for('home_controller.index'))
     g.bc_level_2 = ("Oportunidades", url_for('home_controller.index'))
     g.bc_level_3 = ("Idealista", url_for('idealista_controller.index'))
-    return render_template("pages/idealista/list.html", IDEALISTA_URL=IDEALISTA_URL)
+    districts = get_districts()
+    max_price = get_max_price()
+    parameters= get_parameters_by_key()
+    max_inv_budget = parameters.get('MAX_INVESTMENT_BUDGET', {}).get('VALUE', 0)
+    return render_template("pages/idealista/list.html", IDEALISTA_URL=IDEALISTA_URL, districts=districts, max_price=max_price, max_inv_budget=max_inv_budget)
     # return redirect(url_for('home_controller.index'))
-
 
 
 """ 
