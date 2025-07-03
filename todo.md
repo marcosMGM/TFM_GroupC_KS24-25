@@ -14,6 +14,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 | Implementar área de filtrado y búsqueda                              | Mario, David       | 🔄 En progreso | Filtros por parámetros clave                  |
 | Añadir widget de parámetros ROI ajustables en tiempo real            | Mario, David       | ⬜ Pendiente | Refrescar sin recargar página `/idealista`   |
 | Añadir métrica PER (Coste adquisición / Ingresos anuales)            | Mario, David       | ⬜ Pendiente | Estimar años de recuperación de inversión     |
+| Eliminar el menú de AIRBNB                                           | Mario, David       | ✅ Completado |                                 |
 
 ---
 
@@ -44,4 +45,4 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 
 ---
 
-**Última actualización:** <!-- Actualiza la fecha manualmente aquí -->
+**Última actualización:** 03/07/2025 06:37
