@@ -1,4 +1,4 @@
-# ✅ To-Do List Colaborativo del Proyecto
+# ✅ To-Do List de la recta final del proyecto
 
 Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentarios conforme avancemos.
 
@@ -8,10 +8,10 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 
 | Tarea                                                                 | Responsable(s)     | Estado   | Comentarios                                  |
 |-----------------------------------------------------------------------|--------------------|----------|----------------------------------------------|
-| Añadir ROI en `/idealista/`                                          | Mario, David       | 🔄 En progreso | Mostrar rentabilidad basada en ROI            |
+| Añadir ROI en `/idealista/`                                          | Mario, David       | ⬜ Pendiente | Mostrar rentabilidad basada en ROI            |
 | Añadir coste +10% como dato adicional para calcular rentabilidad     | Mario, David       | ⬜ Pendiente | Coste total vivienda incluido impuesto        |
-| Ajustar el orden de la `DataTable`                                   | Mario, David       | ⬜ Pendiente | Mejorar visualización                         |
-| Implementar área de filtrado y búsqueda                              | Mario, David       | ⬜ Pendiente | Filtros por parámetros clave                  |
+| Ajustar el orden de la `DataTable`                                   | Mario, David       | 🔄 En progreso | Mejorar visualización                         |
+| Implementar área de filtrado y búsqueda                              | Mario, David       | 🔄 En progreso | Filtros por parámetros clave                  |
 | Añadir widget de parámetros ROI ajustables en tiempo real            | Mario, David       | ⬜ Pendiente | Refrescar sin recargar página `/idealista`   |
 | Añadir métrica PER (Coste adquisición / Ingresos anuales)            | Mario, David       | ⬜ Pendiente | Estimar años de recuperación de inversión     |
 
@@ -30,7 +30,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 
 | Tarea                                                                 | Responsable(s)     | Estado   | Comentarios                                  |
 |-----------------------------------------------------------------------|--------------------|----------|----------------------------------------------|
-| Consolidar trabajo en rama definitiva `dev`                          | Todos              | ⬜ Pendiente | Fusionar ramas actuales                      |
+| Consolidar trabajo en rama definitiva `dev`                          | Todos              | 🔄 En progreso | Fusionar ramas actuales. - DSG: Yo OK.                      |
 
 ---
 
