@@ -18,6 +18,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 | Poner BADGES que ayuden a predecir ROI                               | David       | ⬜ Pendiente |  En `/idealista`                     |
 | Analizar si tiene cabida poner objetos ribbon con alguna vivienda    | David       | ⬜ Pendiente |  En `/home` u otra página nueva             |
 | Mover mapa a otra ruta y clasificar por roi    | David       | ⬜ Pendiente |                |
+| Refactorizar la personalización, calculando en la bd la estimación fact anual.    | David       | ⬜ Pendiente |                |
 
 ---
 
