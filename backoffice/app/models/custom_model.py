@@ -35,6 +35,22 @@ def update_by_key(key, value=""):
     }
     result = db.update('PARAMETERS', update, f"NAME = '{key}'")
     if result:
+        """ ACCIONES ESPECIALES SEGÚN EL PARÁMETRO """
+
+        if key == "ESTIMATED_ANNUAL_OCCUPANCY":
+            value = float(value) if value else 0
+            dias_ocupacion = round(value * 365 / 100 ,2)
+            query = "UPDATE HOUSES SET ARR = PRICE_PER_NIGHT * "+ str(dias_ocupacion) + " WHERE DISTRITO <> 'Not defined'"
+            result = db.run_query(query)
+
+        if key == "PURCHASE_COST":
+            value = float(value) / 100 if value else 0
+            query = "UPDATE HOUSES SET PURCHASE_COST = PRICE * "+ str(value) + " WHERE DISTRITO <> 'Not defined'"
+            result = db.run_query(query)
+            query = "UPDATE HOUSES SET TOTAL_PURCHASE_COST = PRICE + PURCHASE_COST WHERE DISTRITO <> 'Not defined'"
+            result = db.run_query(query)
+
+
         return True
     return False
 

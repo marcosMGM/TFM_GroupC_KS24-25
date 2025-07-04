@@ -145,7 +145,85 @@ class DatabaseInterface:
             if cursor:
                 cursor.close()
             if conn:
-                conn.close()       
+                conn.close()   
+
+
+    def run_query(self, query: str) -> bool:
+        """
+        Executes a SQL query (INSERT, UPDATE, DELETE, TRUNCATE, etc.) and returns the execution status.
+
+        Args:
+            query (str): The SQL query to execute.
+
+        Returns:
+            bool: True if the query executed successfully, False otherwise.
+        """
+        conn = None
+        cursor = None
+        try:
+            conn = get_connection()
+            if conn is None:
+                print("Error: Could not establish database connection.")
+                return False
+
+            cursor = conn.cursor()
+            cursor.execute(query)
+            conn.commit()
+            return True
+
+        except pyodbc.Error as ex:
+            sqlstate = ex.args[0] if ex.args else "N/A"
+            print(f"Database execution error: {sqlstate}")
+            print(ex)
+            return False
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+
+    def deleteFrom(self, table: str, where: str) -> bool:
+        """
+        Deletes rows from a specified table based on a WHERE clause.
+
+        Args:
+            table (str): The name of the table to delete from.
+            where (str): The WHERE clause to specify which rows to delete.
+
+        Returns:
+            bool: True if the deletion was successful, False otherwise.
+        """
+        conn = None
+        cursor = None
+        try:
+            conn = get_connection()
+            if conn is None:
+                print("Error: Could not establish database connection.")
+                return False
+
+            cursor = conn.cursor()
+            query = f"DELETE FROM {table} WHERE {where}"
+            cursor.execute(query)
+            conn.commit()
+            return True
+
+        except pyodbc.Error as ex:
+            sqlstate = ex.args[0]
+            print(f"Database deletion error: {sqlstate}")
+            print(ex)
+            return False
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            return False
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
 
 
 if __name__ == '__main__':

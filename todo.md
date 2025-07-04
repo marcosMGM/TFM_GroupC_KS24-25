@@ -18,7 +18,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 | Poner BADGES que ayuden a predecir ROI                               | David       | ⬜ Pendiente |  En `/idealista`                     |
 | Analizar si tiene cabida poner objetos ribbon con alguna vivienda    | David       | ⬜ Pendiente |  En `/home` u otra página nueva             |
 | Mover mapa a otra ruta y clasificar por roi    | David       | ⬜ Pendiente |                |
-| Refactorizar la personalización, calculando en la bd la estimación fact anual.    | David       | ⬜ Pendiente |                |
+| Refactorizar la personalización, calculando en la bd la estimación fact anual.    | David       | ✅ Completado |  He añadido un campo a la DB, llamado ARR  (Annual Reccuring Revenue), cuando se actualiza el % de ocupación precalculamos en la base de datos los ingresos anuales para poderlos ordenar después en la lista y poder manejarlos de otra forma. Introduzco también PURCHASE_COST para reflejar el coste de la operación (impuestos y gastos) y TOTAL_PURCHASE_COST que refleja Importe de la vivienda + PURCHASE_COST |
 
 ---
 
