@@ -17,9 +17,10 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 print(sys.path)
 
-from tfm_functions_bd_mac import *
-from tfm_auxiliar_functions import *
 from urllib.parse import urlparse, parse_qs
+from data_import.idealista.utils.tfm_auxiliar_functions import *
+from data_import.idealista.utils.tfm_functions_bd_mac import *
+from data_import.idealista.utils.fetcher_chrome import *
 
 
 
@@ -29,6 +30,7 @@ BASE_HEADERS = {
     "accept-language": "en-US;en;q=0.9",
     "accept-encoding": "gzip, deflate, br",
 }
+
 session = httpx.AsyncClient(headers=BASE_HEADERS, follow_redirects=True)
 
 
@@ -82,18 +84,22 @@ def procces_features(features, house_detail):
         print(f"Error processing features: {e}")
 
 
-async def get_house_description(ids_houses, zone):
+async def get_house_description(ids_houses, zone, all_transports):
     #Get the description of the house
+    max_fails = 0
     for id_house in ids_houses:
         url = f"https://www.idealista.com/inmueble/{id_house}/"
-        response = session.get(url)
-        response = await response
-        if response.status_code != 200:
-            #If error we finish the process
-            return False
+        response = fetch_page(url)
+        if not response:
+            print(f"Scapper error getting {url}")
+            #We are going to stop the process when we have more than 5 errors
+            max_fails += 1
+            if max_fails > 6:
+                print(f"Scapper max error getted. Ending the process...")
+                return False
         else:
-            print(f"Success: {response.status_code}")
-            soup = BeautifulSoup(response.content, "html.parser")
+            print(f"Success: Processing {url}")
+            soup = response#BeautifulSoup(response.content, "html.parser")
 
             house_detail = dict()
             house_detail["house_id"] = id_house
@@ -218,6 +224,13 @@ async def get_house_description(ids_houses, zone):
                     district = "Not defined"
             house_detail["distrito"] = district
 
+            #Get distances to different transports
+            dict_dist_stops = calcular_distancias_vivienda_transportes( lat, lng, all_transports )
+            house_detail["distance_to_metro"] = dict_dist_stops["distancia_mode_4"]
+            house_detail["distance_to_cercanias"] = dict_dist_stops["distancia_mode_5"]
+            house_detail["distance_to_emt"] = dict_dist_stops["distancia_mode_6"]
+            house_detail["distance_to_interurbanos"] = dict_dist_stops["distancia_mode_8"]
+            house_detail["distance_to_mlo"] = dict_dist_stops["distancia_mode_10"]
 
             #Insert the house in the database
             try:
@@ -228,7 +241,7 @@ async def get_house_description(ids_houses, zone):
                 return False      
     return True
 
-async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_publicacion:str = ",publicado_ultimo-mes"):
+async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_publicacion:str = ",publicado_ultimo-mes", all_transports = []):
     filter_meters = [["menos","40"],
                         ["mas","40","menos","60"],
                         ["mas","60","menos","80"],
@@ -288,7 +301,7 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
                     diff_id_houses = id_houses.difference(db_data_houses)
                     if len(diff_id_houses) > 0:
                         all_house_processes_status = False
-                        all_house_processes_status = await get_house_description(diff_id_houses, zone)
+                        all_house_processes_status = await get_house_description(diff_id_houses, zone, all_transports)
                         if all_house_processes_status == False:
                             return False
             print(f"Process {num_process} finished")
@@ -392,10 +405,11 @@ async def run():
     
     db_data_houses = get_all_db_houses()
     no_finished_process = get_no_finished_processes()
+    all_transports = get_all_transports()
     print(f"Unattended processes: {no_finished_process}")
     for num_process in no_finished_process:
         status_process = False
-        status_process = await houseLinks(zone, num_process,db_data_houses, text_filter_publicacion)
+        status_process = await houseLinks(zone, num_process,db_data_houses, text_filter_publicacion, all_transports)
         if status_process == False:
             print(f"Error in process {num_process}")
             break
@@ -424,6 +438,20 @@ async def run():
 #        print(f"Error updating information: {e}")
 #        return False
 
+# def test_calcular_distancias_to_transports():
+#     all_transports = get_all_transports()
+#     lat = 40.4734285
+#     lng = -3.5796101
+#     dict_distance_to = calcular_distancias_vivienda_transportes(lat,lng,all_transports)
+#     return None
+
 if __name__ == "__main__":
+    #Principal
     asyncio.run(run())
-    #asyncio.run(update_info())
+    
+    
+    #test_calcular_distancias_to_transports()
+    ##asyncio.run(update_info())
+    #asyncio.run(get_house_description(['93595363'], 'Madrid')) #For Testing
+
+    
