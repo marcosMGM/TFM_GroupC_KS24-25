@@ -3,6 +3,8 @@ from shapely.geometry import Point
 import os
 from credenciales_sqlserver import GOOGLE_API_KEY
 import requests
+from geopy.distance import distance
+import pandas as pd
 
 
 def get_neighbourhood_group(latitude, longitude, geojson_path='neighbourhoods.geojson'):
@@ -43,3 +45,42 @@ def get_lat_long_from_address(address, city):
             return None, None
     else:
         raise Exception(f"Error fetching data from Google API: {response.status_code}")
+    
+
+TIPOS_TRANSPORTE = [4,5,6,8,10] #El 9 está integrado en el 8
+
+
+def calcular_distancias_vivienda_transportes(latitude, longitude,stops):
+    resultados = {}
+    for modo in TIPOS_TRANSPORTE:
+        paradas_tipo = stops[stops['mode'] == modo]
+        if paradas_tipo.empty:
+            resultados[f'distancia_mode_{modo}'] = None
+            continue
+        # filtrar primero por lat/lon cercanas para acelerar
+        delta = 0.01
+        paradas_candidatas = paradas_tipo[
+            (abs(paradas_tipo['lat'] - latitude) < delta) &
+            (abs(paradas_tipo['lon'] - longitude) < delta)
+        ]
+        """ Para mejorar el rendimiento voy iterando incrementando el delta a comprobar, tengo que 
+        asegurarme de que haya al menos una parada en el dataset porque sino morimos en el while"""
+        while paradas_candidatas.empty:  
+            delta += 0.01
+            print(f"Buscando paradas cercanas al modo {modo} con delta {delta}")
+            paradas_candidatas = paradas_tipo[
+                (abs(paradas_tipo['lat'] - latitude) < delta) &
+                (abs(paradas_tipo['lon'] - longitude) < delta)
+            ]
+      
+        distancias = paradas_candidatas.apply(
+            lambda stop: distance(
+                (latitude, longitude),
+                (stop['lat'], stop['lon'])
+            ).meters,
+            axis=1
+        )
+
+        resultados[f'distancia_mode_{modo}'] = distancias.min()
+
+    return pd.Series(resultados)

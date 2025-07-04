@@ -84,7 +84,7 @@ def procces_features(features, house_detail):
         print(f"Error processing features: {e}")
 
 
-async def get_house_description(ids_houses, zone):
+async def get_house_description(ids_houses, zone, all_transports):
     #Get the description of the house
     max_fails = 0
     for id_house in ids_houses:
@@ -224,6 +224,9 @@ async def get_house_description(ids_houses, zone):
                     district = "Not defined"
             house_detail["distrito"] = district
 
+            #Get distances to transports
+            dict_dist_stops = calcular_distancias_vivienda_transportes( lat, lng, all_transports )
+
 
             #Insert the house in the database
             try:
@@ -234,7 +237,7 @@ async def get_house_description(ids_houses, zone):
                 return False      
     return True
 
-async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_publicacion:str = ",publicado_ultimo-mes"):
+async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_publicacion:str = ",publicado_ultimo-mes", all_transports = []):
     filter_meters = [["menos","40"],
                         ["mas","40","menos","60"],
                         ["mas","60","menos","80"],
@@ -294,7 +297,7 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
                     diff_id_houses = id_houses.difference(db_data_houses)
                     if len(diff_id_houses) > 0:
                         all_house_processes_status = False
-                        all_house_processes_status = await get_house_description(diff_id_houses, zone)
+                        all_house_processes_status = await get_house_description(diff_id_houses, zone, all_transports)
                         if all_house_processes_status == False:
                             return False
             print(f"Process {num_process} finished")
@@ -398,10 +401,11 @@ async def run():
     
     db_data_houses = get_all_db_houses()
     no_finished_process = get_no_finished_processes()
+    all_transports = get_all_transports()
     print(f"Unattended processes: {no_finished_process}")
     for num_process in no_finished_process:
         status_process = False
-        status_process = await houseLinks(zone, num_process,db_data_houses, text_filter_publicacion)
+        status_process = await houseLinks(zone, num_process,db_data_houses, text_filter_publicacion, all_transports)
         if status_process == False:
             print(f"Error in process {num_process}")
             break
@@ -430,12 +434,20 @@ async def run():
 #        print(f"Error updating information: {e}")
 #        return False
 
+def test_calcular_distancias_to_transports():
+    all_transports = get_all_transports()
+    lat = 40.3900642
+    lng = -3.7218727
+    dict_distance_to = calcular_distancias_vivienda_transportes(lat,lng,all_transports)
+    return None
+
 if __name__ == "__main__":
     #Principal
     #asyncio.run(run())
+    test_calcular_distancias_to_transports()
     
     
     ##asyncio.run(update_info())
-    asyncio.run(get_house_description(['93595363'], 'Madrid'))
+    #asyncio.run(get_house_description(['93595363'], 'Madrid')) #For Testing
 
     

@@ -102,3 +102,10 @@ def insert_process_number(process_number):
         cursor = conn.cursor()
         cursor.execute(query, (process_number,))
         conn.commit()
+
+def get_all_transports():
+    query = "SELECT * FROM TRANSPORTS"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchall()
