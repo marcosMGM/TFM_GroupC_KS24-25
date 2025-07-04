@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g
 from matplotlib import markers
 from app.utils.decorators import login_required
-from app.models.custom_model import get_parameters, update_by_key
+from app.models.custom_model import get_parameters, update_by_key, recalculate_all
 
 custom_controller = Blueprint('custom_controller', __name__)
 
@@ -25,6 +25,7 @@ def update():
     if request.method == 'POST':
         for key in request.form:
             update_by_key(key.replace("name_",""), request.form[key])
+        recalculate_all()
 
 
     flash("Parámetros actualizados correctamente", "primary")
