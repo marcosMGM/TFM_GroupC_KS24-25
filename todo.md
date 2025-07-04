@@ -8,7 +8,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 
 | Tarea                                                                 | Responsable(s)     | Estado   | Comentarios                                  |
 |-----------------------------------------------------------------------|--------------------|----------|----------------------------------------------|
-| Añadir ROI en `/idealista/`                                          | Mario, David       | ⬜ Pendiente | Mostrar rentabilidad basada en ROI            |
+| Añadir ROI en `/idealista/`                                          | Mario, David       | 🔄 En progreso | Mostrar rentabilidad basada en ROI            |
 | Añadir coste +10% como dato adicional para calcular rentabilidad     | Mario, David       | ⬜ Pendiente | Coste total vivienda incluido impuesto        |
 | Ajustar el orden de la `DataTable`                                   | Mario, David       | 🔄 En progreso | Mejorar visualización                         |
 | Implementar área de filtrado y búsqueda                              | Mario, David       | ✅ Completado| Filtros por parámetros clave                  |
@@ -49,4 +49,4 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 
 ---
 
-**Última actualización:** 04/07/2025 07:00 
+**Última actualización:** 04/07/2025 09:05
