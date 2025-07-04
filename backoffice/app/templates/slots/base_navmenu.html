@@ -1,0 +1,84 @@
+    <!-- <nav class="dark-sidebar horizontal-sidebar"> -->
+    <nav class="dark-sidebar">
+        <!-- <div class="app-logo">
+          <a class="logo d-inline-block" href="index.html">
+            <img src="/static/images/logo/1.png" alt="#">
+          </a>
+  
+          <span class="bg-light-primary toggle-semi-nav">
+            <i class="ti ti-chevrons-right f-s-20"></i>
+          </span>
+        </div> -->
+        <div class="app-nav" id="app-simple-bar">
+          <ul class="main-nav p-0 mt-2">
+            <li class="menu-title">
+              <span>DASHBOARD</span>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('home_controller.index')}}">
+                <i class="ph-duotone  ph-house-line"></i>
+                Inicio
+              </a>
+            </li>
+<!-- 
+            <li>
+              <a class="" data-bs-toggle="collapse" href="#dashboard" aria-expanded="false">
+                <i class="ph-duotone  ph-house-line"></i>
+                dashboard
+              </a>
+              <ul class="collapse" id="dashboard">
+                <li><a href="index.html">Ecommerce</a></li>
+                <li><a href="project_dashboard.html">Project</a></li>
+                <li><a href="crypto_dashboard.html">Crypto</a></li>
+                <li><a href="education.html">Education</a></li>
+              </ul>
+            </li> -->
+
+            <li class="menu-title">
+              <span>PROPIEDADES</span>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('idealista_controller.index')}}">
+                <i class="ph-bold  ph-house-line"></i>Idealista
+              </a>
+            </li>
+            <!-- <li class="no-sub">
+              <a class="" href="{{url_for('home_controller.maintenance')}}">
+                <i class="ph-duotone  ph-clock-clockwise"></i><i class="ph-duotone  ph-clock-clockwise"></i></i>AirBNB 
+              </a>
+            </li> -->
+
+            
+            <li class="menu-title">
+              <span>AJUSTES</span>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('custom_controller.index')}}">
+                <i class="ph ph-arrow-square-up"></i>Personalizar
+              </a>
+            </li>
+            <li class="menu-title">
+              <span>CUENTA</span>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('auth_controller.password')}}">
+                <i class="ph-fill  ph-password"></i>Contraseña
+              </a>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('auth_controller.logout')}}">
+                <i class="ph-bold  ph-sign-out"></i>Cerrar sesión
+              </a>
+            </li>
+
+  
+  
+          </ul>
+        </div>
+  
+        <div class="menu-navs">
+          <span class="menu-previous"><i class="ti ti-chevron-left"></i></span>
+          <span class="menu-next"><i class="ti ti-chevron-right"></i></span>
+        </div>
+  
+      </nav>

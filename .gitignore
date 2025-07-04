@@ -176,3 +176,5 @@ cython_debug/
 credenciales_sqlserver.py
 
 /data_import/airbnb/data
+
+.DS_Store
