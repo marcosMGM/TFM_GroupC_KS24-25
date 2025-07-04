@@ -8,7 +8,7 @@ def get_datalist(params, pagination=True):
     db = DatabaseInterface()
 
     """ SELECT BLOCK """
-    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO, PRICE_PER_NIGHT FROM HOUSES """
+    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO, PRICE_PER_NIGHT, ARR, '0' AS ROI FROM HOUSES """
 
 
     """ FILTER BLOCK """

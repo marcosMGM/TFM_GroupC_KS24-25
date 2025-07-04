@@ -123,6 +123,7 @@
                               <th>EUR</th>
                               <th>ADR</th>
                               <th>ARR</th>
+                              <th>ROI</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -191,7 +192,15 @@
             return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
             }
          },
-        { data: 'revenue',
+        { data: 'ARR',
+            render: function (data, type, row) {
+            if (data == null) return '';
+            let number = Number(data);
+            if (isNaN(number)) return data;
+            return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+            }
+         },
+        { data: 'ROI',
             render: function (data, type, row) {
             if (data == null) return '';
             let number = Number(data);
