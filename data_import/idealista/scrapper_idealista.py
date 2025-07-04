@@ -224,9 +224,13 @@ async def get_house_description(ids_houses, zone, all_transports):
                     district = "Not defined"
             house_detail["distrito"] = district
 
-            #Get distances to transports
+            #Get distances to different transports
             dict_dist_stops = calcular_distancias_vivienda_transportes( lat, lng, all_transports )
-
+            house_detail["distance_to_metro"] = dict_dist_stops["distancia_mode_4"]
+            house_detail["distance_to_cercanias"] = dict_dist_stops["distancia_mode_5"]
+            house_detail["distance_to_emt"] = dict_dist_stops["distancia_mode_6"]
+            house_detail["distance_to_interurbanos"] = dict_dist_stops["distancia_mode_8"]
+            house_detail["distance_to_mlo"] = dict_dist_stops["distancia_mode_10"]
 
             #Insert the house in the database
             try:
@@ -434,19 +438,19 @@ async def run():
 #        print(f"Error updating information: {e}")
 #        return False
 
-def test_calcular_distancias_to_transports():
-    all_transports = get_all_transports()
-    lat = 40.3900642
-    lng = -3.7218727
-    dict_distance_to = calcular_distancias_vivienda_transportes(lat,lng,all_transports)
-    return None
+# def test_calcular_distancias_to_transports():
+#     all_transports = get_all_transports()
+#     lat = 40.4734285
+#     lng = -3.5796101
+#     dict_distance_to = calcular_distancias_vivienda_transportes(lat,lng,all_transports)
+#     return None
 
 if __name__ == "__main__":
     #Principal
-    #asyncio.run(run())
-    test_calcular_distancias_to_transports()
+    asyncio.run(run())
     
     
+    #test_calcular_distancias_to_transports()
     ##asyncio.run(update_info())
     #asyncio.run(get_house_description(['93595363'], 'Madrid')) #For Testing
 

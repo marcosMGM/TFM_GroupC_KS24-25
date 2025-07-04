@@ -5,6 +5,7 @@ from credenciales_sqlserver import GOOGLE_API_KEY
 import requests
 from geopy.distance import distance
 import pandas as pd
+from decimal import *
 
 
 def get_neighbourhood_group(latitude, longitude, geojson_path='neighbourhoods.geojson'):
@@ -52,16 +53,21 @@ TIPOS_TRANSPORTE = [4,5,6,8,10] #El 9 está integrado en el 8
 
 def calcular_distancias_vivienda_transportes(latitude, longitude,stops):
     resultados = {}
+    if isinstance(stops, pd.DataFrame):
+        stops_pd = stops
+    else:
+        stops_pd = pd.DataFrame(stops)
+        stops_pd.columns = ['id','mode','stop_name','stop_desc','lat', 'lon']
     for modo in TIPOS_TRANSPORTE:
-        paradas_tipo = stops[stops['mode'] == modo]
+        paradas_tipo = stops_pd[stops_pd['mode'] == modo]
         if paradas_tipo.empty:
             resultados[f'distancia_mode_{modo}'] = None
             continue
         # filtrar primero por lat/lon cercanas para acelerar
         delta = 0.01
         paradas_candidatas = paradas_tipo[
-            (abs(paradas_tipo['lat'] - latitude) < delta) &
-            (abs(paradas_tipo['lon'] - longitude) < delta)
+            (abs(paradas_tipo['lat'] - Decimal(latitude)) < delta) &
+            (abs(paradas_tipo['lon'] - Decimal(longitude)) < delta)
         ]
         """ Para mejorar el rendimiento voy iterando incrementando el delta a comprobar, tengo que 
         asegurarme de que haya al menos una parada en el dataset porque sino morimos en el while"""
@@ -69,8 +75,8 @@ def calcular_distancias_vivienda_transportes(latitude, longitude,stops):
             delta += 0.01
             print(f"Buscando paradas cercanas al modo {modo} con delta {delta}")
             paradas_candidatas = paradas_tipo[
-                (abs(paradas_tipo['lat'] - latitude) < delta) &
-                (abs(paradas_tipo['lon'] - longitude) < delta)
+                (abs(paradas_tipo['lat'] - Decimal(latitude)) < delta) &
+                (abs(paradas_tipo['lon'] - Decimal(longitude)) < delta)
             ]
       
         distancias = paradas_candidatas.apply(
