@@ -65,6 +65,33 @@
             </div>
           </div>
         </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#info_area"
+              aria-expanded="true" aria-controls="info_area">
+                Información adicional
+            </button>
+          </h2>
+
+          <div id="info_area" class="accordion-collapse collapse" data-bs-parent="#acordeon">
+            <div class="accordion-body">
+              <p>En esta sección encontrarás un listado de propiedades inmobiliarias que cumplen con los criterios de
+                búsqueda establecidos. Puedes personalizar los filtros para ajustar la búsqueda a tus necesidades.</p>
+              <p>Para cada propiedad, se muestra el distrito, título, precio de compra, superficie, enlace para visitar y
+                estimación de facturación anual.</p>
+              <p>Utiliza los filtros para encontrar las mejores oportunidades de inversión inmobiliaria que se adapten a tus
+                objetivos financieros.</p> 
+              <p>Leyenda:</p>
+              <ul>
+                <li><strong>EUR</strong>: Valor de adquisición en Euros de la vivienda.</li>
+                <li><strong>ADR</strong>: Average Daily Rate o Tarifa Media Diaria.</li>
+                <li><strong>ARR</strong>: Annual Recurring Revenue o Ingresos Recurrentes Anuales.</li>
+                <li><strong>ROI</strong>: Return on Investment o Retorno de la Inversión.</li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -91,11 +118,11 @@
                               <th>Id</th>
                               <th>Distrito</th>
                               <th>Título</th>
-                              <th>Precio Compra</th>
                               <th>Superficie</th>
-                              <th>Visitar</th>
-                              <th>Eur / Noche</th>
-                              <th>Facturación Anual Estimada</th>
+                              <th>Ver</th>
+                              <th>EUR</th>
+                              <th>ADR</th>
+                              <th>ARR</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -140,6 +167,13 @@
         { data: 'id' },
         { data: 'DISTRITO' },
         { data: 'title' },
+
+        { data: 'built_area' },
+        { data: 'link',
+          render: function (data, type, row) {
+            return '<a type="button" class="btn btn-light-primary icon-btn b-r-4" href="' + data + '" target="_blank"><i class="ti ti-hand-click"></i></a>';
+          }
+         },
         { 
           data: 'price',
             render: function (data, type, row) {
@@ -148,13 +182,7 @@
             if (isNaN(number)) return data;
             return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
             }
-        },
-        { data: 'built_area' },
-        { data: 'link',
-          render: function (data, type, row) {
-            return '<a type="button" class="btn btn-light-primary icon-btn b-r-4" href="' + data + '" target="_blank"><i class="ti ti-hand-click"></i></a>';
-          }
-         },
+        },         
         { data: 'PRICE_PER_NIGHT',
             render: function (data, type, row) {
             if (data == null) return '';
