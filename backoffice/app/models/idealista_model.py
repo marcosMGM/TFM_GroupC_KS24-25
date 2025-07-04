@@ -8,7 +8,7 @@ def get_datalist(params, pagination=True):
     db = DatabaseInterface()
 
     """ SELECT BLOCK """
-    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, ROI FROM HOUSES """
+    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, ROI, PER FROM HOUSES """
 
 
     """ FILTER BLOCK """
@@ -29,6 +29,14 @@ def get_datalist(params, pagination=True):
             where += f" AND PRICE <= {float(max_price)}"
     except Exception:
         print(f"Error al procesar los filtros de precio: {min_price}, {max_price}")
+
+
+    min_roi = params.get('ftr_min_roi')
+    try:
+        if min_roi is not None and min_roi != '' and str(min_roi).replace('.', '', 1).isdigit():
+            where += f" AND ROI >= {int(min_roi)}"
+    except Exception:
+        print(f"Error al procesar el filtro de ROI: {min_roi}")
 
 
 
@@ -146,6 +154,20 @@ def get_max_price():
     query = "SELECT MAX(PRICE) as max_price FROM HOUSES"
     result = db.getallfromquery(query)
     return result[0]['max_price'] if result else 0
+
+def get_max_roi():
+    db = DatabaseInterface()
+    query = "SELECT MAX(ROI) as max_roi FROM HOUSES"
+    result = db.getallfromquery(query)
+    return result[0]['max_roi'] if result else 0
+
+def get_min_roi():
+    db = DatabaseInterface()
+    query = "SELECT MIN(ROI) as min_roi FROM HOUSES"
+    result = db.getallfromquery(query)
+    return result[0]['min_roi'] if result else 0
+
+
 
 
 

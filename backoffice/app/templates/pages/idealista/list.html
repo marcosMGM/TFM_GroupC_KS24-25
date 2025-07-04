@@ -47,13 +47,28 @@
               
                   <div class="col-sm-6 ">
                     <div>
-                      <label class="form-label mb-3" style="padding-bottom:25px">Precio de compra</label>
+                      <label class="form-label mb-3">Precio de compra</label>
                       <div class="mt-3" id="buy_price-slider"></div>
-                      <input  name="ftr_buy_price_min" type="hidden" id="buy_price-min">
+                      <input name="ftr_buy_price_min" type="hidden" id="buy_price-min">
                       <input name="ftr_buy_price_max" type="hidden" id="buy_price-max">
                       <span id="buy_price-display"></span>
                     </div>
                   </div>
+                  
+                  <div class="col-sm-6">
+                  
+                    <div>
+                      <label class="form-label mb-3" >Ocultar propiedades con menor ROI que:</label>
+                  
+                      <div class="slider-round mt-3" id="ftr_min_roi_slider"></div>
+                      <input name="ftr_min_roi" type="hidden" id="ftr_min_roi">
+                      <span id="ftr_min_roi_slider_val"></span>
+                    </div>
+                  
+                  
+                  </div>
+
+
               
               
               
@@ -93,6 +108,8 @@
                           <li><strong>ARR</strong>: Annual Recurring Revenue o Ingresos Recurrentes Anuales. [ADR * 365 * EAO]</li>
                           <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del FIXED_OPEX y VARIABLE OPEX anual estimado.</li>
                           <li><strong>ROI</strong>: Anual Return on Investment o Retorno de la Inversión Anual. [(ARR - OPEX) / PTC * 100]</li>
+                          <li><strong>PER</strong>: Price-to-Earnings Ratio o Ratio Precio/Beneficio.  Muestra cuántos años de beneficios de la empresa están contenidos en el precio actual de la acción.  [ PTC / (ARR - OPEX)]</li>
+
               </div>
                 </div>
             
@@ -135,6 +152,8 @@
                               <th>ARR</th>
                               <th>OPEX</th>
                               <th>ROI</th>
+                              <th>PER</th>
+                              <th>&nbsp;</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -168,6 +187,7 @@
             d.ftr_district = form.querySelector('select[name="ftr_district"]').value;
             d.ftr_buy_price_min = form.querySelector('input[name="ftr_buy_price_min"]').value;
             d.ftr_buy_price_max = form.querySelector('input[name="ftr_buy_price_max"]').value;
+            d.ftr_min_roi = form.querySelector('input[name="ftr_min_roi"]').value;
         }
       },
 
@@ -227,6 +247,23 @@
             return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '  %';
             }
          },
+        { data: 'PER',
+            render: function (data, type, row) {
+            if (data == null) return '';
+            let number = Number(data);
+            if (isNaN(number)) return data;
+            return Math.round(number) + ' años';
+            }
+         },
+        { data: 'ROI',
+            render: function (data, type, row) {
+            // if (data == null) return '';
+            // let number = Number(data);
+            // if (isNaN(number)) return data;
+            // return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '  %';
+            return '<span class="badge text-bg-warning">CLASIFICAR</span>';
+            }
+         },
 
 
       ]
@@ -243,13 +280,13 @@
   const slider = document.getElementById('buy_price-slider');
 
   noUiSlider.create(slider, {
-    start: [0, {{ max_inv_budget}}],
+    start: [0, {{ max_inv_budget }}],
     connect: true,
     range: {
       'min': 0,
       'max': {{ max_price }}
     },
-    tooltips: true,
+    tooltips: false,
     format: {
       to: value => Math.round(value) + ' €',
       from: value => Number(value.replace(' €', ''))
@@ -267,6 +304,31 @@
       const maxFormatted = Number(max).toLocaleString('es-ES');
       document.getElementById('buy_price-display').innerText = `De ${minFormatted} € a ${maxFormatted} €`;
     });
+
+
+
+const roi_slider = document.getElementById('ftr_min_roi_slider');
+
+noUiSlider.create(roi_slider, {
+    start: {{ min_display_roi }},                   // ROI inicial (ej. 10 %)
+    range: { min: {{ min_roi }}, max: {{ max_roi }} }, // Rango ROI 0 – 100 %
+    step: 1,
+    connect: 'upper',            // Resalta la parte derecha
+    tooltips: false,
+    format: wNumb({ decimals: 0, suffix: '%' })
+});
+
+    roi_slider.noUiSlider.on('update', function (values, handle) {
+      const min_roi_display = values[0].replace('%', '');
+      document.getElementById('ftr_min_roi').value = min_roi_display;
+      $(form).find('input[name="ftr_min_roi"]').trigger('change');
+
+      document.getElementById('ftr_min_roi_slider_val').innerText = 'Ocultar por debajo de ' + min_roi_display +' % ';
+    });
+
+
+
+
 
 
 
