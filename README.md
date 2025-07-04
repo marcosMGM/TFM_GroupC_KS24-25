@@ -12,10 +12,10 @@ Consolidar todas las funcionalidades, módulos y mejoras del proyecto en una ún
 
 ## 🔄 Flujo de trabajo
 
-1. Cada miembro del equipo trabajará en **ramas individuales** creadas a partir de `dev`.
-2. Al completar una tarea o funcionalidad, se abrirá un **Pull Request (PR) hacia `dev`**.
+1. Cada miembro del equipo hemos trabajado en **ramas individuales** creadas a partir de `main`. Hemos integrado nuestro trabajo en `dev`. Si se quieren hacer cambios importantes podemos ir creando ramas desde `dev` o trabajar directamente en `dev` dado el avance del proyecto.
+2. Si se crean ramas individuales desde `dev`, al completar una tarea o funcionalidad, se abrirá un **Pull Request (PR) hacia `dev`**.
 3. Los PRs serán revisados por el equipo antes de hacer `merge`.
-4. Solo cuando el proyecto esté validado y listo para entrega, se realizará un PR desde `dev` hacia `main`.
+4. Solo cuando el proyecto esté validado por los cuatro miembros del equipo realizará un PR desde `dev` hacia `main`.
 
 ---
 
@@ -28,10 +28,9 @@ Consolidar todas las funcionalidades, módulos y mejoras del proyecto en una ún
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Cambios y estado
 
 Consulta el archivo [`TODO.md`](TODO.md) para ver el estado de las tareas activas y quién está trabajando en qué.
 
 ---
 
-**Última actualización:** <!-- Actualizar fecha aquí -->
