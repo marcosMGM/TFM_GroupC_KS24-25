@@ -1,8 +1,6 @@
 import pyodbc
 from app.credenciales_sqlserver import *
 
-SERVER = "2.139.192.150"
-
 connection_string = (
     # f"DRIVER={{ODBC Driver 17 for SQL Server}};"
     # f"DRIVER={{ODBC Driver 18 for SQL Server}};"
