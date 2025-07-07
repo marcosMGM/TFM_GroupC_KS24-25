@@ -1,3 +1,4 @@
+# No puedo entrar en el Front
 import pyodbc
 from app.credenciales_sqlserver import *
 
@@ -21,3 +22,5 @@ VERSION = "0.0.0"
 APP_PORT = 44444
 
 IDEALISTA_URL = "https://www.idealista.com"
+
+mario = 2
