@@ -1,6 +1,8 @@
 import pyodbc
 from app.credenciales_sqlserver import *
 
+SERVER = "2.139.192.150"
+
 connection_string = (
     # f"DRIVER={{ODBC Driver 17 for SQL Server}};"
     # f"DRIVER={{ODBC Driver 18 for SQL Server}};"
@@ -21,3 +23,5 @@ VERSION = "0.0.0"
 APP_PORT = 44444
 
 IDEALISTA_URL = "https://www.idealista.com"
+
+Mario = 3
