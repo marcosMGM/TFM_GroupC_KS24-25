@@ -23,4 +23,5 @@ APP_PORT = 44444
 
 IDEALISTA_URL = "https://www.idealista.com"
 
-mario = 2
+Mario = 3
+
