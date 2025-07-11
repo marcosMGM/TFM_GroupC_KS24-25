@@ -102,3 +102,14 @@ def insert_process_number(process_number):
         cursor = conn.cursor()
         cursor.execute(query, (process_number,))
         conn.commit()
+
+
+def update_processed_with_distrito_not_defined():
+    """
+    Actualiza el processed a 1, para que se consideren por no tener distrito
+    """
+    query = "UPDATE HOUSES SET PROCESSED=1, UPDATED_DATE = getdate() WHERE DISTRITO = 'Not defined' and PROCESSED=0"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()

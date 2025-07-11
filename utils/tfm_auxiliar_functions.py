@@ -3,7 +3,7 @@ from shapely.geometry import Point
 import os
 from credenciales_sqlserver import GOOGLE_API_KEY
 import requests
-
+import pandas as pd
 
 def get_neighbourhood_group(latitude, longitude, geojson_path='neighbourhoods.geojson'):
     """
@@ -43,3 +43,30 @@ def get_lat_long_from_address(address, city):
             return None, None
     else:
         raise Exception(f"Error fetching data from Google API: {response.status_code}")
+    
+def get_df_rentas():
+    df_rentas = pd.read_csv('../data_import/ayto_madrid/Datos_Rentas_Madrid_2022.csv',delimiter=";")
+    
+    for col in df_rentas.select_dtypes(include='float'):
+        df_rentas[col] = df_rentas[col].apply(lambda x: x * 1000)
+
+    df_rentas['Distrito'] = df_rentas['Distrito'].str[4:]
+    df_rentas['Distrito'] = df_rentas['Distrito'].apply(lambda x: x.replace('-', ' - ') if '-' in x else x)
+    #Bin of 5 
+    df_rentas['renta_bin'] = pd.cut(
+        df_rentas['Renta neta media por hogar'].sort_values(),
+        bins=5,
+        labels=['muy_bajo','bajo','medio','alto','muy_alto'],
+        include_lowest=True
+    )
+    return df_rentas[['Distrito', 'Renta neta media por hogar', 'renta_bin']]
+
+def get_renta_bin(distrito:str, df_rentas):
+    # Busca el distrito en df_rentas y devuelve el valor de 'renta_bin'
+    row = df_rentas[df_rentas['Distrito'] == distrito]
+    if not row.empty:
+        return row['renta_bin'].values[0]
+    else:
+        return None
+
+ 
