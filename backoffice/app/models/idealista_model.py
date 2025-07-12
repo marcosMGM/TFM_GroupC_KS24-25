@@ -39,6 +39,15 @@ def get_datalist(params, pagination=True):
         print(f"Error al procesar el filtro de ROI: {min_roi}")
 
 
+  
+    max_per = params.get('ftr_max_per')
+    try:
+        if max_per is not None and max_per != '' and float(max_per):
+            where += f" AND PER <= {float(max_per)}"
+    except (ValueError, TypeError):
+        print(f"Error al procesar el filtro de PER: {max_per}")
+
+
 
     ##### SEARCH BOX #####
     filter_data = {

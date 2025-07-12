@@ -45,7 +45,7 @@
                     </div>
                   </div>
               
-                  <div class="col-sm-6 ">
+                  <div class="col-sm-4">
                     <div>
                       <label class="form-label mb-3">Precio de compra</label>
                       <div class="mt-3" id="buy_price-slider"></div>
@@ -55,17 +55,22 @@
                     </div>
                   </div>
                   
-                  <div class="col-sm-6">
-                  
+                  <div class="col-sm-4">
                     <div>
                       <label class="form-label mb-3" >Ocultar propiedades con menor ROI que:</label>
-                  
                       <div class="slider-round mt-3" id="ftr_min_roi_slider"></div>
                       <input name="ftr_min_roi" type="hidden" id="ftr_min_roi">
                       <span id="ftr_min_roi_slider_val"></span>
                     </div>
-                  
-                  
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div>
+                      <label class="form-label mb-3" >Ocultar propiedades con mayor PER que:</label>
+                      <div class="slider-round mt-3" id="ftr_max_per_slider"></div>
+                      <input name="ftr_max_per" type="hidden" id="ftr_max_per">
+                      <span id="ftr_max_per_slider_val"></span>
+                    </div>
                   </div>
 
 
@@ -96,25 +101,36 @@
                 estimación de facturación anual.</p>
               <p>Utiliza los filtros para encontrar las mejores oportunidades de inversión inmobiliaria que se adapten a tus
                 objetivos financieros.</p> 
-                <div class="col-6 mt-3">
-                  
-              <div class="card card-body dashed-1-secondary">
-                        <p><strong>Leyenda de términos empleados:</strong></p>
-                        <ul>
-                          <li><strong>EUR</strong>: Valor de adquisición en Euros de la vivienda.</li>
-                          <li><strong>PTC</strong>: Coste total de la adquisición de la propiedad en Euros (Purchase Total Cost). Representa la suma del valor de adquisición y los costes de la compra, incluyendo costes de transmisión, impuestos, compraventa, notaría y otros conceptos.</li>
-                          <li><strong>EAO</strong>: Estimated Annual Occupancy. Porcentaje de ocupación anual utilizado para calcular la rentabilidad estándar.</li>
-                          <li><strong>ADR</strong>: Average Daily Rate o Tarifa Media Diaria.</li>
-                          <li><strong>ARR</strong>: Annual Recurring Revenue o Ingresos Recurrentes Anuales. [ADR * 365 * EAO]</li>
-                          <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del FIXED_OPEX y VARIABLE OPEX anual estimado.</li>
-                          <li><strong>ROI</strong>: Anual Return on Investment o Retorno de la Inversión Anual. [(ARR - OPEX) / PTC * 100]</li>
-                          <li><strong>PER</strong>: Price-to-Earnings Ratio o Ratio Precio/Beneficio.  Muestra cuántos años de beneficios de la empresa están contenidos en el precio actual de la acción.  [ PTC / (ARR - OPEX)]</li>
-                        </ul>
 
-              </div>
+
+                <div class="row">
+                <div class="col-6 mt-3">
+                
+                  <div class="card card-body dashed-1-secondary">
+                    <p><strong>Leyenda de términos empleados:</strong></p>
+                    <ul>
+                      <li><strong>EUR</strong>: Valor de adquisición en Euros de la vivienda.</li>
+                      <li><strong>PTC</strong>: Coste total de la adquisición de la propiedad en Euros (Purchase Total Cost). Representa
+                        la suma del valor de adquisición y los costes de la compra, incluyendo costes de transmisión, impuestos,
+                        compraventa, notaría y otros conceptos.</li>
+                      <li><strong>EAO</strong>: Estimated Annual Occupancy. Porcentaje de ocupación anual utilizado para calcular la
+                        rentabilidad estándar.</li>
+                      <li><strong>ADR</strong>: Average Daily Rate o Tarifa Media Diaria.</li>
+                      <li><strong>ARR</strong>: Annual Recurring Revenue o Ingresos Recurrentes Anuales. [ADR * 365 * EAO]</li>
+                      <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la
+                        operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota
+                        comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del
+                        FIXED_OPEX y VARIABLE OPEX anual estimado.</li>
+                      <li><strong>ROI</strong>: Anual Return on Investment o Retorno de la Inversión Anual. [(ARR - OPEX) / PTC * 100]
+                      </li>
+                      <li><strong>PER</strong>: Price-to-Earnings Ratio o Ratio Precio/Beneficio. Muestra cuántos años de beneficios de
+                        la empresa están contenidos en el precio actual de la acción. [ PTC / (ARR - OPEX)]</li>
+                    </ul>
+                
+                  </div>
                 </div>
 
-                <div class="col-12 mt-3">
+                <div class="col-6 mt-3">
                 <p><strong>¿Cómo se clasifican las oportunidades?</strong></p>
                 <ul>
                   <li><strong>NO RENTABLE</strong>: Propiedades que no generan beneficios o tienen rentabilidad negativa.</li>
@@ -123,6 +139,7 @@
                   <li><strong>ALTA</strong>: Rentabilidad entre el 66% y el 90% de las propiedades.</li>
                   <li><strong>EXCELENTE</strong>: Rentabilidad superior al 90% de las propiedades, es decir, las mejores oportunidades.</li>
                 </ul>
+                </div>
                 </div>
             </div>
           </div>
@@ -201,6 +218,7 @@
             d.ftr_buy_price_min = form.querySelector('input[name="ftr_buy_price_min"]').value;
             d.ftr_buy_price_max = form.querySelector('input[name="ftr_buy_price_max"]').value;
             d.ftr_min_roi = form.querySelector('input[name="ftr_min_roi"]').value;
+            d.ftr_max_per = form.querySelector('input[name="ftr_max_per"]').value;
         }
       },
 
@@ -300,7 +318,7 @@
 
 
 
-
+/* SLIDER DEL PRECIO DE COMPRA */
   const slider = document.getElementById('buy_price-slider');
 
   noUiSlider.create(slider, {
@@ -340,6 +358,7 @@ slider.noUiSlider.on('change', function (values, handle) {
 
 
 
+/* SLIDER DEL ROI */
 const roi_slider = document.getElementById('ftr_min_roi_slider');
 
 noUiSlider.create(roi_slider, {
@@ -350,6 +369,10 @@ noUiSlider.create(roi_slider, {
     tooltips: false,
     format: wNumb({ decimals: 0, suffix: '%' })
 });
+roi_slider.querySelector('.noUi-connect').style.background = '#7E9ED7';
+
+
+
 
 roi_slider.noUiSlider.on('update', function (values, handle) {
   const min_roi_display = values[0].replace('%', '');
@@ -360,6 +383,30 @@ roi_slider.noUiSlider.on('change', function (values, handle) {
   const min_roi_display = values[0].replace('%', '');
   document.getElementById('ftr_min_roi').value = min_roi_display;
   $(form).find('input[name="ftr_min_roi"]').trigger('change');
+});
+
+/* SLIDER DEL MAX PER */
+const per_slider = document.getElementById('ftr_max_per_slider');
+noUiSlider.create(per_slider, {
+  start: 15,                   
+  range: { min: 0, max: 100 }, 
+  connect: [true, false], // Rellena la parte izquierda
+  step: 1,
+  tooltips: false,
+  format: wNumb({ decimals: 0, suffix: ' años' })
+});
+
+per_slider.querySelector('.noUi-connect').style.background = '#A9A1D1';
+
+per_slider.noUiSlider.on('update', function (values, handle) {
+  const max_per_display = values[0].replace('años', '');
+  document.getElementById('ftr_max_per_slider_val').innerText = 'Ocultar PER superiores a ' + max_per_display + ' años ';
+});
+
+per_slider.noUiSlider.on('change', function (values, handle) {
+  const max_per_display = values[0].replace('años', '');
+  document.getElementById('ftr_max_per').value = max_per_display;
+  $(form).find('input[name="ftr_max_per"]').trigger('change');
 });
 
 
