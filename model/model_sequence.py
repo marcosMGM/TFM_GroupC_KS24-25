@@ -3,6 +3,8 @@ import os
 import numpy as np
 import pandas as pd
 import skops.io as sio
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler,OneHotEncoder
 #os.getcwd() get the current directory, where we are runnning the .py file
 project_root = os.getcwd()
 base_dir = os.path.abspath(os.path.join(project_root, "..")) #Should be the root directory of the project
@@ -74,12 +76,21 @@ def pre_model_sequence():
         'DISTANCE_TO_INTERURBANOS':'distance_to_interurbanos',
         'DISTANCE_TO_MLO':'distance_to_mlo'},
         inplace = True)
+    
+    order_columns = ['bedrooms', 'bathrooms','ascensor', 'garaje', 'pool',
+       'terraza', 'balcon', 'distance_to_center', 'aire_acondicionado',
+       'movilidad_reducida', 'calefaccion', 'distance_to_metro',
+       'distance_to_cercanias', 'distance_to_emt', 'distance_to_interurbanos',
+       'distance_to_mlo', 'renta_bin']
+    
+    df = df[order_columns]
     return df
 
 
 def get_predicts(df):
     model = sio.load("model.skops")
     data = df.drop(columns=['HOUSE_ID'])
+    
     test_predictions = model.predict(data)
     predictions = pd.DataFrame({'Id': df['HOUSE_ID'], 'Predicted': test_predictions})
 
