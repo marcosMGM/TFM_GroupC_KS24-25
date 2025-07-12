@@ -208,6 +208,7 @@
     $('#tablelist').DataTable({
       processing: true,
       serverSide: true,
+      searching:false,
       ajax: {
         url: '{{url_for("idealista_controller.datalist")}}',
         type: "POST",
