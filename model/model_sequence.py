@@ -1,17 +1,15 @@
 import sys
 import os
 import numpy as np
-
-project_root = os.getcwd() #give us the actual directory
-
-# Obtener el directorio padre de project_root to register credenciales_sqlserver.py
-base_dir = os.path.abspath(os.path.join(project_root, ".."))
-print(base_dir)
-if base_dir not in sys.path:
-    sys.path.append(base_dir)
-print(sys.path)
-
 import pandas as pd
+
+#os.getcwd() get the current directory, where we are runnning the .py file
+project_root = os.getcwd()
+base_dir = os.path.abspath(os.path.join(project_root, "..")) #Should be the root directory of the project
+
+#Adding the path to work with our modules
+sys.path.append(base_dir)
+
 import credenciales_sqlserver as cred
 import utils.tfm_functions_bd_mac as tfbd
 import utils.tfm_auxiliar_functions as tfmg
