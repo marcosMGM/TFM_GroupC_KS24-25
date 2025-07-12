@@ -2,7 +2,7 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-
+import skops.io as sio
 #os.getcwd() get the current directory, where we are runnning the .py file
 project_root = os.getcwd()
 base_dir = os.path.abspath(os.path.join(project_root, "..")) #Should be the root directory of the project
@@ -77,8 +77,19 @@ def pre_model_sequence():
     return df
 
 
+def get_predicts(df):
+    model = sio.load("model.skops")
+    data = df.drop(columns=['HOUSE_ID'])
+    test_predictions = model.predict(data)
+    predictions = pd.DataFrame({'Id': df['HOUSE_ID'], 'Predicted': test_predictions})
+
+    #Update the BD with the predictions and marking them to processed to 2
+    predictions_tuple = list(zip(predictions['Id'].tolist(), predictions['Predicted'].tolist()))
+    for a in predictions_tuple:
+        print(f"House_id:{a[0]} Predicted:{a[1]}")
+
 
 if __name__ == "__main__":
     df = pre_model_sequence()
-    print(df)
+    get_predicts(df)
 
