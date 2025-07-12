@@ -278,10 +278,6 @@
                 clase = 'success';
                 texto = 'EXCELENTE';
               }
-            // if (data == null) return '';
-            // let number = Number(data);
-            // if (isNaN(number)) return data;
-            // return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '  %';
             return '<span class="badge text-bg-'+clase+'">'+texto+'</span>';
             }
          },
@@ -314,17 +310,26 @@
     }
   });
 
-    slider.noUiSlider.on('update', function (values, handle) {
-      const min = values[0].replace(' €', '');
-      const max = values[1].replace(' €', '');
-      document.getElementById('buy_price-min').value = min;
-      document.getElementById('buy_price-max').value = max;
-      $(form).find('input[name="ftr_buy_price_min"], input[name="ftr_buy_price_max"]').trigger('change');
-      // Formatear con separador de miles
-      const minFormatted = Number(min).toLocaleString('es-ES');
-      const maxFormatted = Number(max).toLocaleString('es-ES');
-      document.getElementById('buy_price-display').innerText = `De ${minFormatted} € a ${maxFormatted} €`;
-    });
+slider.noUiSlider.on('update', function (values, handle) {
+    const min = values[0].replace(' €', '');
+    const max = values[1].replace(' €', '');
+
+    // Actualiza el display formateado en tiempo real
+    const minFormatted = Number(min).toLocaleString('es-ES');
+    const maxFormatted = Number(max).toLocaleString('es-ES');
+    document.getElementById('buy_price-display').innerText = `De ${minFormatted} € a ${maxFormatted} €`;
+});
+
+slider.noUiSlider.on('change', function (values, handle) {
+    const min = values[0].replace(' €', '');
+    const max = values[1].replace(' €', '');
+
+    document.getElementById('buy_price-min').value = min;
+    document.getElementById('buy_price-max').value = max;
+
+    $(form).find('input[name="ftr_buy_price_min"], input[name="ftr_buy_price_max"]').trigger('change');
+});
+
 
 
 
@@ -339,13 +344,17 @@ noUiSlider.create(roi_slider, {
     format: wNumb({ decimals: 0, suffix: '%' })
 });
 
-    roi_slider.noUiSlider.on('update', function (values, handle) {
-      const min_roi_display = values[0].replace('%', '');
-      document.getElementById('ftr_min_roi').value = min_roi_display;
-      $(form).find('input[name="ftr_min_roi"]').trigger('change');
+roi_slider.noUiSlider.on('update', function (values, handle) {
+  const min_roi_display = values[0].replace('%', '');
+  document.getElementById('ftr_min_roi_slider_val').innerText = 'Ocultar por debajo de ' + min_roi_display + ' % ';
+});
 
-      document.getElementById('ftr_min_roi_slider_val').innerText = 'Ocultar por debajo de ' + min_roi_display +' % ';
-    });
+roi_slider.noUiSlider.on('change', function (values, handle) {
+  const min_roi_display = values[0].replace('%', '');
+  document.getElementById('ftr_min_roi').value = min_roi_display;
+  $(form).find('input[name="ftr_min_roi"]').trigger('change');
+});
+
 
 
 
