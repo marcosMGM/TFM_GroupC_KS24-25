@@ -276,7 +276,15 @@
             if (data == null) return '';
             let number = Number(data);
             if (isNaN(number)) return data;
-            return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '  %';
+            if (number > 0) {
+              roi_icon = '<i class="ti ti-chevrons-up f-s-20 text-success"></i>'
+              roi_text_class='success'
+            } else {
+              roi_icon = '<i class="ti ti-chevrons-down f-s-20 text-danger"></i>'
+              roi_text_class='danger'
+
+            }
+            return roi_icon + "<span class='text-"+roi_text_class+"'>" +number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '  %</span>';
             }
          },
         { data: 'PER',
