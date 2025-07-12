@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, g
 from app.utils.decorators import login_required
-from app.models.idealista_model import get_datalist, get_districts, get_max_price, get_max_roi, get_min_roi
+from app.models.idealista_model import get_datalist, get_districts, get_max_price, get_max_roi, get_min_roi, get_percentile_roi
 from app.models.custom_model import get_parameters_by_key
 from flask import jsonify
 from app.config import IDEALISTA_URL
@@ -22,7 +22,8 @@ def index():
     parameters= get_parameters_by_key()
     max_inv_budget = parameters.get('MAX_INVESTMENT_BUDGET', {}).get('VALUE', 0)
     min_display_roi = parameters.get('INITIAL_MIN_ROI_DISPLAY_THRESOLD', {}).get('VALUE', 0)
-    return render_template("pages/idealista/list.html", IDEALISTA_URL=IDEALISTA_URL, districts=districts, max_price=max_price, max_inv_budget=max_inv_budget, min_roi = min_roi, min_display_roi = min_display_roi, max_roi=max_roi)
+    percentile_roi = get_percentile_roi()
+    return render_template("pages/idealista/list.html", IDEALISTA_URL=IDEALISTA_URL, districts=districts, max_price=max_price, max_inv_budget=max_inv_budget, min_roi = min_roi, min_display_roi = min_display_roi, max_roi=max_roi, percentile_roi = percentile_roi)
     # return redirect(url_for('home_controller.index'))
 
 

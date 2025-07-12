@@ -167,6 +167,20 @@ def get_min_roi():
     result = db.getallfromquery(query)
     return result[0]['min_roi'] if result else 0
 
+def get_percentile_roi():
+    db = DatabaseInterface()
+    query = """
+    SELECT TOP 1
+        PERCENTILE_CONT(0.33) WITHIN GROUP (ORDER BY ROI) OVER () AS P33,
+        PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER () AS P66,
+        PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER () AS P90
+    FROM (
+        SELECT ROI FROM HOUSES WHERE ROI > 0
+    ) AS subquery;
+    """
+    result = db.getallfromquery(query)
+    return result[0] if result else {'P33': 0, 'P66': 0, 'P90': 0}
+
 
 
 

@@ -142,11 +142,11 @@
                         <table id="tablelist" class="display app-data-table default-data-table">
                           <thead>
                             <tr>
-                              <th>Id</th>
-                              <th>Distrito</th>
-                              <th>Título</th>
-                              <th>Superficie</th>
-                              <th>Ver</th>
+                              <th>ID</th>
+                              <th>DISTRITO</th>
+                              <th>TÍTULO</th>
+                              <th>SUP.</th>
+                              <th>LINK</th>
                               <th>EUR</th>
                               <th>ADR</th>
                               <th>ARR</th>
@@ -172,6 +172,12 @@
 
 <script>
   $(document).ready(function () {
+
+    /* Clasificación de los inmuebles rentables */
+  roi_P33 = {{ percentile_roi.P33 }};
+  roi_P66 = {{ percentile_roi.P66 }};
+  roi_P90 = {{ percentile_roi.P90 }};
+
 
     const form = document.forms['ftr_data_form'];
 
@@ -257,11 +263,26 @@
          },
         { data: 'ROI',
             render: function (data, type, row) {
+              clase = 'danger';
+              texto = 'NO RENTABLE';
+              if (data > 0 && data <= roi_P33) {
+                clase = 'dark';
+                texto = 'BAJA';
+              } else if (data > roi_P33 && data <= roi_P66) {
+                clase = 'warning';
+                texto = 'MEDIA';
+              } else if (data > roi_P66 && data <= roi_P90) {
+                clase = 'primary';
+                texto = 'ALTA';
+              } else if (data > roi_P90) {
+                clase = 'success';
+                texto = 'EXCELENTE';
+              }
             // if (data == null) return '';
             // let number = Number(data);
             // if (isNaN(number)) return data;
             // return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '  %';
-            return '<span class="badge text-bg-warning">CLASIFICAR</span>';
+            return '<span class="badge text-bg-'+clase+'">'+texto+'</span>';
             }
          },
 
