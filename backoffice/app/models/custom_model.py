@@ -91,7 +91,6 @@ def recalculate_all():
 
     query = "UPDATE HOUSES SET PER = TOTAL_PURCHASE_COST / (ARR -  FIXED_OPEX - VARIABLE_OPEX) WHERE DISTRITO <> 'Not defined'"
     result = db.run_query(query)
-
     query = "UPDATE HOUSES SET PER = 999999 WHERE PER < 0 AND DISTRITO <> 'Not defined'"
     result = db.run_query(query)
 
