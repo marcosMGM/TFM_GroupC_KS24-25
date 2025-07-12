@@ -54,6 +54,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 - DSG: ¿Sería necesario reajustar todas las consultas, incluida la clasificación de oportunidades en función a la personalización del usuario? (Ej: Tengo un presupuesto máximo de 400k. El cálculo de percentiles para clasificar la rentabilidad de la vivienda lo saco con la población filtrada, o global?)
 - DSG: Definir que KPI y otros indicadores queremos mostrar definitivamente. Se me ocurre crear una pantalla de recomendaciones y que salgan las 3 viviendas más rentables de cada distrito, aquí sí, complementando a la cuestión a tratar anterior, sería necesario que atienda a las personalizaciones. 
 - DSG: Separar el mapa quitandolo de la home para que no tarde en cargar, y cambiar el color de los puntos del mapa en función a la clasificación hecha según su rentabilidad? Actualizar los popup incluyendo información relevante.
+- DSG: La mayoría de propiedades en las que pincho ya no están publicadas. Además, ahora que funciona el ordenado de la tabla, se ve facilmente que las propiedades más rentables son en realidad outliers. (Afueras de Madrid). ¿Hacemos un nuevo scrapping o lo dejamos así? ¿Hacemos una limpieza de datos?
 
 
 **Última actualización:** 12/07/2025 19:30
