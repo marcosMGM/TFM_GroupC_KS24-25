@@ -32,7 +32,7 @@ def pre_model_sequence():
     # Tratamiento de Garaje
     df["GARAJE"] = df["GARAJE"].astype(int)
     # Tratamiento de Calefaccion
-    df["CALEFACCION"].fillna(0,inplace=True)
+    df["CALEFACCION"] = df["CALEFACCION"].fillna(0)
     df.loc[df["CALEFACCION"] == "No dispone de calefacción", "CALEFACCION"] = 0
     df.loc[df["CALEFACCION"] != 0, "CALEFACCION"] = 1
     df["CALEFACCION"] = df["CALEFACCION"].astype(int)
@@ -77,27 +77,45 @@ def pre_model_sequence():
         'DISTANCE_TO_MLO':'distance_to_mlo'},
         inplace = True)
     
-    order_columns = ['bedrooms', 'bathrooms','ascensor', 'garaje', 'pool',
+    order_columns = ['HOUSE_ID','bedrooms', 'bathrooms','ascensor', 'garaje', 'pool',
        'terraza', 'balcon', 'distance_to_center', 'aire_acondicionado',
        'movilidad_reducida', 'calefaccion', 'distance_to_metro',
        'distance_to_cercanias', 'distance_to_emt', 'distance_to_interurbanos',
        'distance_to_mlo', 'renta_bin']
     
     df = df[order_columns]
+    print(df.info())
     return df
 
 
 def get_predicts(df):
-    model = sio.load("model.skops")
-    data = df.drop(columns=['HOUSE_ID'])
-    
-    test_predictions = model.predict(data)
-    predictions = pd.DataFrame({'Id': df['HOUSE_ID'], 'Predicted': test_predictions})
 
-    #Update the BD with the predictions and marking them to processed to 2
-    predictions_tuple = list(zip(predictions['Id'].tolist(), predictions['Predicted'].tolist()))
-    for a in predictions_tuple:
-        print(f"House_id:{a[0]} Predicted:{a[1]}")
+    #Verifications
+    print("Type:", type(df))
+    print("Shape:", df.shape)
+    print("Columns:", df.columns.tolist())
+    print("Any nulls:\n", df.isnull().sum())
+
+    model_path = "model.skops"
+    untrusted = sio.get_untrusted_types(file=model_path)
+    try:
+        model = sio.load(model_path, trusted=untrusted)
+        print(model)
+        data = df.drop(columns=['HOUSE_ID'])
+        
+        test_predictions = model.predict(data)
+        predictions = pd.DataFrame({'Id': df['HOUSE_ID'], 'Predicted': test_predictions})
+        #Update the BD with the predictions and marking them to processed to 2
+        predictions_tuple = list(zip(predictions['Id'].tolist(), predictions['Predicted'].tolist()))
+        for a in predictions_tuple:
+            print(f"House_id:{a[0]} Predicted:{a[1]}")
+    except Exception as e:
+        print("❌ Error during model prediction:")
+        print(type(e).__name__, e)
+        import traceback
+        traceback.print_exc()
+
+
 
 
 if __name__ == "__main__":
