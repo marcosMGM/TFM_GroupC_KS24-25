@@ -121,3 +121,10 @@ def update_processed_with_distrito_not_defined():
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
+
+def update_predicted_price(house_id, price):
+    query = f"UPDATE HOUSES SET PROCESSED=2, PRICE_PER_NIGHT={price} WHERE HOUSE_ID={house_id} AND PROCESSED = 0"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
