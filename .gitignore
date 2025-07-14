@@ -173,6 +173,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+/data_import/airbnb/data
+
 credenciales_sqlserver.py
 /modules/credentials
 
