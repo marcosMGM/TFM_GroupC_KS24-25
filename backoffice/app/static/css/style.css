@@ -22742,6 +22742,8 @@ input[type=range]::-webkit-slider-thumb {
   color: rgba(var(--dark), 1);
   right: 26px;
 }
+
+
 .app-datatable-default .dataTables_wrapper table thead th.sorting.sorting_asc_disabled, .app-datatable-default .dataTables_wrapper table thead th.sorting.sorting_desc_disabled, .app-datatable-default .dataTables_wrapper table thead th.sorting.sorting_asc, .app-datatable-default .dataTables_wrapper table thead th.sorting.sorting_desc {
   padding-right: 0.6rem !important;
 }

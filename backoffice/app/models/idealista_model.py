@@ -6,9 +6,11 @@ import datetime
 
 def get_datalist(params, pagination=True):
     db = DatabaseInterface()
+    # print(f"Params received: {params}")
 
     """ SELECT BLOCK """
-    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, ROI, PER FROM HOUSES """
+    select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, 
+    DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, ROI, PER FROM HOUSES """
 
 
     """ FILTER BLOCK """
@@ -37,6 +39,15 @@ def get_datalist(params, pagination=True):
             where += f" AND ROI >= {int(min_roi)}"
     except Exception:
         print(f"Error al procesar el filtro de ROI: {min_roi}")
+
+
+  
+    max_per = params.get('ftr_max_per')
+    try:
+        if max_per is not None and max_per != '' and float(max_per):
+            where += f" AND PER <= {float(max_per)}"
+    except (ValueError, TypeError):
+        print(f"Error al procesar el filtro de PER: {max_per}")
 
 
 
@@ -80,26 +91,16 @@ def get_datalist(params, pagination=True):
     """ GROUP BLOCK """
     group = """ """
 
-
     """ ORDER BLOCK """
-    if params.get('order') and len(params['order']) > 0 and 'columns' in params:
-        orderColumns = []
-
-        for i in range(len(params['order'])):
-            columnIdx = int(params['order'][i].get('column', 0))
-            requestColumn = params['columns'][columnIdx]
-
-            if requestColumn.get('orderable') == 'true':
-                dir = 'ASC' if params['order'][i].get('dir') == 'asc' else 'DESC'
-
-                if requestColumn.get('data') == 'activa':
-                    orderColumns.append(f"p.activa {dir}")
-                else:
-                    orderColumns.append(f"{requestColumn.get('data')} {dir}")
-
-        if orderColumns:
-            order = " ORDER BY " + ", ".join(orderColumns)
-
+    order = ""
+    # Params received: ImmutableMultiDict([('draw', '3'), ('columns[0][data]', 'id'), ('columns[0][name]', ''), ('columns[0][searchable]', 'true'), ('columns[0][orderable]', 'true'), ('columns[0][search][value]', ''), ('columns[0][search][regex]', 'false'), ('columns[1][data]', 'DISTRITO'), ('columns[1][name]', ''), ('columns[1][searchable]', 'true'), ('columns[1][orderable]', 'true'), ('columns[1][search][value]', ''), ('columns[1][search][regex]', 'false'), ('columns[2][data]', 'title'), ('columns[2][name]', ''), ('columns[2][searchable]', 'true'), ('columns[2][orderable]', 'true'), ('columns[2][search][value]', ''), ('columns[2][search][regex]', 'false'), ('columns[3][data]', 'built_area'), ('columns[3][name]', ''), ('columns[3][searchable]', 'true'), ('columns[3][orderable]', 'true'), ('columns[3][search][value]', ''), ('columns[3][search][regex]', 'false'), ('columns[4][data]', 'link'), ('columns[4][name]', ''), ('columns[4][searchable]', 'true'), ('columns[4][orderable]', 'true'), ('columns[4][search][value]', ''), ('columns[4][search][regex]', 'false'), ('columns[5][data]', 'price'), ('columns[5][name]', ''), ('columns[5][searchable]', 'true'), ('columns[5][orderable]', 'true'), ('columns[5][search][value]', ''), ('columns[5][search][regex]', 'false'), ('columns[6][data]', 'PRICE_PER_NIGHT'), ('columns[6][name]', ''), ('columns[6][searchable]', 'true'), ('columns[6][orderable]', 'true'), ('columns[6][search][value]', ''), ('columns[6][search][regex]', 'false'), ('columns[7][data]', 'ARR'), ('columns[7][name]', ''), ('columns[7][searchable]', 'true'), ('columns[7][orderable]', 'true'), ('columns[7][search][value]', ''), ('columns[7][search][regex]', 'false'), ][search][value]', ''), ('columns[7][search][regex]', 'false'), ('columns[8][data]', 'OPEX'), ('columns[8][name]', ''), ('columns[8][searchable]', 'true'), ('columns[8][orderable]', 'true'), ('columns[8][search][value]', ''), ('columns[8][search][regex]', 'false'), ('columns[9][data]', 'ROI'), ('columns[9][name]', ''), ('columns[9][searchable]', 'true'), ('columns[9][orderable]', 'true'), ('columns[9][search][value]', ''), ('columns[9][search][regex]', 'false'), ('columns[10][data]', 'PER'), ('columns[10][name]', ''), ('columns[10][searchable]', 'true'), ('columns[10][orderable]', 'true'), ('columns[10][search][value]', ''), ('columns[10][search][regex]', 'false'), ('columns[11][data]', 'ROI'), ('columns[11][name]', ''), ('columns[11][searchable]', 'true'), ('columns[11][orderable]', 'true'), ('columns[11][search][value]', ''), ('columns[11][search][regex]', 'false'), ('order[0][column]', '0'), ('order[0][dir]', 'asc'), ('start', '0'), ('length', '10'), ('search[value]', ''), ('search[regex]', 'false'), ('ftr_text', ''), ('ftr_district', ''), ('ftr_buy_price_min', ''), ('ftr_buy_price_max', ''), ('ftr_min_roi', ''), ('ftr_max_per', '')])
+    # print(f"Columna solicitada para ordenar: {params.get('order[0][column]')} cuyo nombre es: {params.get('columns[' + params.get('order[0][column]') + '][data]')}")
+    if params.get('order[0][column]') and 'columns[0][data]' in params:
+        """ añadir excepciones """
+        """ si x columna, entonces x orden (fechas, etc) """
+        order_column = params.get('columns['+ params.get('order[0][column]') +'][data]')
+        sentido = params.get('order[0][dir]', 'ASC') #por omisión, ponemos ASC
+        order = f" ORDER BY {order_column} {sentido}"
 
     #Orden por omisión
     if 'order' not in locals() or not order:
@@ -118,13 +119,7 @@ def get_datalist(params, pagination=True):
 
 
     results = db.getallfromquery(select + where + group + order + limit) if db.getallfromquery(select + where + group + order + limit) else []
-    if results:
-        parameters= get_parameters_by_key()
-        estimated_anual_days_ocupation = int(round(int(parameters.get('ESTIMATED_ANNUAL_OCCUPANCY', {}).get('VALUE', 0)) /100 * 365,0))
 
-        for result in results:
-            result['revenue'] = result['PRICE_PER_NIGHT'] * estimated_anual_days_ocupation
-            # print() 
 
     """ OUTPUT """
     # print(f"SELECT: {select + where + group + order + limit}")
@@ -166,6 +161,20 @@ def get_min_roi():
     query = "SELECT MIN(ROI) as min_roi FROM HOUSES"
     result = db.getallfromquery(query)
     return result[0]['min_roi'] if result else 0
+
+def get_percentile_roi():
+    db = DatabaseInterface()
+    query = """
+    SELECT TOP 1
+        PERCENTILE_CONT(0.33) WITHIN GROUP (ORDER BY ROI) OVER () AS P33,
+        PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER () AS P66,
+        PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER () AS P90
+    FROM (
+        SELECT ROI FROM HOUSES WHERE ROI > 0
+    ) AS subquery;
+    """
+    result = db.getallfromquery(query)
+    return result[0] if result else {'P33': 0, 'P66': 0, 'P90': 0}
 
 
 
