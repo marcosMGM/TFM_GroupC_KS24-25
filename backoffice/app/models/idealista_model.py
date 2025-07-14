@@ -45,7 +45,7 @@ def get_datalist(params, pagination=True):
     max_per = params.get('ftr_max_per')
     try:
         if max_per is not None and max_per != '' and float(max_per):
-            where += f" AND PER <= {float(max_per)}"
+            where += f" AND (PER <= {float(max_per)} OR PER IS NULL)"
     except (ValueError, TypeError):
         print(f"Error al procesar el filtro de PER: {max_per}")
   
@@ -183,9 +183,9 @@ def get_percentile_roi():
     db = DatabaseInterface()
     query = """
     SELECT TOP 1
-        PERCENTILE_CONT(0.33) WITHIN GROUP (ORDER BY ROI) OVER () AS P33,
-        PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER () AS P66,
-        PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER () AS P90
+        ROUND(PERCENTILE_CONT(0.33) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P33,
+        ROUND(PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P66,
+        ROUND(PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P90
     FROM (
         SELECT ROI FROM HOUSES WHERE ROI > 0
     ) AS subquery;
