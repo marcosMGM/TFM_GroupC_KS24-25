@@ -10,17 +10,29 @@ import pymssql
 
 import sys
 import os
-project_root = os.path.abspath(os.path.join(os.getcwd()+"/TFM_GroupC_KS24-25"))
+
+project_root = os.getcwd()
+print(f"Path:{project_root}")
+base_dir = os.path.abspath(os.path.join(project_root, "../..")) #Should be the root directory of the project
+print(f"Base***:{base_dir}")
+
+#for debug we add also project_root
+
 
 # Add to sys.path if not already added
+if base_dir not in sys.path:
+    sys.path.append(base_dir)
+print(sys.path)
+
+#for debug we add also project_root
 if project_root not in sys.path:
     sys.path.append(project_root)
 print(sys.path)
 
 from urllib.parse import urlparse, parse_qs
-from data_import.idealista.utils.tfm_auxiliar_functions import *
-from data_import.idealista.utils.tfm_functions_bd_mac import *
-from data_import.idealista.utils.fetcher_chrome import *
+from utils.tfm_auxiliar_functions import *
+from utils.tfm_functions_bd_mac import *
+from utils.fetcher_chrome import *
 
 
 
@@ -218,6 +230,7 @@ async def get_house_description(ids_houses, zone, all_transports):
                 lat, lng = 0, 0
             house_detail["latitude"] = lat
             house_detail["longitude"] = lng
+            district = "Not defined"
             if lat != 0 or lng != 0:
                 district = get_neighbourhood_group(lat, lng)
                 if district == None:
