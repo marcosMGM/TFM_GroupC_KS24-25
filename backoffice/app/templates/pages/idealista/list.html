@@ -27,13 +27,13 @@
                     <p>Descubre las mejores oportunidades de inversión personalizando tus filtros de búsqueda y encuentra las
                       propiedades que mejor se adaptan a tus objetivos.</p>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-4">
                     <div class="mb-3">
                       <label class="form-label">Que incluyan el siguiente texto</label>
                       <input name="ftr_text" type="text" class="form-control" placeholder="Introduzca un texto">
                     </div>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-4">
                     <div class="mb-3">
                       <label class="form-label">Distrito</label>
                       <select name="ftr_district" class="form-select">
@@ -41,6 +41,19 @@
                         {% for district in districts %}
                         <option value="{{ district.DISTRITO }}">{{ district.DISTRITO }}</option>
                         {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="mb-3">
+                      <label class="form-label">Rentabilidad</label>
+                      <select name="ftr_roi_group" class="form-select">
+                        <option value="" selected>Incluir todas</option>
+                        <option value="1">No Rentable</option>
+                        <option value="2">Baja</option>
+                        <option value="3">Media</option>
+                        <option value="4">Alta</option>
+                        <option value="5">Excelente</option>
                       </select>
                     </div>
                   </div>
@@ -216,6 +229,7 @@
           // const form = document.forms['ftr_data_form'];
             d.ftr_text = form.querySelector('input[name="ftr_text"]').value;
             d.ftr_district = form.querySelector('select[name="ftr_district"]').value;
+            d.ftr_roi_group = form.querySelector('select[name="ftr_roi_group"]').value;
             d.ftr_buy_price_min = form.querySelector('input[name="ftr_buy_price_min"]').value;
             d.ftr_buy_price_max = form.querySelector('input[name="ftr_buy_price_max"]').value;
             d.ftr_min_roi = form.querySelector('input[name="ftr_min_roi"]').value;

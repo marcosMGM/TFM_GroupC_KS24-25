@@ -48,6 +48,23 @@ def get_datalist(params, pagination=True):
             where += f" AND PER <= {float(max_per)}"
     except (ValueError, TypeError):
         print(f"Error al procesar el filtro de PER: {max_per}")
+  
+    roi_group = params.get('ftr_roi_group')
+    try:
+        if roi_group is not None and roi_group != '' and int(roi_group):
+            roi_groups = get_percentile_roi()
+            if roi_group == '1':
+                where += f" AND ROI <= 0"
+            elif roi_group == '2':
+                where += f" AND ROI > 0 AND ROI <= {roi_groups['P33']}"
+            elif roi_group == '3':
+                where += f" AND ROI > {roi_groups['P33']} AND ROI <= {roi_groups['P66']}"
+            elif roi_group == '4':
+                where += f" AND ROI > {roi_groups['P66']} AND ROI <= {roi_groups['P90']}"
+            elif roi_group == '5':
+                where += f" AND ROI > {roi_groups['P90']}"
+    except (ValueError, TypeError):
+        print(f"Error al procesar el filtro de ROI_GROUP: {roi_group}")
 
 
 
