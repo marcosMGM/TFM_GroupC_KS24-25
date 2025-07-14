@@ -120,7 +120,7 @@
                 <div class="col-6 mt-3">
                 
                   <div class="card card-body dashed-1-secondary">
-                    <p><strong>Leyenda de términos empleados:</strong></p>
+                    <p class="f-s-20"><strong>Glosario de términos empleados:</strong></p>
                     <ul>
                       <li><strong>EUR</strong>: Valor de adquisición en Euros de la vivienda.</li>
                       <li><strong>PTC</strong>: Coste total de la adquisición de la propiedad en Euros (Purchase Total Cost). Representa
@@ -144,14 +144,17 @@
                 </div>
 
                 <div class="col-6 mt-3">
-                <p><strong>¿Cómo se clasifican las oportunidades?</strong></p>
+
+                  <div class="card card-body dashed-1-secondary bg-light-secondary">
+                <p class="f-s-20"><strong>¿Cómo se clasifican las oportunidades?</strong></p>
                 <ul>
-                  <li><strong>NO RENTABLE</strong>: Propiedades que no generan beneficios o tienen rentabilidad negativa.</li>
-                  <li><strong>BAJA</strong>: Rentabilidad inferior al 33% de las propiedades analizadas.</li>
-                  <li><strong>MEDIA</strong>: Rentabilidad entre el 33% y el 66% de las propiedades.</li>
-                  <li><strong>ALTA</strong>: Rentabilidad entre el 66% y el 90% de las propiedades.</li>
-                  <li><strong>EXCELENTE</strong>: Rentabilidad superior al 90% de las propiedades, es decir, las mejores oportunidades.</li>
+                  <li class="p-1"><strong><span class="bg-danger p-1">NO RENTABLE</span></strong>: Propiedades que no generan beneficios o tienen rentabilidad negativa. <span class="text-dark">ROI menor de 0%.</span></li>
+                  <li  class="p-1"><strong><span class="bg-dark p-1">BAJA</span></strong>: Rentabilidad inferior al 33% de las propiedades analizadas. <span class="text-dark">ROI entre 0% y {{ percentile_roi.P33}}%.</span></li>
+                  <li class="p-1"><strong><span class="bg-warning p-1">MEDIA</span></strong>: Rentabilidad entre el 33% y el 66% de las propiedades. <span class="text-dark">ROI entre {{ percentile_roi.P33}}% y {{ percentile_roi.P66}}%.</span></li>
+                  <li class="p-1"><strong><span class="bg-primary p-1">ALTA</span></strong>: Rentabilidad entre el 66% y el 90% de las propiedades. <span class="text-dark">ROI entre {{ percentile_roi.P66}}% y {{ percentile_roi.P90}}%.</span></li>
+                  <li class="p-1"><strong><span class="bg-success p-1">EXCELENTE</span></strong>: Rentabilidad superior al 90% de las propiedades, es decir, las mejores oportunidades.<span class="text-dark">ROI superior a {{ percentile_roi.P90}}%.</span></li>
                 </ul>
+                  </div>
                 </div>
                 </div>
             </div>
