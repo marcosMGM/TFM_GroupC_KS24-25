@@ -189,6 +189,8 @@ def get_percentile_roi():
 
 
 
+
+
 # def get_all_properties():
 #     with get_connection() as conn:
 #         cursor = conn.cursor()

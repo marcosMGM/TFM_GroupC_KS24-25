@@ -49,8 +49,8 @@
                     <div>
                       <label class="form-label mb-3">Precio de compra</label>
                       <div class="mt-3" id="buy_price-slider"></div>
-                      <input name="ftr_buy_price_min" type="hidden" id="buy_price-min">
-                      <input name="ftr_buy_price_max" type="hidden" id="buy_price-max">
+                      <input name="ftr_buy_price_min" type="hidden" id="buy_price-min" value="0" />
+                      <input name="ftr_buy_price_max" type="hidden" id="buy_price-max" value="{{max_inv_budget}}" />
                       <span id="buy_price-display"></span>
                     </div>
                   </div>
@@ -59,7 +59,7 @@
                     <div>
                       <label class="form-label mb-3" >Ocultar propiedades con menor ROI que:</label>
                       <div class="slider-round mt-3" id="ftr_min_roi_slider"></div>
-                      <input name="ftr_min_roi" type="hidden" id="ftr_min_roi">
+                      <input name="ftr_min_roi" type="hidden" id="ftr_min_roi" value="{{min_display_roi}}">
                       <span id="ftr_min_roi_slider_val"></span>
                     </div>
                   </div>
