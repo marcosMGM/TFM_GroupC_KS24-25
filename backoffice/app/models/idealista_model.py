@@ -125,7 +125,7 @@ def get_datalist(params, pagination=True):
     # print(f"SELECT: {select + where + group + order + limit}")
     return {
         "draw": int(params.get('draw', 1)),
-        "recordsTotal": db.getcountfromquery(select),
+        "recordsTotal": db.getcountfromquery(select + " WHERE 1=1 AND DISTRITO <> 'Not defined' "),
         "recordsFiltered": db.getcountfromquery(select + where),
         # "data": result if result else [],
         "data": results,
