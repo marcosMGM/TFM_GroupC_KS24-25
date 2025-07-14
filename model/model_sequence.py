@@ -50,21 +50,30 @@ def pre_model_sequence():
     # Nueva Columna Distance_to_center
     center_lat, center_lon = 40.4168, -3.7038
     df['distance_to_center'] = np.sqrt((df['LATITUDE'] - center_lat)**2 + (df['LONGITUDE'] - center_lon)**2)
+    # Create distance to El Retiro
+    retiro_lat, retiro_lon = 40.415262, -3.6883366
+    df['distance_to_retiro'] = np.sqrt((df['LATITUDE'] - retiro_lat)**2 + (df['LONGITUDE'] - retiro_lon)**2)
+    # Create distance to Atocha
+    atocha_lat, atocha_lon = 40.405383, -3.6914676
+    df['distance_to_atocha'] = np.sqrt((df['LATITUDE'] - atocha_lat)**2 + (df['LONGITUDE'] - atocha_lon)**2)
+    # Create distance to Chamartín
+    chamartin_lat, chamartin_lon = 40.472103, -3.6852973
+    df['distance_to_chamartin'] = np.sqrt((df['LATITUDE'] - chamartin_lat)**2 + (df['LONGITUDE'] - chamartin_lon)**2)
     # Nueva columna renta_bin
     df["DISTRITO"].value_counts()
     #Import data from Ayto de Madrid, rentas
     df_rentas = tfmg.get_df_rentas()#pd.read_csv('../data_import/ayto_madrid/Datos_Rentas_Madrid_2022.csv',delimiter=";")
     df["renta_bin"] = df['DISTRITO'].apply(lambda x: tfmg.get_renta_bin(x, df_rentas))
     df["renta_bin"].value_counts()
-    df = df [['HOUSE_ID','GARAJE','CALEFACCION', 'PISCINA', 'ASCENSOR', 'MOVILIDAD_REDUCIDA', 'TERRAZA',
+    df = df [['HOUSE_ID','DISTRITO','CALEFACCION', 'PISCINA', 'ASCENSOR', 'MOVILIDAD_REDUCIDA', 'TERRAZA',
            'BALCON', 'AIRE_ACOND','DISTANCE_TO_METRO',
            'DISTANCE_TO_CERCANIAS', 'DISTANCE_TO_EMT', 'DISTANCE_TO_INTERURBANOS',
            'DISTANCE_TO_MLO', 'bedrooms', 'bathrooms',
-           'distance_to_center', 'renta_bin']]
+           'distance_to_center', 'distance_to_retiro','distance_to_atocha','distance_to_chamartin','renta_bin']]
 
     df.rename(columns={'ASCENSOR': 'ascensor',
-        'GARAJE': 'garaje',
-        'PISCINA': 'pool',
+        'DISTRITO': 'distrito',
+        'PISCINA': 'piscina',
         'CALEFACCION':'calefaccion',
         'TERRAZA': 'terraza',
         'BALCON': 'balcon',
@@ -76,13 +85,14 @@ def pre_model_sequence():
         'DISTANCE_TO_INTERURBANOS':'distance_to_interurbanos',
         'DISTANCE_TO_MLO':'distance_to_mlo'},
         inplace = True)
-    
-    order_columns = ['HOUSE_ID','bedrooms', 'bathrooms','ascensor', 'garaje', 'pool',
+
+    order_columns = ['HOUSE_ID','bedrooms', 'bathrooms','ascensor', 'piscina',
        'terraza', 'balcon', 'distance_to_center', 'aire_acondicionado',
        'movilidad_reducida', 'calefaccion', 'distance_to_metro',
        'distance_to_cercanias', 'distance_to_emt', 'distance_to_interurbanos',
-       'distance_to_mlo', 'renta_bin']
-    
+       'distance_to_mlo','distance_to_retiro','distance_to_atocha','distance_to_chamartin','renta_bin','distrito']
+
+
     df = df[order_columns]
     print(df.info())
     return df
@@ -96,7 +106,7 @@ def get_predicts(df):
     print("Columns:", df.columns.tolist())
     print("Any nulls:\n", df.isnull().sum())
 
-    model_path = "model.skops"
+    model_path = "model_tfm.skops"
     untrusted = sio.get_untrusted_types(file=model_path)
     try:
         model = sio.load(model_path, trusted=untrusted)
