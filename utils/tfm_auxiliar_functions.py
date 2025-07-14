@@ -10,7 +10,7 @@ def get_neighbourhood_group(latitude, longitude, geojson_path='neighbourhoods.ge
     Returns the neighbourhood_group for given latitude and longitude
     based on the provided GeoJSON file.
     """
-    geojson_path = os.path.join('TFM_GroupC_KS24-25/data_import/airbnb/data/neighbourhoods.geojson')
+    geojson_path = os.path.join('TFM_GroupC_KS24-25/data_import/data/neighbourhoods.geojson')
     if not os.path.exists(geojson_path):
         raise FileNotFoundError(f"GeoJSON file not found at {geojson_path}")
     gdf = gpd.read_file(geojson_path)
@@ -45,7 +45,7 @@ def get_lat_long_from_address(address, city):
         raise Exception(f"Error fetching data from Google API: {response.status_code}")
     
 def get_df_rentas():
-    df_rentas = pd.read_csv('../data_import/ayto_madrid/Datos_Rentas_Madrid_2022.csv',delimiter=";")
+    df_rentas = pd.read_csv('../data_import/data/Datos_Rentas_Madrid_2022.csv',delimiter=";")
     
     for col in df_rentas.select_dtypes(include='float'):
         df_rentas[col] = df_rentas[col].apply(lambda x: x * 1000)
