@@ -5,10 +5,10 @@ from collections import defaultdict
 
 def get_home_cards():
     db = DatabaseInterface()
-    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined'")
-    card3 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND CONVERT(date, CREATED_DATE) = '{datetime.datetime.now().date()}'")
-    card4 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND CONVERT(date, UPDATED_DATE) = '{datetime.datetime.now().date()}'")
-    card5 = db.getallfromquery("SELECT ISNULL(SUM(PRICE) / NULLIF(SUM(BUILT_AREA), 0), 0) AS precio_medio FROM HOUSES WHERE DISTRITO <> 'Not defined';")
+    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0")
+    card3 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND CONVERT(date, CREATED_DATE) = '{datetime.datetime.now().date()}'")
+    card4 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND CONVERT(date, UPDATED_DATE) = '{datetime.datetime.now().date()}'")
+    card5 = db.getallfromquery("SELECT ISNULL(SUM(PRICE) / NULLIF(SUM(BUILT_AREA), 0), 0) AS precio_medio FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0;")
 
     return {
         'card1': card1,
@@ -25,7 +25,7 @@ def get_pie_ide_by_district():
         DISTRITO,
         COUNT(HOUSE_ID) as propiedades
         FROM HOUSES 
-        WHERE DISTRITO <> 'Not defined'
+        WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
         GROUP BY DISTRITO
         ORDER BY DISTRITO ASC
     """
@@ -38,7 +38,7 @@ def get_pie_ide_by_bedrooms():
         BEDROOMS as bedrooms,
         COUNT(HOUSE_ID) as propiedades
         FROM HOUSES 
-        WHERE DISTRITO <> 'Not defined'
+        WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
         GROUP BY BEDROOMS
         ORDER BY BEDROOMS ASC
     """
@@ -52,7 +52,7 @@ def get_sct1():
     CAST(PRICE AS FLOAT) AS y,
     '1' AS serie
     FROM HOUSES
-    WHERE PRICE IS NOT NULL AND BUILT_AREA IS NOT NULL AND BUILT_AREA > 0 AND DISTRITO <> 'Not defined'
+    WHERE PRICE IS NOT NULL AND BUILT_AREA IS NOT NULL AND BUILT_AREA > 0 AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
 
     UNION ALL
 
@@ -62,7 +62,7 @@ def get_sct1():
     '2' AS serie
     FROM HOUSES
     WHERE 
-    1=1 AND DISTRITO <> 'Not defined' 
+    1=1 AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 
     -- price IS NOT NULL AND bedrooms IS NOT NULL;
     """
     data = db.getallfromquery(sql)
@@ -86,7 +86,7 @@ def get_map_markers():
         BATHROOMS,
         DISTRITO
     FROM HOUSES
-    WHERE LATITUDE IS NOT NULL AND LONGITUDE IS NOT NULL AND DISTRITO <> 'Not defined'
+    WHERE LATITUDE IS NOT NULL AND LONGITUDE IS NOT NULL AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
     """
     data = db.getallfromquery(sql)
     
