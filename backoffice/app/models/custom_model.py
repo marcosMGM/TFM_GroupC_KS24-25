@@ -86,6 +86,9 @@ def recalculate_all():
     query = "UPDATE HOUSES SET VARIABLE_OPEX = ARR * "+ str(VARIABLE_OPEX) + " WHERE DISTRITO <> 'Not defined'"
     result = db.run_query(query)
 
+    query = "UPDATE HOUSES SET NP = (ARR -  FIXED_OPEX - VARIABLE_OPEX) WHERE DISTRITO <> 'Not defined'"
+    result = db.run_query(query)
+
     query = "UPDATE HOUSES SET ROI = (ARR -  FIXED_OPEX - VARIABLE_OPEX) / TOTAL_PURCHASE_COST * 100 WHERE DISTRITO <> 'Not defined'"
     result = db.run_query(query)
 

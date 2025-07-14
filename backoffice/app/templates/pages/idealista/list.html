@@ -130,10 +130,8 @@
                         rentabilidad estándar.</li>
                       <li><strong>ADR</strong>: Average Daily Rate o Tarifa Media Diaria.</li>
                       <li><strong>ARR</strong>: Annual Recurring Revenue o Ingresos Recurrentes Anuales. [ADR * 365 * EAO]</li>
-                      <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la
-                        operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota
-                        comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del
-                        FIXED_OPEX y VARIABLE OPEX anual estimado.</li>
+                      <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del FIXED_OPEX y VARIABLE OPEX anual estimado.
+                      <li><strong>NP</strong>: Net Profit o Ganancia Neta Anual. Representa el beneficio neto anual obtenido tras restar los gastos operativos (OPEX) a los ingresos recurrentes anuales (ARR). [NP = ARR - FIXED_OPEX - VARIABLE_OPEX]</li>
                       <li><strong>ROI</strong>: Anual Return on Investment o Retorno de la Inversión Anual. [(ARR - OPEX) / PTC * 100]
                       </li>
                       <li><strong>PER</strong>: Price-to-Earnings Ratio o Ratio Precio/Beneficio. Muestra cuántos años de beneficios de
@@ -185,12 +183,13 @@
                               <th>ID</th>
                               <th>DISTRITO</th>
                               <th>TÍTULO</th>
-                              <th>SUP.</th>
+                              <!-- <th>SUP.</th> -->
                               <th>LINK</th>
                               <th>EUR</th>
                               <th>ADR</th>
                               <th>ARR</th>
                               <th>OPEX</th>
+                              <th>NP</th>
                               <th>ROI</th>
                               <th>PER</th>
                               <th>&nbsp;</th>
@@ -245,11 +244,11 @@
         type: "POST"
       },
       columns: [
-        { data: 'id' },
+        { data: 'id', },
         { data: 'DISTRITO' },
         { data: 'title' },
 
-        { data: 'built_area' },
+        // { data: 'built_area' },
         { data: 'link',
           render: function (data, type, row) {
             return '<a type="button" class="btn btn-light-primary icon-btn b-r-4" href="' + data + '" target="_blank"><i class="ti ti-hand-click"></i></a>';
@@ -286,6 +285,19 @@
             let number = Number(data);
             if (isNaN(number)) return data;
             return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+            }
+         },
+        { data: 'NP',
+            render: function (data, type, row) {
+            if (data == null) return '';
+            let number = Number(data);
+            if (isNaN(number)) return data;
+            if (number > 0) {
+              np_text_class='success'
+            } else {
+              np_text_class='danger'
+            }
+            return "<span class='text-"+np_text_class+"'>" +number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €</span>';
             }
          },
         { data: 'ROI',
