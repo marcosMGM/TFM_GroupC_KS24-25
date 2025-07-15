@@ -7,6 +7,12 @@ from app.models.custom_model import get_parameters_by_key
 def get_oportunities():
     db = DatabaseInterface()
     parameters = get_parameters_by_key()
+    order_by = parameters.get("RECOMMEND_BY", dict).get("VALUE", "ROI")
+    if order_by == "ROI" or order_by == "NP":
+        order_by = order_by
+    else:
+        order_by = "ROI"
+
     sql = f"""
         SELECT 
         TOP 12
@@ -27,7 +33,7 @@ def get_oportunities():
         WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
         AND ROI > 0 AND ROI >= {parameters.get("INITIAL_MIN_ROI_DISPLAY_THRESOLD",dict).get("VALUE",-999)}
          AND PRICE <= {parameters.get("MAX_INVESTMENT_BUDGET",dict).get("VALUE",0)}
-        ORDER BY NP DESC
+        ORDER BY {order_by} DESC
 
     """
     return db.getallfromquery(sql)
@@ -35,6 +41,11 @@ def get_oportunities():
 def get_improvable_oportunities():
     db = DatabaseInterface()
     parameters = get_parameters_by_key()
+    order_by = parameters.get("RECOMMEND_BY", dict).get("VALUE", "ROI")
+    if order_by == "ROI" or order_by == "NP":
+        order_by = order_by
+    else:
+        order_by = "ROI"
     sql = f"""
         SELECT 
         TOP 6
@@ -55,7 +66,7 @@ def get_improvable_oportunities():
         WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
         AND ROI > 0 AND ROI >= {parameters.get("INITIAL_MIN_ROI_DISPLAY_THRESOLD",dict).get("VALUE",-999)}
          AND PRICE >= {parameters.get("MAX_INVESTMENT_BUDGET",dict).get("VALUE",0)} 
-        ORDER BY NP DESC
+        ORDER BY {order_by} DESC
 
     """
     return db.getallfromquery(sql)
