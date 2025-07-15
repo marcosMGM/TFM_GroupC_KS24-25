@@ -22,7 +22,7 @@
                             <div class="col-12">
                                 <label for="id_{{parameter.NAME}}" class="form-label">{{parameter.NAME}}</label>
                                 <p class="text-secondary">
-                                    {{parameter.DESCRIPTION}}
+                                    {{parameter.DESCRIPTION |safe}}
                                 </p>
                                 <input type="text" class="form-control" id="id_{{parameter.NAME}}" name="name_{{parameter.NAME}}" value="{{parameter.VALUE}}" required>
                                 <!-- <div class="mt-1">

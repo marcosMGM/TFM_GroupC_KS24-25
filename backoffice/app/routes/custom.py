@@ -20,8 +20,9 @@ def index():
 
 
 @custom_controller.route("/update", methods=["GET", "POST"])
+@custom_controller.route("/update/<parametro>", methods=["GET", "POST"])
 @login_required
-def update():    
+def update(parametro=None):
     if request.method == 'POST':
         for key in request.form:
             update_by_key(key.replace("name_",""), request.form[key])
@@ -30,6 +31,8 @@ def update():
 
     flash("Parámetros actualizados correctamente", "primary")
     # return "HOLA"
+    if parametro is not None and parametro == "dashboard":
+        return redirect(url_for('custom_controller.index', parametro=parametro))
     return redirect(url_for('custom_controller.index'))
 
 

@@ -27,13 +27,13 @@
                     <p>Descubre las mejores oportunidades de inversión personalizando tus filtros de búsqueda y encuentra las
                       propiedades que mejor se adaptan a tus objetivos.</p>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-4">
                     <div class="mb-3">
                       <label class="form-label">Que incluyan el siguiente texto</label>
                       <input name="ftr_text" type="text" class="form-control" placeholder="Introduzca un texto">
                     </div>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-4">
                     <div class="mb-3">
                       <label class="form-label">Distrito</label>
                       <select name="ftr_district" class="form-select">
@@ -41,6 +41,19 @@
                         {% for district in districts %}
                         <option value="{{ district.DISTRITO }}">{{ district.DISTRITO }}</option>
                         {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="mb-3">
+                      <label class="form-label">Rentabilidad</label>
+                      <select name="ftr_roi_group" class="form-select">
+                        <option value="" selected>Incluir todas</option>
+                        <option value="1">No Rentable</option>
+                        <option value="2">Baja</option>
+                        <option value="3">Media</option>
+                        <option value="4">Alta</option>
+                        <option value="5">Excelente</option>
                       </select>
                     </div>
                   </div>
@@ -107,7 +120,7 @@
                 <div class="col-6 mt-3">
                 
                   <div class="card card-body dashed-1-secondary">
-                    <p><strong>Leyenda de términos empleados:</strong></p>
+                    <p class="f-s-20"><strong>Glosario de términos empleados:</strong></p>
                     <ul>
                       <li><strong>EUR</strong>: Valor de adquisición en Euros de la vivienda.</li>
                       <li><strong>PTC</strong>: Coste total de la adquisición de la propiedad en Euros (Purchase Total Cost). Representa
@@ -117,10 +130,8 @@
                         rentabilidad estándar.</li>
                       <li><strong>ADR</strong>: Average Daily Rate o Tarifa Media Diaria.</li>
                       <li><strong>ARR</strong>: Annual Recurring Revenue o Ingresos Recurrentes Anuales. [ADR * 365 * EAO]</li>
-                      <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la
-                        operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota
-                        comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del
-                        FIXED_OPEX y VARIABLE OPEX anual estimado.</li>
+                      <li><strong>OPEX</strong>: Operational Expenditure o Gastos Operativos. Son los costes recurrentes asociados a la operación y mantenimiento de la propiedad, como suministros, limpieza, reparaciones, seguros, gestión, cuota comunitaria, comisión de comercialización y otros gastos necesarios para su funcionamiento. Suma en Euros del FIXED_OPEX y VARIABLE OPEX anual estimado.
+                      <li><strong>NP</strong>: Net Profit o Ganancia Neta Anual. Representa el beneficio neto anual obtenido tras restar los gastos operativos (OPEX) a los ingresos recurrentes anuales (ARR). [NP = ARR - FIXED_OPEX - VARIABLE_OPEX]</li>
                       <li><strong>ROI</strong>: Anual Return on Investment o Retorno de la Inversión Anual. [(ARR - OPEX) / PTC * 100]
                       </li>
                       <li><strong>PER</strong>: Price-to-Earnings Ratio o Ratio Precio/Beneficio. Muestra cuántos años de beneficios de
@@ -131,14 +142,17 @@
                 </div>
 
                 <div class="col-6 mt-3">
-                <p><strong>¿Cómo se clasifican las oportunidades?</strong></p>
+
+                  <div class="card card-body dashed-1-secondary bg-light-secondary">
+                <p class="f-s-20"><strong>¿Cómo se clasifican las oportunidades?</strong></p>
                 <ul>
-                  <li><strong>NO RENTABLE</strong>: Propiedades que no generan beneficios o tienen rentabilidad negativa.</li>
-                  <li><strong>BAJA</strong>: Rentabilidad inferior al 33% de las propiedades analizadas.</li>
-                  <li><strong>MEDIA</strong>: Rentabilidad entre el 33% y el 66% de las propiedades.</li>
-                  <li><strong>ALTA</strong>: Rentabilidad entre el 66% y el 90% de las propiedades.</li>
-                  <li><strong>EXCELENTE</strong>: Rentabilidad superior al 90% de las propiedades, es decir, las mejores oportunidades.</li>
+                  <li class="p-1"><strong><span class="bg-danger p-1">NO RENTABLE</span></strong>: Propiedades que no generan beneficios o tienen rentabilidad negativa. <span class="text-dark">ROI menor de 0%.</span></li>
+                  <li  class="p-1"><strong><span class="bg-dark p-1">BAJA</span></strong>: Rentabilidad inferior al 33% de las propiedades analizadas. <span class="text-dark">ROI entre 0% y {{ percentile_roi.P33}}%.</span></li>
+                  <li class="p-1"><strong><span class="bg-warning p-1">MEDIA</span></strong>: Rentabilidad entre el 33% y el 66% de las propiedades. <span class="text-dark">ROI entre {{ percentile_roi.P33}}% y {{ percentile_roi.P66}}%.</span></li>
+                  <li class="p-1"><strong><span class="bg-primary p-1">ALTA</span></strong>: Rentabilidad entre el 66% y el 90% de las propiedades. <span class="text-dark">ROI entre {{ percentile_roi.P66}}% y {{ percentile_roi.P90}}%.</span></li>
+                  <li class="p-1"><strong><span class="bg-success p-1">EXCELENTE</span></strong>: Rentabilidad superior al 90% de las propiedades, es decir, las mejores oportunidades.<span class="text-dark">ROI superior a {{ percentile_roi.P90}}%.</span></li>
                 </ul>
+                  </div>
                 </div>
                 </div>
             </div>
@@ -169,12 +183,13 @@
                               <th>ID</th>
                               <th>DISTRITO</th>
                               <th>TÍTULO</th>
-                              <th>SUP.</th>
+                              <!-- <th>SUP.</th> -->
                               <th>LINK</th>
                               <th>EUR</th>
                               <th>ADR</th>
                               <th>ARR</th>
                               <th>OPEX</th>
+                              <th>NP</th>
                               <th>ROI</th>
                               <th>PER</th>
                               <th>&nbsp;</th>
@@ -216,6 +231,7 @@
           // const form = document.forms['ftr_data_form'];
             d.ftr_text = form.querySelector('input[name="ftr_text"]').value;
             d.ftr_district = form.querySelector('select[name="ftr_district"]').value;
+            d.ftr_roi_group = form.querySelector('select[name="ftr_roi_group"]').value;
             d.ftr_buy_price_min = form.querySelector('input[name="ftr_buy_price_min"]').value;
             d.ftr_buy_price_max = form.querySelector('input[name="ftr_buy_price_max"]').value;
             d.ftr_min_roi = form.querySelector('input[name="ftr_min_roi"]').value;
@@ -228,11 +244,11 @@
         type: "POST"
       },
       columns: [
-        { data: 'id' },
+        { data: 'id', },
         { data: 'DISTRITO' },
         { data: 'title' },
 
-        { data: 'built_area' },
+        // { data: 'built_area' },
         { data: 'link',
           render: function (data, type, row) {
             return '<a type="button" class="btn btn-light-primary icon-btn b-r-4" href="' + data + '" target="_blank"><i class="ti ti-hand-click"></i></a>';
@@ -269,6 +285,19 @@
             let number = Number(data);
             if (isNaN(number)) return data;
             return number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+            }
+         },
+        { data: 'NP',
+            render: function (data, type, row) {
+            if (data == null) return '';
+            let number = Number(data);
+            if (isNaN(number)) return data;
+            if (number > 0) {
+              np_text_class='success'
+            } else {
+              np_text_class='danger'
+            }
+            return "<span class='text-"+np_text_class+"'>" +number.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €</span>';
             }
          },
         { data: 'ROI',

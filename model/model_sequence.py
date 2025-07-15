@@ -110,15 +110,16 @@ def get_predicts(df):
     untrusted = sio.get_untrusted_types(file=model_path)
     try:
         model = sio.load(model_path, trusted=untrusted)
-        print(model)
+        #print(model)
         data = df.drop(columns=['HOUSE_ID'])
         
         test_predictions = model.predict(data)
         predictions = pd.DataFrame({'Id': df['HOUSE_ID'], 'Predicted': test_predictions})
         #Update the BD with the predictions and marking them to processed to 2
         predictions_tuple = list(zip(predictions['Id'].tolist(), predictions['Predicted'].tolist()))
-        for a in predictions_tuple:
-            print(f"House_id:{a[0]} Predicted:{a[1]}")
+        for predict in predictions_tuple:
+            tfbd.update_predicted_price(predict[0],predict[1])
+            print(f"House_id:{predict[0]} Predicted:{predict[1]}")
     except Exception as e:
         print("❌ Error during model prediction:")
         print(type(e).__name__, e)

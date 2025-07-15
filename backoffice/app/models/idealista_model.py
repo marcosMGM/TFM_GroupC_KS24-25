@@ -10,11 +10,11 @@ def get_datalist(params, pagination=True):
 
     """ SELECT BLOCK """
     select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, 
-    DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, ROI, PER FROM HOUSES """
+    DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, NP, ROI, PER FROM HOUSES """
 
 
     """ FILTER BLOCK """
-    where = """ WHERE 1=1 AND DISTRITO <> 'Not defined' """
+    where = """ WHERE 1=1 AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 """
 
     if params.get('ftr_district'):
         where += f" AND DISTRITO = '{params['ftr_district']}'"
@@ -45,9 +45,26 @@ def get_datalist(params, pagination=True):
     max_per = params.get('ftr_max_per')
     try:
         if max_per is not None and max_per != '' and float(max_per):
-            where += f" AND PER <= {float(max_per)}"
+            where += f" AND (PER <= {float(max_per)} OR PER IS NULL)"
     except (ValueError, TypeError):
         print(f"Error al procesar el filtro de PER: {max_per}")
+  
+    roi_group = params.get('ftr_roi_group')
+    try:
+        if roi_group is not None and roi_group != '' and int(roi_group):
+            roi_groups = get_percentile_roi()
+            if roi_group == '1':
+                where += f" AND ROI <= 0"
+            elif roi_group == '2':
+                where += f" AND ROI > 0 AND ROI <= {roi_groups['P33']}"
+            elif roi_group == '3':
+                where += f" AND ROI > {roi_groups['P33']} AND ROI <= {roi_groups['P66']}"
+            elif roi_group == '4':
+                where += f" AND ROI > {roi_groups['P66']} AND ROI <= {roi_groups['P90']}"
+            elif roi_group == '5':
+                where += f" AND ROI > {roi_groups['P90']}"
+    except (ValueError, TypeError):
+        print(f"Error al procesar el filtro de ROI_GROUP: {roi_group}")
 
 
 
@@ -125,7 +142,7 @@ def get_datalist(params, pagination=True):
     # print(f"SELECT: {select + where + group + order + limit}")
     return {
         "draw": int(params.get('draw', 1)),
-        "recordsTotal": db.getcountfromquery(select + " WHERE 1=1 AND DISTRITO <> 'Not defined' "),
+        "recordsTotal": db.getcountfromquery(select + " WHERE 1=1 AND DISTRITO <> 'Not defined'  AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"),
         "recordsFiltered": db.getcountfromquery(select + where),
         # "data": result if result else [],
         "data": results,
@@ -140,25 +157,25 @@ def get_districts():
 
 def get_min_price():
     db = DatabaseInterface()
-    query = "SELECT MIN(PRICE) as min_price FROM HOUSES"
+    query = "SELECT MIN(PRICE) as min_price FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['min_price'] if result else 0
 
 def get_max_price():
     db = DatabaseInterface()
-    query = "SELECT MAX(PRICE) as max_price FROM HOUSES"
+    query = "SELECT MAX(PRICE) as max_price FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['max_price'] if result else 0
 
 def get_max_roi():
     db = DatabaseInterface()
-    query = "SELECT MAX(ROI) as max_roi FROM HOUSES"
+    query = "SELECT MAX(ROI) as max_roi FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['max_roi'] if result else 0
 
 def get_min_roi():
     db = DatabaseInterface()
-    query = "SELECT MIN(ROI) as min_roi FROM HOUSES"
+    query = "SELECT MIN(ROI) as min_roi FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['min_roi'] if result else 0
 
@@ -166,11 +183,11 @@ def get_percentile_roi():
     db = DatabaseInterface()
     query = """
     SELECT TOP 1
-        PERCENTILE_CONT(0.33) WITHIN GROUP (ORDER BY ROI) OVER () AS P33,
-        PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER () AS P66,
-        PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER () AS P90
+        ROUND(PERCENTILE_CONT(0.33) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P33,
+        ROUND(PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P66,
+        ROUND(PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P90
     FROM (
-        SELECT ROI FROM HOUSES WHERE ROI > 0
+        SELECT ROI FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND ROI > 0
     ) AS subquery;
     """
     result = db.getallfromquery(query)

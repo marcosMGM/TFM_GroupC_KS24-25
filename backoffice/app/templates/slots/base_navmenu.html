@@ -12,12 +12,24 @@
         <div class="app-nav" id="app-simple-bar">
           <ul class="main-nav p-0 mt-2">
             <li class="menu-title">
-              <span>DASHBOARD</span>
+              <span>INSIGHTS</span>
             </li>
             <li class="no-sub">
               <a class="" href="{{url_for('home_controller.index')}}">
-                <i class="ph-duotone  ph-house-line"></i>
-                Inicio
+                <i class="ph-fill  ph-chart-line-up"></i>
+                Smart Summary
+              </a>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('statistics_controller.index')}}">
+                <i class="ph-fill  ph-chart-donut"></i>
+                 Data Explorer 
+              </a>
+            </li>
+            <li class="no-sub">
+              <a class="" href="{{url_for('statistics_controller.roi_map')}}">
+                <i class="ph-fill  ph-map-pin-line"></i>
+                ROI Map
               </a>
             </li>
 <!-- 
@@ -35,7 +47,7 @@
             </li> -->
 
             <li class="menu-title">
-              <span>PROPIEDADES</span>
+              <span>INMUEBLES</span>
             </li>
             <li class="no-sub">
               <a class="" href="{{url_for('idealista_controller.index')}}">
