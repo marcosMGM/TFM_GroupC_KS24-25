@@ -7,30 +7,33 @@ custom_controller = Blueprint('custom_controller', __name__)
 
 @custom_controller.route("/")
 @custom_controller.route("/index")
+@custom_controller.route("/index/")
+@custom_controller.route("/index/<parametro>")
 @login_required
-def index():
-    g.page_title = "Inicio"
+def index(parametro=None):
+    g.page_title = "Personalización de ajustes y parámetros"
     g.bc_level_1 = ("Inicio", url_for('home_controller.index'))
     g.bc_level_2 = ("Personalizacion", url_for('custom_controller.index'))
-    
-    # g.bc_level_3 = ("Idealista", url_for('idealista_controller.index'))
-
-    return render_template("pages/custom/parameters.html", parameters = get_parameters())
+    if parametro != "dashboard":
+        parametro = None
+        
+    return render_template("pages/custom/parameters.html", parameters = get_parameters(), parametro=parametro)
 
 @custom_controller.route("/update", methods=["GET", "POST"])
-@custom_controller.route("/update/<parametro>", methods=["GET", "POST"])
 @login_required
-def update(parametro=None):
+def update():
     if request.method == 'POST':
         for key in request.form:
-            update_by_key(key.replace("name_",""), request.form[key])
+            if key != "retorno_dashboard":
+                update_by_key(key.replace("name_",""), request.form[key])
         recalculate_all()
-
     flash("Parámetros actualizados correctamente", "primary")
-    # return "HOLA"
-    if parametro is not None and parametro == "dashboard":
-        return redirect(url_for('custom_controller.index', parametro=parametro))
+    
+    if request.form.get("retorno_dashboard") == "1":
+        return redirect(url_for('home_controller.index'))
+    
     return redirect(url_for('custom_controller.index'))
+
 
 
 

@@ -20,7 +20,7 @@
               resultados aún más precisos y relevantes para ti. ¡Haz que la plataforma trabaje a tu medida!
             </p>
             <p>&nbsp;</p>
-            <p class="card-text"><button type="button" onclick="window.open('{{ url_for('custom_controller.index') }}')" class="btn btn-secondary d-lg-inline-flex align-items-center">
+            <p class="card-text"><button type="button" onclick="window.open('{{ url_for('custom_controller.index', parametro='dashboard') }}',location='_self')" class="btn btn-secondary d-lg-inline-flex align-items-center">
                 <i class="fa-solid fa-pencil-square fa-fw"></i> Personalizar</button></p>
           </div>
         </div>
@@ -103,11 +103,66 @@
 </div>
 <!-- FIN Franja superior con los ajustes de los cálculos -->
 
+<!-- Inicio franja de recomendación de oportunidades -->
+{%if oportunities %}
 <div class="row">
-  <div class="col-md-12">
-    <div class="h2">David, te recomendamos invertir en las siguientes oportunidades</div>
+  
+  <div class="col-md-12 mb-3">
+    <div class="h5">Hola <strong>{{profile_user_name}}</strong>, hoy te recomendamos invertir en las siguientes oportunidades</div>
+  </div>
+ 
+
+{% for oportunitie in oportunities %}
+<div class="col-2">
+  <div class="ribbon-box h-150 bg-dark-500 mb-3">
+    <div class="circle-ribbon circle-right ribbon-success">
+      {{ '{:.1f}'.format(oportunitie.ROI | float) }}%
+    </div>
+    <p>{{oportunitie.TITLE}}</p>
+    <p class="f-s-12">Compra en {{ '{:,.0f}'.format(oportunitie.PRICE | float).replace(',', '.') }} €</p>
+    <p class="f-s-12">Beneficios alquilando <strong></strong>{{ '{:,.0f}'.format(oportunitie.BED | float).replace(',', '.') }} días</strong>.</p>
+    <p class="f-fw-700">Ganancia Anual: <span class="text-success">{{ '{:,.0f}'.format(oportunitie.NP | float).replace(',', '.') }} €</span>.</p>
   </div>
 </div>
+
+{%endfor%}
+
+
+</div>
+ {%endif%}
+ <!-- Fin de franja de recomendaciones -->
+
+
+ 
+<!-- Inicio franja de recomendación de oportunidades mejorando el presupuesto -->
+{%if improvable_oportunities %}
+<div class="row">
+  
+  <div class="col-md-12 mb-3">
+    <div class="h5">Y además... mejorando tu presupuesto podrían interesarte las siguientes oportunidades</div>
+  </div>
+ 
+
+{% for improvable_oportunitie in improvable_oportunities %}
+<div class="col-2">
+  <div class="ribbon-box h-150 bg-light-500 mb-3">
+    <div class="circle-ribbon circle-right ribbon-success">
+      {{ '{:.1f}'.format(improvable_oportunitie.ROI | float) }}%
+    </div>
+    <p class="text-dark">{{improvable_oportunitie.TITLE}}</p>
+    <p class="f-s-12 text-dark">Compra en {{ '{:,.0f}'.format(improvable_oportunitie.PRICE | float).replace(',', '.') }} €</p>
+    <p class="f-s-12  text-dark">Beneficios alquilando <strong></strong>{{ '{:,.0f}'.format(improvable_oportunitie.BED | float).replace(',', '.') }} días</strong>.</p>
+    <p class="f-fw-700  text-dark">Ganancia Anual: <span class="text-success">{{ '{:,.0f}'.format(improvable_oportunitie.NP | float).replace(',', '.') }} €</span>.</p>
+  </div>
+</div>
+
+
+{%endfor%}
+
+
+</div>
+ {%endif%}
+ <!-- Fin de franja de recomendaciones mejorando el presupuesto -->
 
 
 

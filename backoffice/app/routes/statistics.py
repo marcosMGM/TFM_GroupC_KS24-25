@@ -14,8 +14,7 @@ def index():
     bars1 = get_pie_ide_by_bedrooms()
     print(bars1)
     sct1 = get_sct1()
-    map_markers = get_map_markers()
-    return render_template("pages/statistics/inicio.html", pie1=pie1, bars1=bars1, cards=cards, sct1=sct1, map_markers=map_markers)
+    return render_template("pages/statistics/inicio.html", pie1=pie1, bars1=bars1, cards=cards, sct1=sct1)
 
 @statistics_controller.route("/roi_map")
 @login_required

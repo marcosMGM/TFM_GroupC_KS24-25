@@ -34,6 +34,12 @@
                         {% endfor %}
 
                       <div class="col-12">
+                        {% if parametro %}
+                        <p>{{parametro}} </p>
+                        <input type="hidden" name="retorno_dashboard" value="1" />
+                        {% else %}
+                        {% endif %}
+
                         <button type="submit" value="Submit" class="btn btn-primary">Guardar Parámetros</button>
                       </div>
                     </form>
