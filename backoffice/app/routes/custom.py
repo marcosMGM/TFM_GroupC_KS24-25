@@ -17,8 +17,6 @@ def index():
 
     return render_template("pages/custom/parameters.html", parameters = get_parameters())
 
-
-
 @custom_controller.route("/update", methods=["GET", "POST"])
 @custom_controller.route("/update/<parametro>", methods=["GET", "POST"])
 @login_required
@@ -27,7 +25,6 @@ def update(parametro=None):
         for key in request.form:
             update_by_key(key.replace("name_",""), request.form[key])
         recalculate_all()
-
 
     flash("Parámetros actualizados correctamente", "primary")
     # return "HOLA"
