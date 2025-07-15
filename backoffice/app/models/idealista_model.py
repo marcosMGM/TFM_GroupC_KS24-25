@@ -10,7 +10,7 @@ def get_datalist(params, pagination=True):
 
     """ SELECT BLOCK """
     select = """SELECT HOUSE_ID as id, URL as link, TITLE as title, BUILT_AREA as built_area, PRICE as price, 
-    DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, NP, ROI, PER FROM HOUSES """
+    DISTRITO, PRICE_PER_NIGHT, ARR, (FIXED_OPEX + VARIABLE_OPEX) as OPEX, NP, ROI, PER, BED FROM HOUSES """
 
 
     """ FILTER BLOCK """
