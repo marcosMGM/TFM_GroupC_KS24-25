@@ -19,7 +19,7 @@ def index():
 @statistics_controller.route("/roi_map")
 @login_required
 def roi_map():
-    g.page_title = "Mapa de Rentabilidad de Inversión"
+    g.page_title = "Radar de Oportunidades"
     map_markers = get_map_markers()
     return render_template("pages/statistics/roi_map.html", map_markers=map_markers)
 
