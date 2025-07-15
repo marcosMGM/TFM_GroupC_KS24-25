@@ -65,7 +65,7 @@ def pre_model_sequence():
     df_rentas = tfmg.get_df_rentas()#pd.read_csv('../data_import/ayto_madrid/Datos_Rentas_Madrid_2022.csv',delimiter=";")
     df["renta_bin"] = df['DISTRITO'].apply(lambda x: tfmg.get_renta_bin(x, df_rentas))
     df["renta_bin"].value_counts()
-    df = df [['HOUSE_ID','DISTRITO','CALEFACCION', 'PISCINA', 'ASCENSOR', 'MOVILIDAD_REDUCIDA', 'TERRAZA',
+    df = df [['HOUSE_ID','DISTRITO','CALEFACCION', 'PISCINA', 'GARAJE','ASCENSOR', 'MOVILIDAD_REDUCIDA', 'TERRAZA',
            'BALCON', 'AIRE_ACOND','DISTANCE_TO_METRO',
            'DISTANCE_TO_CERCANIAS', 'DISTANCE_TO_EMT', 'DISTANCE_TO_INTERURBANOS',
            'DISTANCE_TO_MLO', 'bedrooms', 'bathrooms',
@@ -74,6 +74,7 @@ def pre_model_sequence():
     df.rename(columns={'ASCENSOR': 'ascensor',
         'DISTRITO': 'distrito',
         'PISCINA': 'piscina',
+        'GARAJE': 'garaje',
         'CALEFACCION':'calefaccion',
         'TERRAZA': 'terraza',
         'BALCON': 'balcon',
@@ -86,7 +87,7 @@ def pre_model_sequence():
         'DISTANCE_TO_MLO':'distance_to_mlo'},
         inplace = True)
 
-    order_columns = ['HOUSE_ID','bedrooms', 'bathrooms','ascensor', 'piscina',
+    order_columns = ['HOUSE_ID','bedrooms', 'bathrooms','ascensor', 'piscina','garaje',
        'terraza', 'balcon', 'distance_to_center', 'aire_acondicionado',
        'movilidad_reducida', 'calefaccion', 'distance_to_metro',
        'distance_to_cercanias', 'distance_to_emt', 'distance_to_interurbanos',
