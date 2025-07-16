@@ -5,75 +5,20 @@ from collections import defaultdict
 from app.models.idealista_model import get_percentile_roi
 from app.models.custom_model import get_parameters_by_key
 
-def get_home_cards():
+def get_home_kpi():
     db = DatabaseInterface()
-    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0")
-    card3 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND CONVERT(date, CREATED_DATE) = '{datetime.datetime.now().date()}'")
-    card4 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND CONVERT(date, UPDATED_DATE) = '{datetime.datetime.now().date()}'")
+    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0")
+
     card5 = db.getallfromquery("SELECT ISNULL(SUM(PRICE) / NULLIF(SUM(BUILT_AREA), 0), 0) AS precio_medio FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0;")
 
     return {
         'card1': card1,
-        'card2': 13871,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
-        'card3': card3,
-        'card4': card4,
+        'card2': 0,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
+        'card3': 0,
+        'card4': 0,
         'card5': round(float(card5[0].get('precio_medio', 0)),2),
     }
 
-def get_pie_ide_by_district():
-    db = DatabaseInterface()
-    sql = """
-        SELECT 
-        DISTRITO,
-        COUNT(HOUSE_ID) as propiedades
-        FROM HOUSES 
-        WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
-        GROUP BY DISTRITO
-        ORDER BY DISTRITO ASC
-    """
-    return db.getallfromquery(sql)
-
-def get_pie_ide_by_bedrooms():
-    db = DatabaseInterface()
-    sql = """
-        SELECT 
-        BEDROOMS as bedrooms,
-        COUNT(HOUSE_ID) as propiedades
-        FROM HOUSES 
-        WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
-        GROUP BY BEDROOMS
-        ORDER BY BEDROOMS ASC
-    """
-    return db.getallfromquery(sql)
-
-def get_sct1():
-    db = DatabaseInterface()
-    sql = """
-    SELECT 
-    CAST(BUILT_AREA AS FLOAT) AS x,
-    CAST(PRICE AS FLOAT) AS y,
-    '1' AS serie
-    FROM HOUSES
-    WHERE PRICE IS NOT NULL AND BUILT_AREA IS NOT NULL AND BUILT_AREA > 0 AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
-
-    UNION ALL
-
-    SELECT 
-    CAST(BEDROOMS AS FLOAT) AS x,
-    CAST(PRICE   AS FLOAT) AS y,
-    '2' AS serie
-    FROM HOUSES
-    WHERE 
-    1=1 AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 
-    -- price IS NOT NULL AND bedrooms IS NOT NULL;
-    """
-    data = db.getallfromquery(sql)
- 
-    grouped = defaultdict(list)
-    for item in data:
-        grouped[item['serie']].append([item['x'], item['y']])
-
-    return grouped
 
 def get_map_markers():
     db = DatabaseInterface()
