@@ -276,9 +276,10 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
     #Before scraping we have to get the number of total houses
     filter_met = filter_meters[num_process]
     text_filter_meter = f"con-metros-cuadrados-{filter_met[0]}-de_{filter_met[1]}"
+    text_filter_sin_inguilinos = f",sin-inquilinos"
     if len(filter_met) > 2:
         text_filter_meter += f",metros-cuadrados-{filter_met[2]}-de_{filter_met[3]}"
-    url = f"https://www.idealista.com/venta-viviendas/{zone}-provincia/{text_filter_meter}{text_filter_publicacion}/?ordenado-por=fecha-publicacion-desc"
+    url = f"https://www.idealista.com/venta-viviendas/{zone}-{zone}/{text_filter_meter}{text_filter_publicacion}{text_filter_sin_inguilinos}/?ordenado-por=fecha-publicacion-desc"
     response = session.get(url)
     response = await response
     if response.status_code != 200:
@@ -298,7 +299,7 @@ async def houseLinks(zone:str, num_process:int,db_data_houses:set, text_filter_p
             max_page = (59 if num_houses > 1800 else num_houses // 30)
             for page in range(1, max_page + 2):
                 text_page = f"pagina-{page}.htm"
-                url = f"https://www.idealista.com/venta-viviendas/{zone}-provincia/{text_filter_meter}{text_filter_publicacion}/{text_page}?ordenado-por=fecha-publicacion-desc"
+                url = f"https://www.idealista.com/venta-viviendas/{zone}-{zone}/{text_filter_meter}{text_filter_publicacion}{text_filter_sin_inguilinos}/{text_page}?ordenado-por=fecha-publicacion-desc"
                 response = session.get(url)
                 response = await response
                 if response.status_code != 200:
