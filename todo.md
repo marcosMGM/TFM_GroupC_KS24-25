@@ -28,7 +28,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
 | Home actual cambiar ruta a estadisticas.Gráfico de barras apiladas con la clasificación (de no rent a excel) por distrito                                 | David          | ⬜ Pendiente  |                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | En personalización, añadir una pequeña indicación sobre los valores por defecto en cada valor.                                  | David          | ✅ Completado  |                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Añadir un nuevo filtro para poder filtras según la clasificación de rentabilidad que ofrece cada inmueble                                  | David          | ✅ Completado  |                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| Si da tiempo, añadir un botón desde el filtrado para ver ese filtrado en el mapa                                  | David          | ⬜ Pendiente  |                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Si da tiempo, añadir un botón desde el filtrado para ver ese filtrado en el mapa                                  | David          | 🚩 Descartado  |                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ---
 
@@ -57,6 +57,7 @@ Lista de tareas colaborativas del equipo. Actualiza el estado y añade comentari
   - 🔄 En progreso
   - ✅ Completado
   - ⌛ OK con anotación
+  - 🚩 Descartado
 
 ---
 

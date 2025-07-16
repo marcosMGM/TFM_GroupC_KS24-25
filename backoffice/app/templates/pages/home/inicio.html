@@ -120,7 +120,7 @@
     </div>
     <p>{{oportunitie.TITLE}}</p>
     <p class="f-s-12">Compra en {{ '{:,.0f}'.format(oportunitie.PRICE | float).replace(',', '.') }} €</p>
-    <p class="f-s-12">Beneficios alquilando <strong></strong>{{ '{:,.0f}'.format(oportunitie.BED | float).replace(',', '.') }} días</strong>.</p>
+    <p class="f-s-12">Rentable a partir de <strong></strong>{{ '{:,.0f}'.format(oportunitie.BED | float).replace(',', '.') }} días</strong>.</p>
     <p class="f-fw-700">Ganancia Anual: <span class="text-success">{{ '{:,.0f}'.format(oportunitie.NP | float).replace(',', '.') }} €</span>.</p>
   </div>
 </div>
