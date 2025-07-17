@@ -13,7 +13,8 @@ statistics_controller = Blueprint('statistics_controller', __name__)
 def index():
     g.page_title = "Data Explorer"
     home_kpi = get_home_kpi()
-    return render_template("pages/statistics/index.html", kpi=home_kpi)
+    parameters = get_parameters_by_key()
+    return render_template("pages/statistics/index.html", kpi=home_kpi, parameters=parameters)
 
 @statistics_controller.route("/roi_map")
 @login_required

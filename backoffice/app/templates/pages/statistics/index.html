@@ -1,6 +1,12 @@
 {% extends "layouts/base.html" %}
 {% block content %}
 
+<!-- INFO INICIAL -->
+            <p>A continuación te mostramos algunos datos de interés calculados según tus preferencias. Puedes ver o modificar tus ajustes en <strong><a class="text-d-underline" href="#" data-bs-target="#box_1" data-bs-toggle="modal">pinchando aquí</a></strong>.</p>
+
+<!-- / INFO INICIAL -->
+
+
 <!-- CARDS -->
  <div class="row">
   <div class="col-md-12">
@@ -15,14 +21,14 @@
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
                   <i class="ph-fill  ph-house-line"></i>
                 </span>
-                <p class="mb-0 mt-2">Idealista</p>
+                <p class="mb-0 mt-2">Inmuebles en cartera</p>
                 <h4 class="text-white f-w-600">{{kpi.card1}}</h4>
               </div>
               <div class="project-status-card bg-light">
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                  <i class="ph-duotone  ph-house-line"></i>
+                  <i class="ph-fill  ph-house-line"></i>
                 </span>
-                <p class="mb-0 mt-2">AirBNB</p>
+                <p class="mb-0 mt-2">Coinciden con tus preferencias</p>
                 <h4 class="text-white f-w-600">{{kpi.card2}}</h4>
               </div>
               <div class="project-status-card bg-light">
@@ -38,6 +44,13 @@
                 </span>
                 <p class="mb-0 mt-2">Acualizadas hoy</p>
                 <h4 class="text-white f-w-600">{{kpi.card4}}</h4>
+              </div>
+              <div class="project-status-card bg-light">
+                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-currency-eur"></i>
+                </span>
+                <p class="mb-0 mt-2">Precio medio por metro</p>
+                <h4 class="f-w-600 text-white">{{kpi.card5}} €</h4>
               </div>
               <div class="project-status-card bg-light">
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
@@ -151,5 +164,37 @@ colors: ['#F9D249','#535AE7','#E5E3E0','#48443D'],
 
 
 </script>
+
+
+
+<!-- MODAL-start-->
+<div class="modal fade" id="box_1" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary ">
+        <h5 class="modal-title text-white" id="exampleModalToggleLabel4">Tus ajustes</h5>
+        <button type="button" class="btn-close m-0 fs-5" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Todos los datos expuestos han sido calculados conforme a los siguientes ajustes. Recuerda que puedes cambiarlos en cualquier momento pulsando en el botón personalizar.</p>
+        <ul>
+           
+          <li><i class="ti ti-coin-euro icon-bg"></i> Presupuesto máximo: <b>{{ '{:,.0f}'.format(parameters.MAX_INVESTMENT_BUDGET.VALUE | float).replace(',', '.') }} €</b></li>
+          <li><i class="ti ti-coins icon-bg"></i> Retorno garantizado: <b>{{ '{:,.0f}'.format(parameters.INITIAL_MIN_ROI_DISPLAY_THRESOLD.VALUE | float).replace(',', '.') }} %</b></li>
+          <li><i class="ti ti-building-warehouse icon-bg"></i> Ocupación anual: <b>{{ '{:,.0f}'.format(parameters.ESTIMATED_ANNUAL_OCCUPANCY.VALUE | float).replace(',', '.') }} %</b></li>
+          <li><i class="ti ti-file-spreadsheet icon-bg"></i> Gastos aplicables a la compra: <b>{{ '{:,.0f}'.format(parameters.PURCHASE_COST.VALUE | float).replace(',', '.') }} %</b></li>
+          <li><i class="ti ti-award icon-bg"></i> Gastos fijos: <b>{{ '{:,.0f}'.format(parameters.FIXED_OPEX.VALUE | float).replace(',', '.') }} %</b></li>
+          <li><i class="ti ti-bulb-filled icon-bg"></i> Gastos variables: <b>{{ '{:,.0f}'.format(parameters.VARIABLE_OPEX.VALUE | float).replace(',', '.') }} %</b></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+          onclick="window.open('{{ url_for('custom_controller.index') }}',location='_self')" class="btn btn-light-secondary">Personalizar</button>
+        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL-end-->
 
 {% endblock %}

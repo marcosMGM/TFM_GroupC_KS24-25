@@ -30,7 +30,7 @@ def get_oportunities():
             NP,
             BED
         FROM HOUSES
-        WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
+        WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
         AND ROI > 0 AND ROI >= {parameters.get("INITIAL_MIN_ROI_DISPLAY_THRESOLD",dict).get("VALUE",-999)}
          AND PRICE <= {parameters.get("MAX_INVESTMENT_BUDGET",dict).get("VALUE",0)}
         ORDER BY {order_by} DESC
@@ -63,7 +63,7 @@ def get_improvable_oportunities():
             NP,
             BED
         FROM HOUSES
-        WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
+        WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
         AND ROI > 0 AND ROI >= {parameters.get("INITIAL_MIN_ROI_DISPLAY_THRESOLD",dict).get("VALUE",-999)}
          AND PRICE >= {parameters.get("MAX_INVESTMENT_BUDGET",dict).get("VALUE",0)} 
         ORDER BY {order_by} DESC
