@@ -7,17 +7,57 @@ from app.models.custom_model import get_parameters_by_key
 
 def get_home_kpi():
     db = DatabaseInterface()
-    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0")
+    parameters = get_parameters_by_key()
+    group_roi = get_percentile_roi() # dict con keys P33, P66, P90
 
-    card5 = db.getallfromquery("SELECT ISNULL(SUM(PRICE) / NULLIF(SUM(BUILT_AREA), 0), 0) AS precio_medio FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0;")
+    card1 = db.getcountfromquery("SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0")
+    card2 = db.getcountfromquery(f"SELECT HOUSE_ID FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND PRICE <= {parameters.get('MAX_INVESTMENT_BUDGET', dict).get('VALUE', 0)} AND ROI >= {parameters.get('INITIAL_MIN_ROI_DISPLAY_THRESOLD', dict).get('VALUE', -999)}")
+
+    card5 = db.getallfromquery("SELECT ISNULL(SUM(PRICE) / NULLIF(SUM(BUILT_AREA), 0), 0) AS precio_medio FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0;")
 
     return {
         'card1': card1,
-        'card2': 0,  ### Lo pongo a cholón porque no tenemos aún tabla de AIRBNB, está en CSV
+        'card2': card2, 
         'card3': 0,
         'card4': 0,
         'card5': round(float(card5[0].get('precio_medio', 0)),2),
     }
+
+
+def get_houses_by_distrito():
+    db = DatabaseInterface()
+    parameters = get_parameters_by_key()
+    group_roi = get_percentile_roi() # dict con keys P33, P66,
+    sql = f"""
+    SELECT 
+    DISTRITO,
+    CASE 
+            WHEN ROI <= 0 THEN 'No Rentable'
+            WHEN ROI > 0 AND ROI <= {group_roi.get('P33')} THEN 'Baja'
+            WHEN ROI > {group_roi.get('P33')} AND ROI <= {group_roi.get('P66')} THEN 'Media'
+            WHEN ROI > {group_roi.get('P66')} AND ROI <= {group_roi.get('P90')} THEN 'Alta'
+            WHEN ROI > {group_roi.get('P90')} THEN 'Excelente'
+    END AS ROI_GROUP,
+    COUNT(HOUSE_ID) AS PROPIEDADES
+
+
+    FROM HOUSES 
+
+
+    WHERE 
+    DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND ROI IS NOT NULL
+    AND PRICE <= {parameters.get('MAX_INVESTMENT_BUDGET', dict).get('VALUE', 0)} AND ROI >= {parameters.get('INITIAL_MIN_ROI_DISPLAY_THRESOLD', dict).get('VALUE', -999)}
+
+    GROUP BY DISTRITO, CASE 
+            WHEN ROI <= 0 THEN 'No Rentable'
+            WHEN ROI > 0 AND ROI <= {group_roi.get('P33')} THEN 'Baja'
+            WHEN ROI > {group_roi.get('P33')} AND ROI <= {group_roi.get('P66')} THEN 'Media'
+            WHEN ROI > {group_roi.get('P66')} AND ROI <= {group_roi.get('P90')} THEN 'Alta'
+            WHEN ROI > {group_roi.get('P90')} THEN 'Excelente'
+    END
+    ORDER BY DISTRITO ASC;"""
+    data = db.getallfromquery(sql)
+    return data
 
 
 def get_map_markers():
@@ -54,7 +94,7 @@ def get_map_markers():
         END AS ROI_COLOR
 
     FROM HOUSES
-    WHERE LATITUDE IS NOT NULL AND LONGITUDE IS NOT NULL AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
+    WHERE LATITUDE IS NOT NULL AND LONGITUDE IS NOT NULL AND DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0
     AND ROI >= {parameters.get("INITIAL_MIN_ROI_DISPLAY_THRESOLD", dict).get("VALUE", -999)}
     AND PRICE <= {parameters.get("MAX_INVESTMENT_BUDGET", dict).get("VALUE", 0)}
     

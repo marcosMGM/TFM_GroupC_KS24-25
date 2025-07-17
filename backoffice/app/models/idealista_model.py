@@ -14,7 +14,7 @@ def get_datalist(params, pagination=True):
 
 
     """ FILTER BLOCK """
-    where = """ WHERE 1=1 AND DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 """
+    where = """ WHERE 1=1 AND DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 """
 
     if params.get('ftr_district'):
         where += f" AND DISTRITO = '{params['ftr_district']}'"
@@ -142,7 +142,7 @@ def get_datalist(params, pagination=True):
     # print(f"SELECT: {select + where + group + order + limit}")
     return {
         "draw": int(params.get('draw', 1)),
-        "recordsTotal": db.getcountfromquery(select + " WHERE 1=1 AND DISTRITO <> 'Not defined'  AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"),
+        "recordsTotal": db.getcountfromquery(select + " WHERE 1=1 AND DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"),
         "recordsFiltered": db.getcountfromquery(select + where),
         # "data": result if result else [],
         "data": results,
@@ -151,31 +151,31 @@ def get_datalist(params, pagination=True):
 
 def get_districts():
     db = DatabaseInterface()
-    query = "SELECT DISTINCT DISTRITO FROM HOUSES WHERE DISTRITO <> 'Not defined' ORDER BY DISTRITO"
+    query = "SELECT DISTINCT DISTRITO FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 ORDER BY DISTRITO"
     return db.getallfromquery(query)
 
 
 def get_min_price():
     db = DatabaseInterface()
-    query = "SELECT MIN(PRICE) as min_price FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
+    query = "SELECT MIN(PRICE) as min_price FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['min_price'] if result else 0
 
 def get_max_price():
     db = DatabaseInterface()
-    query = "SELECT MAX(PRICE) as max_price FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
+    query = "SELECT MAX(PRICE) as max_price FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['max_price'] if result else 0
 
 def get_max_roi():
     db = DatabaseInterface()
-    query = "SELECT MAX(ROI) as max_roi FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
+    query = "SELECT MAX(ROI) as max_roi FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['max_roi'] if result else 0
 
 def get_min_roi():
     db = DatabaseInterface()
-    query = "SELECT MIN(ROI) as min_roi FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
+    query = "SELECT MIN(ROI) as min_roi FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0"
     result = db.getallfromquery(query)
     return result[0]['min_roi'] if result else 0
 
@@ -187,7 +187,7 @@ def get_percentile_roi():
         ROUND(PERCENTILE_CONT(0.66) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P66,
         ROUND(PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY ROI) OVER (), 2) AS P90
     FROM (
-        SELECT ROI FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND ROI > 0
+        SELECT ROI FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED=2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0 AND ROI > 0
     ) AS subquery;
     """
     result = db.getallfromquery(query)

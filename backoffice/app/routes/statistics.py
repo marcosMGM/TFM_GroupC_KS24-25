@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash, g
 from matplotlib import markers
 from app.utils.decorators import login_required
-from app.models.statistics_model import  get_home_kpi, get_map_markers
+from app.models.statistics_model import  get_home_kpi, get_map_markers, get_houses_by_distrito
 from app.models.custom_model import get_parameters_by_key
 
 statistics_controller = Blueprint('statistics_controller', __name__)
@@ -13,7 +13,11 @@ statistics_controller = Blueprint('statistics_controller', __name__)
 def index():
     g.page_title = "Data Explorer"
     home_kpi = get_home_kpi()
-    return render_template("pages/statistics/index.html", kpi=home_kpi)
+    parameters = get_parameters_by_key()
+    houses_by_distrito = get_houses_by_distrito()
+    print(f"Casas: {houses_by_distrito}")
+
+    return render_template("pages/statistics/index.html", kpi=home_kpi, parameters=parameters)
 
 @statistics_controller.route("/roi_map")
 @login_required
