@@ -15,9 +15,9 @@ def index():
     home_kpi = get_home_kpi()
     parameters = get_parameters_by_key()
     houses_by_distrito = get_houses_by_distrito()
-    print(f"Casas: {houses_by_distrito}")
+    # print(f"Casas: {houses_by_distrito}")
 
-    return render_template("pages/statistics/index.html", kpi=home_kpi, parameters=parameters)
+    return render_template("pages/statistics/index.html", kpi=home_kpi, parameters=parameters , houses_by_distrito=houses_by_distrito)
 
 @statistics_controller.route("/roi_map")
 @login_required

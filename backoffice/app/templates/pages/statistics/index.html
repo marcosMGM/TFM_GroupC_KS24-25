@@ -7,82 +7,161 @@
 <!-- / INFO INICIAL -->
 
 
-<!-- CARDS -->
+<!-- CARDS GLOBAL -->
  <div class="row">
   <div class="col-md-12">
     <div class="card equal-card">
       <div class="card-body">
+        <!-- global -->
         <div class="row">
           <div class="col-sm-12">
-            <h5 class="header-title-text">Resumen del inventario de propiedades</h5>
+            <h5 class="header-title-text">Resumen del inventario global de propiedades</h5>
 
             <div class="project-status-box">
+
               <div class="project-status-card bg-light">
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
                   <i class="ph-fill  ph-house-line"></i>
                 </span>
                 <p class="mb-0 mt-2">Inmuebles en cartera</p>
-                <h4 class="text-white f-w-600">{{kpi.card1}}</h4>
+                <h4 class="text-white f-w-600">{{ '{:,.0f}'.format(kpi.card01 | float).replace(',', '.') }}</h4>
               </div>
+
               <div class="project-status-card bg-light">
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                  <i class="ph-fill  ph-house-line"></i>
+                  <i class="ph-fill  ph-align-center-horizontal"></i>
                 </span>
-                <p class="mb-0 mt-2">Coinciden con tus preferencias</p>
-                <h4 class="text-white f-w-600">{{kpi.card2}}</h4>
+                <p class="mb-0 mt-2">Repartidas en distritos</p>
+                <h4 class="text-white f-w-600">{{ '{:,.0f}'.format(kpi.card02 | float).replace(',', '.') }}</h4>
               </div>
-              <div class="project-status-card bg-light">
-                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                  <i class="ph-fill  ph-circles-three-plus"></i>
-                </span>
-                <p class="mb-0 mt-2">Añadidas hoy</p>
-                <h4 class="text-white f-w-600">{{kpi.card3}}</h4>
-              </div>
-              <div class="project-status-card bg-light">
-                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                  <i class="ph-fill  ph-key-return"></i>
-                </span>
-                <p class="mb-0 mt-2">Acualizadas hoy</p>
-                <h4 class="text-white f-w-600">{{kpi.card4}}</h4>
-              </div>
+    
               <div class="project-status-card bg-light">
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
                   <i class="ph-fill  ph-currency-eur"></i>
                 </span>
-                <p class="mb-0 mt-2">Precio medio por metro</p>
-                <h4 class="f-w-600 text-white">{{kpi.card5}} €</h4>
+                <p class="mb-0 mt-2">Precio medio</p>
+                <h4 class="text-white f-w-600">{{ '{:,.2f}'.format(kpi.card03 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }}€</h4>
               </div>
+
               <div class="project-status-card bg-light">
                 <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
-                  <i class="ph-fill  ph-currency-eur"></i>
+                  <i class="ph-bold  ph-hand-coins"></i>
                 </span>
-                <p class="mb-0 mt-2">Precio medio por metro</p>
-                <h4 class="f-w-600 text-white">{{kpi.card5}} €</h4>
+                <p class="mb-0 mt-2">Inmuebles rentables</p>
+                <h4 class="f-w-600 text-white">{{ '{:,.2f}'.format(kpi.card04 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }} %</h4>
               </div>
+
+
+              <div class="project-status-card bg-light">
+                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-arrow-circle-up-right"></i>
+                </span>
+                <p class="mb-0 mt-2">Retorno Anual medio</p>
+                <h4 class="f-w-600 text-white">{{ '{:,.2f}'.format(kpi.card05 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }} %</h4>
+              </div>
+
+              <div class="project-status-card bg-light">
+                <span class="bg-light-dark h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-bold  ph-arrows-clockwise"></i>
+                </span>
+                <p class="mb-0 mt-2">Ganancia anual media</p>
+                <h4 class="text-white f-w-600">{{ '{:,.2f}'.format(kpi.card06 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }}€</h4>
+              </div>
+
             </div>
 
 
           </div>
 
         </div>
+        <!-- / global -->
+        <!-- custom -->
+        <div class="row mt-3">
+          <div class="col-sm-12">
+            <h5 class="header-title-text">Resumen personalizado del inventario de acuerdo a tus preferencias y ajustes</h5>
+
+            <div class="project-status-box">
+
+              <div class="project-status-card bg-light-primary">
+                <span class="bg-primary h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-house-line"></i>
+                </span>
+                <p class="mb-0 mt-2">Inmuebles en cartera</p>
+                <h4 class="text-primary f-w-600">{{ '{:,.0f}'.format(kpi.card11 | float).replace(',', '.') }}</h4>
+              </div>
+
+              <div class="project-status-card bg-light-primary">
+                <span class="bg-primary h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-align-center-horizontal"></i>
+                </span>
+                <p class="mb-0 mt-2">Repartidas en distritos</p>
+                <h4 class="text-primary f-w-600">{{ '{:,.0f}'.format(kpi.card12 | float).replace(',', '.') }}</h4>
+              </div>
+
+              <div class="project-status-card bg-light-primary">
+                <span class="bg-primary h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-currency-eur"></i>
+                </span>
+                <p class="mb-0 mt-2">Precio medio</p>
+                <h4 class="text-primary f-w-600">{{ '{:,.2f}'.format(kpi.card13 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }}€</h4>
+              </div>
+
+              <div class="project-status-card bg-light-primary">
+                <span class="bg-primary h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-bold  ph-hand-coins"></i>
+                </span>
+                <p class="mb-0 mt-2">Inmuebles rentables</p>
+                <h4 class="f-w-600 text-primary">{{ '{:,.2f}'.format(kpi.card14 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }} %</h4>
+              </div>
+
+
+              <div class="project-status-card bg-light-primary">
+                <span class="bg-primary h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-fill  ph-arrow-circle-up-right"></i>
+                </span>
+                <p class="mb-0 mt-2">Retorno Anual medio</p>
+                <h4 class="f-w-600 text-primary">{{ '{:,.2f}'.format(kpi.card15 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }} %</h4>
+              </div>
+
+              <div class="project-status-card bg-light-primary">
+                <span class="bg-primary h-45 w-45 d-flex-center b-r-50">
+                  <i class="ph-bold  ph-arrows-clockwise"></i>
+                </span>
+                <p class="mb-0 mt-2">Ganancia anual media</p>
+                <h4 class="text-primary f-w-600">{{ '{:,.2f}'.format(kpi.card16 | float).replace(',', 'X').replace('.', ',').replace('X', '.') }}€</h4>
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+        <!-- / custom -->
       </div>
     </div>
   </div>
 </div>
-<!-- / CARDS -->
+<!-- / CARDS GLOBAL -->
 
-<!-- Stacked Column Chart start -->
-<div class="col-lg-6">
+
+
+
+
+<!-- Barras apiladas por distritos -->
+<div class="row">
+  <div class="col-lg-12">
     <div class="card">
-        <div class="card-header">
-            <h5>Stacked Column Chart</h5>
-        </div>
-        <div class="card-body">
-            <div id="column3"></div>
-        </div>
+      <div class="card-header">
+        <h5>Rentabilidad de los inmuebles por distrito</h5>
+      </div>
+      <div class="card-body">
+        <div id="column3"></div>
+      </div>
     </div>
+  </div>
 </div>
-<!-- Stacked Column Chart end -->
+<!-- / Barras apiladas por distritos -->
 
 <div class="row">
 
@@ -90,40 +169,22 @@
 
 
 <script>
-//  **------column_chart 3**
+  const chartData = {{ houses_by_distrito | safe }};
+</script>
+<script>
 var options = {
-    series: [{
-    name: 'PRODUCT A',
-    data: [44, 55, 41, 67, 22, 43]
-  }, {
-    name: 'PRODUCT B',
-    data: [13, 23, 20, 8, 13, 27]
-  }, {
-    name: 'PRODUCT C',
-    data: [11, 17, 15, 15, 21, 14]
-  }, {
-    name: 'PRODUCT D',
-    data: [21, 7, 25, 13, 22, 8]
-  }],
-    chart: {
+  series: chartData.series,
+  chart: {
     type: 'bar',
     height: 350,
     stacked: true,
-    toolbar: {
-      show: true
-    },
-    zoom: {
-      enabled: true
-    }
+    toolbar: { show: true },
+    zoom: { enabled: true }
   },
   responsive: [{
     breakpoint: 480,
     options: {
-      legend: {
-        position: 'bottom',
-        offsetX: -10,
-        offsetY: 0
-      }
+      legend: { position: 'bottom', offsetX: -10, offsetY: 0 }
     }
   }],
   plotOptions: {
@@ -133,37 +194,23 @@ var options = {
       dataLabels: {
         total: {
           enabled: true,
-          style: {
-            fontSize: '13px',
-            fontWeight: 900
-          }
+          style: { fontSize: '13px', fontWeight: 900 }
         }
       }
-    },
+    }
   },
-  xaxis: {
-    type: 'datetime',
-    categories: ['01/01/2011 GMT', '01/02/2011 GMT', '01/03/2011 GMT', '01/04/2011 GMT',
-      '01/05/2011 GMT', '01/06/2011 GMT'
-    ],
-  },
-  legend: {
-    position: 'right',
-    offsetY: 40
-  },
-  fill: {
-    opacity: 1
-  },
- 
-colors: ['#F9D249','#535AE7','#E5E3E0','#48443D'],
-  };
+  xaxis: { categories: chartData.categories },
+  legend: { position: 'right', offsetY: 40 },
+  fill: { opacity: 1 },
+  colors: chartData.colors
+};
 
-  var chart = new ApexCharts(document.querySelector("#column3"), options);
-  chart.render();
-
-
-
+var chart = new ApexCharts(document.querySelector("#column3"), options);
+chart.render();
 </script>
+
+
+
 
 
 
