@@ -78,7 +78,7 @@
         <!-- custom -->
         <div class="row mt-3">
           <div class="col-sm-12">
-            <h5 class="header-title-text">Resumen personalizado del inventario de acuerdo a tus preferencias y ajustes</h5>
+            <h5 class="header-title-text">Resumen personalizado del inventario <span class="f-fs-italic">(de acuerdo a tus preferencias y ajustes)</span></h5>
 
             <div class="project-status-box">
 
@@ -153,7 +153,7 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <h5>Rentabilidad de los inmuebles por distrito</h5>
+        <h5>Rentabilidad de los inmuebles por distrito <span class="f-fs-italic">(de acuerdo a tus preferencias y ajustes)</span></h5>
       </div>
       <div class="card-body">
         <div id="column3"></div>
@@ -162,12 +162,22 @@
   </div>
 </div>
 <!-- / Barras apiladas por distritos -->
-
 <div class="row">
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>Dispersión de Rentabilidad según el Precio de Compra <span class="f-fs-italic">(de acuerdo a tus preferencias y ajustes)</span></h5>
+      </div>
+      <div class="card-body">
+        <div id="scatter1"></div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
-
+<!-- grafico de barras apiladas -->
 <script>
   const chartData = {{ houses_by_distrito | safe }};
 </script>
@@ -208,9 +218,48 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#column3"), options);
 chart.render();
 </script>
+<!-- / grafico de barras apiladas -->
 
 
+<!-- scatter plot -->
+<script>  
+ const scatter_series = {{ scatter_data | safe }};
 
+    const scatter_options = {
+    series: scatter_series,
+      chart: {
+        height: 500,
+        type: 'scatter',
+        zoom: { enabled: true, type: 'xy' }
+      },
+      // No definimos colors[]: cada punto usa su propio `fillColor`
+      markers: { size: 6 },
+      xaxis: {
+        title: { text: 'Precio de compra (€)' },
+        tickAmount: 10,
+        labels: {
+          formatter: v => Intl.NumberFormat("es-ES",
+                          { notation: "compact", maximumFractionDigits: 1 }).format(v)
+        }
+      },
+      yaxis: {
+        title: { text: 'Rentabilidad (%)' },
+        tickAmount: 8,
+        labels: { formatter: v => v.toFixed(1) + '%' }
+      },
+      tooltip: {
+        x: { formatter: v => '€ ' + v.toLocaleString('es-ES') },
+        y: { formatter: v => v.toFixed(2) + ' %' }
+      }
+    };
+
+    new ApexCharts(document.querySelector("#scatter1"), scatter_options).render();
+
+  
+</script>
+
+
+<!-- / scatter plot -->
 
 
 

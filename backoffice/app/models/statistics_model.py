@@ -5,6 +5,7 @@ from collections import defaultdict
 from app.models.idealista_model import get_percentile_roi
 from app.models.custom_model import get_parameters_by_key
 import json
+from decimal import Decimal
 
 
 def get_home_kpi():
@@ -127,6 +128,43 @@ def get_houses_by_distrito():
 
     chart_data_json = json.dumps(chart_dict, ensure_ascii=False)
     return chart_data_json
+
+def num(v):                            # convierte Decimal → float
+    return float(v) if isinstance(v, Decimal) else v
+
+def get_home_scatter():
+    db = DatabaseInterface()
+    parameters = get_parameters_by_key()
+    group_roi = get_percentile_roi()  # dict con keys P33, P66, P90
+    sql = f"""
+    SELECT DISTRITO, PRICE, PRICE_PER_NIGHT, ROI, NP, 
+    CASE 
+            WHEN ROI <= 0 THEN 'No Rentable'
+            WHEN ROI > 0 AND ROI <= {group_roi.get('P33')} THEN 'Baja'
+            WHEN ROI > {group_roi.get('P33')} AND ROI <= {group_roi.get('P66')} THEN 'Media'
+            WHEN ROI > {group_roi.get('P66')} AND ROI <= {group_roi.get('P90')} THEN 'Alta'
+            WHEN ROI > {group_roi.get('P90')} THEN 'Excelente'
+    END AS ROI_GROUP,
+    CASE 
+            WHEN ROI <= 0 THEN '#FF5E40'
+            WHEN ROI > 0 AND ROI <= {group_roi.get('P33')} THEN '#48443D'
+            WHEN ROI > {group_roi.get('P33')} AND ROI <= {group_roi.get('P66')} THEN '#EBC33F'
+            WHEN ROI > {group_roi.get('P66')} AND ROI <= {group_roi.get('P90')} THEN '#4FC9DA'
+            WHEN ROI > {group_roi.get('P90')} THEN '#AECC34'
+    END AS ROI_COLOR
+      FROM HOUSES WHERE DISTRITO <> 'Not defined' AND PROCESSED = 2 AND PRICE_PER_NIGHT IS NOT NULL AND PRICE_PER_NIGHT > 0   AND PRICE <= {parameters.get('MAX_INVESTMENT_BUDGET', dict).get('VALUE', 0)} AND ROI >= {parameters.get('INITIAL_MIN_ROI_DISPLAY_THRESOLD', dict).get('VALUE', -999)};
+    """
+    rows = db.getallfromquery(sql)
+    # data = [[float(r["PRICE"]), float(r["ROI"])] for r in rows]
+    data = [{
+        "x": num(r["PRICE"]),
+        "y": num(r["ROI"]),
+        "fillColor": r["ROI_COLOR"] or "#48BECE"   # fallback si viniera nulo
+    } for r in rows]
+
+    series_json = json.dumps([{"name": "Viviendas", "data": data}])
+    return series_json
+
 
 
 def get_map_markers():
