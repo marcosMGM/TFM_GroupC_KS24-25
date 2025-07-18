@@ -28,6 +28,15 @@ def get_all_houses():
         cursor = conn.cursor()
         cursor.execute(query)
         return cursor.fetchall()
+
+def get_all_houses_for_meters_model():
+    query = "SELECT HOUSE_ID,TITLE,PRICE,ADDRESS1,ADDRESS2,CITY,ENERGY_CONSUME,ENERGY_EMISSION,PLANTA,SUPERFICIE,HABITACIONES,BANOS,GARAJE,ESTADO, \
+        ARMARIOS_EMPOTRADOS,ANO,CALEFACCION,PISCINA,JARDIN,UPDATE_DATE,URL,ZONA,MORE_INFO,ASCENSOR,MOVILIDAD_REDUCIDA,TRASTERO,TERRAZA,BALCON,AIRE_ACOND, \
+            ORIENTACION,LATITUDE,LONGITUDE,CREATED_DATE,UPDATED_DATE,DISTRITO FROM HOUSES"
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchall()
     
 
 def get_all_houses_id():
