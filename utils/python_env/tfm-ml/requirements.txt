@@ -130,3 +130,8 @@ websocket-client==1.8.0
 widgetsnbextension==4.0.14
 xgboost==2.1.4
 zipp==3.21.0
+undetected-chromedriver==3.5.5
+selenium==4.33.0
+pydantic=2.10.3
+pydantic-core=2.27.1
+pymssql=2.3.2
