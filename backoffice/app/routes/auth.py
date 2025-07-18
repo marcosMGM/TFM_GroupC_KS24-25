@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, g
 from app.utils.decorators import login_required
 from app.models.auth_model import get_user_by_login, update_last_access, update_password
+from app.models.custom_model import recalculate_all
 from werkzeug.security import check_password_hash
 
 auth_controller = Blueprint('auth_controller', __name__)
@@ -20,6 +21,12 @@ def login():
             session['user_mail'] = user.email
             session['user_id'] = user.id
             update_last_access(user.id)
+
+            """Dado que el recálculo de parámetros tarda poco, lo hacemos en cada login
+            de esta forma cancelamos el riesgo de que se hayan quedado viviendas con 
+            campos incorrectos por nuevos scrapping o actualizaciones de la tabla."""
+            recalculate_all()
+
             return redirect(url_for('home_controller.index'))
 
         flash("Credenciales inválidas o usuario inactivo", "danger")

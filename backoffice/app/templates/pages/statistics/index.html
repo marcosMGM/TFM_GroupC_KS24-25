@@ -146,26 +146,30 @@
 
 <!-- barras según rentabilidad general y XXXX -->
 <div class="row">
-  <div class="col-lg-6">
-    <div class="card">
+
+
+  <div class="col-sm-6  d-flex align-items-stretch">
+    <div class="card w-100">
       <div class="card-header">
-        <h5 class="text-danger">TO DO: TARTA CON COMPOSICIÓN SEGÚN RENTABILIDAD</h5>
+        <h5>Composición según retorno de tus inmuebles objetivo</h5>
       </div>
       <div class="card-body">
-        <div id="column11"></div>
+        <div id="composition_by_roi_div"></div>
       </div>
     </div>
   </div>
-  <div class="col-lg-6">
-    <div class="card">
+
+  <div class="col-sm-6  d-flex align-items-stretch">
+    <div class="card w-100">
       <div class="card-header">
-        <h5 class="text-danger">TO DO: TARTA O BARRAS CON COMPOSICIÓN POR DISTRITO.</h5>
+        <h5>Comparativa multivariable de rentabilidad por distrito</h5>
       </div>
       <div class="card-body">
-        <div id="column11"></div>
+        <div id="radar2"></div>
       </div>
     </div>
   </div>
+
 
 
 
@@ -179,7 +183,7 @@
 
 <!-- Barras apiladas por distritos -->
 <div class="row">
-  <div class="col-lg-12">
+  <div class="col-sm-12">
     <div class="card">
       <div class="card-header">
         <h5>Rentabilidad de los inmuebles por distrito <span class="f-fs-italic">(de acuerdo a tus preferencias y ajustes)</span></h5>
@@ -191,6 +195,8 @@
   </div>
 </div>
 <!-- / Barras apiladas por distritos -->
+
+<!-- Dispersión de Rentabilidad -->
 <div class="row">
 
   <div class="col-12">
@@ -205,6 +211,28 @@
   </div>
 
 </div>
+<!-- / Dispersión de Rentabilidad -->
+
+<!-- Dispersión de Ganancias anuales -->
+<div class="row">
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>Dispersión de Ganancias anuales según el Precio de Compra y la estimación de ocupación anual <span class="f-fs-italic">(de acuerdo a tus preferencias y ajustes)</span></h5>
+      </div>
+      <div class="card-body">
+        <div id="scatter2"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- / Dispersión de Ganancias anuales -->
+
+
+
+
 
 <!-- grafico de barras apiladas -->
 <script>
@@ -286,15 +314,113 @@ chart.render();
 
   
 </script>
-
-
 <!-- / scatter plot -->
 
+<!-- scatter_2 plot -->
+<script>  
+ const scatter_2_series = {{ scatter_2_data | safe }};
 
-<!-- barras según rentabilidad general y XXXX -->
-<script></script>
+    const scatter_2_options = {
+    series: scatter_2_series,
+      chart: {
+        height: 500,
+        type: 'scatter',
+        zoom: { enabled: true, type: 'xy' }
+      },
+      // No definimos colors[]: cada punto usa su propio `fillColor`
+      markers: { size: 6 },
+      xaxis: {
+        title: { text: 'Precio de compra (€)' },
+        tickAmount: 10,
+        labels: {
+          formatter: v => Intl.NumberFormat("es-ES",
+                          { notation: "compact", maximumFractionDigits: 1 }).format(v)
+        }
+      },
+      yaxis: {
+        title: { text: 'Ganancias Anuales Netas (Eur)' },
+        tickAmount: 8,
+        labels: { formatter: v => v.toFixed(1) + '€' }
+      },
+      tooltip: {
+        x: { formatter: v => '€ ' + v.toLocaleString('es-ES') },
+        y: { formatter: v => v.toFixed(2) + ' €' }
+      }
+    };
 
-<!-- / barras según rentabilidad general y XXXX -->
+    new ApexCharts(document.querySelector("#scatter2"), scatter_2_options).render();
+
+  
+</script>
+<!-- / scatter_2 plot -->
+
+
+<!-- donut según rentabilidad general -->
+<script>
+  var donut_roi_options = {
+    series: {{ donut_data.values_json | safe }},
+    labels: {{ donut_data.labels_json | safe }},
+    chart: {
+        type: 'donut',
+        height: 350,
+    },
+    legend: {
+      position: 'bottom'
+    },
+    colors: {{ donut_data.colors_json | safe }},
+    responsive: [{
+      breakpoint: 1366,
+      options: {
+          chart: {
+              height: 350
+          },
+          legend: {
+            show: false
+          }
+      }
+    }]
+  };
+
+  var chart = new ApexCharts(document.querySelector("#composition_by_roi_div"), donut_roi_options);
+  chart.render();
+</script>
+
+<!-- / donut según rentabilidad general  -->
+
+
+<!-- radar2 -->
+<script>
+  var radar_2_options = {
+    series: {{ radar_2_data.series_json | safe }},
+    chart: {
+      height: 350,
+      type: 'radar',
+      dropShadow: {
+        enabled: true,
+        blur: 1,
+        left: 1,
+        top: 1
+      }
+    },
+    stroke: {
+      width: 2
+    },
+    fill: {
+      opacity: 0.1
+    },
+    markers: {
+      size: 0
+    },
+    xaxis: {
+      categories: {{ radar_2_data.categories_json | safe }}
+    },
+    colors: {{ radar_2_data.colors_json | safe }}
+  };
+
+  var chart = new ApexCharts(document.querySelector("#radar2"), radar_2_options);
+  chart.render();
+</script>
+<!-- / radar2 -->
 
 
 
